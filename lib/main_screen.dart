@@ -4,6 +4,7 @@ import 'screens/dashboard_screen.dart';
 import 'screens/mealScreen.dart';
 import 'screens/expense_screen.dart';
 import 'screens/profile_screen.dart';
+import 'package:flutter/foundation.dart'; // for kIsWeb
 
 class MainScreen extends StatelessWidget {
   final PersistentTabController navBarController =
