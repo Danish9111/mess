@@ -7,6 +7,8 @@ void main() {
 }
 
 class MessApp extends StatelessWidget {
+  const MessApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

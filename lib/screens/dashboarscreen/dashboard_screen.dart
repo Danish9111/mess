@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui';
+import 'dashboard_body.dart'; // Assuming you have a separate file for the body content
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
@@ -210,6 +213,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+      // body: const DashboardBody(),
       body: Center(
           child: Stack(
         children: [
@@ -228,11 +232,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: double.infinity,
               width: double.infinity,
               child: Center(
-                child: Text(
-                  'Welcome to the Dashboard!',
-                  style: TextStyle(fontSize: 24),
-                ),
-              )),
+                  child: Padding(
+                      child: DashboardBody(), padding: EdgeInsets.all(20)))),
         ],
       )),
     );

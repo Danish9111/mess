@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'screens/dashboard_screen.dart';
+import 'screens/dashboarscreen/dashboard_screen.dart';
 import 'screens/mealScreen.dart';
 import 'screens/expense_screen.dart';
 import 'screens/profile_screen.dart';
@@ -41,6 +41,8 @@ class MainScreen extends StatelessWidget {
       inactiveColorPrimary: Colors.grey,
     ),
   ];
+
+  MainScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
