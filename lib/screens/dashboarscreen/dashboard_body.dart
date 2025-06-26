@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'meal_attendence_marker.dart';
 
 class DashboardBody extends StatefulWidget {
   const DashboardBody({super.key});
@@ -29,8 +29,9 @@ class _DashboardBodyState extends State<DashboardBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 15),
           _buildWelcomeHeader(isSmallScreen),
-          const SizedBox(height: 24),
+          _buildAttendenceMarker(),
           _buildMealProgress(),
           const SizedBox(height: 24),
           _buildMessStatusCard(),
@@ -38,6 +39,7 @@ class _DashboardBodyState extends State<DashboardBody> {
           _buildQuickActions(isSmallScreen),
           const SizedBox(height: 24),
           _buildTodaysSpecial(),
+          SizedBox(height: 24),
         ],
       ),
     );
@@ -55,7 +57,7 @@ class _DashboardBodyState extends State<DashboardBody> {
             color: Colors.blueGrey[800],
           ),
         ),
-        const SizedBox(height: 8),
+        // const SizedBox(height: 8),
         Text(
           _getDailyQuote(),
           style: TextStyle(
@@ -112,6 +114,16 @@ class _DashboardBodyState extends State<DashboardBody> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildAttendenceMarker() {
+    return
+        // In your dashboard:
+        Column(
+      children: [
+        SymmetricalMealGrid(),
+      ],
     );
   }
 

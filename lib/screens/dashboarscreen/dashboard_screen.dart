@@ -222,18 +222,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
             height: double.infinity,
             width: double.infinity,
           ),
-          Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(90),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(90),
+            ),
+            child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(90),
+                  ),
                 ),
-              ),
-              height: double.infinity,
-              width: double.infinity,
-              child: Center(
-                  child: Padding(
-                      child: DashboardBody(), padding: EdgeInsets.all(20)))),
+                height: double.infinity,
+                width: double.infinity,
+                child: Center(
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: DashboardBody()))),
+          ),
         ],
       )),
     );
