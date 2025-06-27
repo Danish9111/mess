@@ -33,7 +33,7 @@ dependencies:
   google_fonts: ^5.1.0
   persistent_bottom_nav_bar:
   intl:
-  confetti: ^0.8.0
+  riverpod:
 
 
   # The following adds the Cupertino Icons font to your application.

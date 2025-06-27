@@ -1,5 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_utils/meal_cards_utils.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_utils/name_of_meal_utils.dart';
+
+final _mealData = getMealStatus(TimeOfDay.now());
+
+final _currentMeal = _mealData['current']; // e.g. "Lunch"
+final _otherMeals = _mealData['others'] ?? '';
+// debugPrint('other meals: $_otherMeals');
+final randomMeal1 = _otherMeals[0];
+final randomMeal2 = _otherMeals[1];
+
+String _mealTimingForCurrent() {
+  if (_currentMeal == 'Breakfast') {
+    return '7:00 AM - 9:00 AM';
+  } else if (_currentMeal == 'Lunch') {
+    return '12:00 PM - 3:00 PM';
+  } else {
+    return '7:00 PM - 12:00 PM';
+  }
+}
+
+String _mealTimingForOther(String randomMeal) {
+  if (randomMeal == 'Breakfast') {
+    return '7:00 AM - 9:00 AM';
+  } else if (randomMeal == 'Lunch') {
+    return '12:00PM - 3:00PM';
+  } else {
+    return '7:00 PM - 12:00 PM';
+  }
+}
 
 class SymmetricalMealGrid extends StatelessWidget {
   final List<Meal> meals = [
@@ -28,7 +58,7 @@ class SymmetricalMealGrid extends StatelessWidget {
       width: screenWidth,
       height: screenHeight / 3.4,
       child: Row(
-        spacing: 1,
+        spacing: 2,
         children: [
           // Main Large Card
           Expanded(child: _buildCurrentCard(context)),
@@ -42,9 +72,13 @@ class SymmetricalMealGrid extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: screenHeight * 0.015),
               child: Column(
                 children: [
-                  Expanded(child: _buildSmallCard('Breakfast')),
+                  Expanded(
+                      child: _buildSmallCard(
+                          _mealTimingForOther(randomMeal1), randomMeal1)),
                   SizedBox(height: screenHeight * 0.01),
-                  Expanded(child: _buildSmallCard('Dinner')),
+                  Expanded(
+                      child: _buildSmallCard(
+                          _mealTimingForOther(randomMeal2), randomMeal2)),
                 ],
               ),
             ),
@@ -56,6 +90,7 @@ class SymmetricalMealGrid extends StatelessWidget {
 
   Widget _buildCurrentCard(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final mealTiming = MealTiming().mealTiming();
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -85,7 +120,7 @@ class SymmetricalMealGrid extends StatelessWidget {
             // SizedBox(height: 10),
 
             Text(
-              "Lunch",
+              _currentMeal,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -96,21 +131,18 @@ class SymmetricalMealGrid extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: Text(
-                'Currently Serving',
+                _mealTimingForCurrent(),
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            Text(
-              'Closing in 20 minutes',
-              style: TextStyle(color: Colors.white),
-            ),
+            MealCountdown()
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSmallCard(String meal) {
+  Widget _buildSmallCard(timing, randomMeal) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.shade400,
@@ -120,7 +152,7 @@ class SymmetricalMealGrid extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            meal,
+            randomMeal,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
@@ -131,7 +163,7 @@ class SymmetricalMealGrid extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Text(
-              'Currently Serving',
+              timing,
               style: TextStyle(color: Colors.white),
               textAlign: TextAlign.center,
             ),
