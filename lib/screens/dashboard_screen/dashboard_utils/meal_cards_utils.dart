@@ -9,6 +9,8 @@ class MealTiming {
 }
 
 class MealCountdown extends StatefulWidget {
+  const MealCountdown({super.key});
+
   @override
   _MealCountdownState createState() => _MealCountdownState();
 }
@@ -39,16 +41,15 @@ class _MealCountdownState extends State<MealCountdown> {
 
   void _updateStatus() {
     final now = DateTime.now();
-    print("Now: $now");
 
     // Correct meal times
     final startBreakfast = convertToDateTime(TimeOfDay(hour: 7, minute: 0));
     final endBreakfast = convertToDateTime(TimeOfDay(hour: 8, minute: 59));
 
-    final startLunch = convertToDateTime(TimeOfDay(hour: 9, minute: 0));
-    final endLunch = convertToDateTime(TimeOfDay(hour: 13, minute: 59));
+    final startLunch = convertToDateTime(TimeOfDay(hour: 12, minute: 0));
+    final endLunch = convertToDateTime(TimeOfDay(hour: 17, minute: 59));
 
-    final startDinner = convertToDateTime(TimeOfDay(hour: 14, minute: 0));
+    final startDinner = convertToDateTime(TimeOfDay(hour: 20, minute: 0));
     final endDinner = convertToDateTime(TimeOfDay(hour: 24, minute: 0));
 
     String status = "";
@@ -70,7 +71,7 @@ class _MealCountdownState extends State<MealCountdown> {
       meal = "Lunch";
       status = "Preparing for $meal";
     } else if (now.isAfter(startDinner) && now.isBefore(endDinner)) {
-      meal = "Dinner";
+      meal = " Dinner ";
       remaining = endDinner.difference(now);
       status = "Closing in ${_formatDuration(remaining)}";
     } else if (now.isBefore(startDinner)) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_utils/meal_cards_utils.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_utils/name_of_meal_utils.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/model_bottom_sheet.dart';
 
 final _mealData = getMealStatus(TimeOfDay.now());
 
@@ -13,11 +14,11 @@ final randomMeal2 = _otherMeals[1];
 
 String _mealTimingForCurrent() {
   if (_currentMeal == 'Breakfast') {
-    return '7:00 AM - 9:00 AM';
+    return '7:00AM - 9:00AM';
   } else if (_currentMeal == 'Lunch') {
-    return '12:00 PM - 3:00 PM';
+    return '12:00PM - 3:00PM';
   } else {
-    return '7:00 PM - 12:00 PM';
+    return '7:00PM - 12:00PM';
   }
 }
 
@@ -27,7 +28,7 @@ String _mealTimingForOther(String randomMeal) {
   } else if (randomMeal == 'Lunch') {
     return '12:00PM - 3:00PM';
   } else {
-    return '7:00 PM - 12:00 PM';
+    return '7:00 PM-12:00 PM';
   }
 }
 
@@ -54,7 +55,7 @@ class SymmetricalMealGrid extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Container(
+    return SizedBox(
       width: screenWidth,
       height: screenHeight / 3.4,
       child: Row(
@@ -73,12 +74,12 @@ class SymmetricalMealGrid extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                      child: _buildSmallCard(
-                          _mealTimingForOther(randomMeal1), randomMeal1)),
+                      child: _buildSmallCard(_mealTimingForOther(randomMeal1),
+                          randomMeal1, context)),
                   SizedBox(height: screenHeight * 0.01),
                   Expanded(
-                      child: _buildSmallCard(
-                          _mealTimingForOther(randomMeal2), randomMeal2)),
+                      child: _buildSmallCard(_mealTimingForOther(randomMeal2),
+                          randomMeal2, context)),
                 ],
               ),
             ),
@@ -89,7 +90,6 @@ class SymmetricalMealGrid extends StatelessWidget {
   }
 
   Widget _buildCurrentCard(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final mealTiming = MealTiming().mealTiming();
 
     return Padding(
@@ -142,33 +142,46 @@ class SymmetricalMealGrid extends StatelessWidget {
     );
   }
 
-  Widget _buildSmallCard(timing, randomMeal) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade400,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
+  Widget _buildSmallCard(timing, randomMeal, BuildContext context) {
+    return InkWell(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          // isScrollControlled: true,
+          builder: (context) => buildModelBottomSheet(
+            context,
             randomMeal,
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 28,
-              fontFamily: GoogleFonts.lato().fontFamily,
-            ),
+            timing,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            child: Text(
-              timing,
-              style: TextStyle(color: Colors.white),
-              textAlign: TextAlign.center,
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey.shade400,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              randomMeal,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 28,
+                fontFamily: GoogleFonts.lato().fontFamily,
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: Text(
+                timing,
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

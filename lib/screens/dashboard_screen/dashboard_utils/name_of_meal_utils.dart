@@ -8,11 +8,14 @@ Map<String, dynamic> getMealStatus(TimeOfDay now) {
 
   if (minutes >= 420 && minutes < 540) {
     currentMeal = 'Breakfast';
-  } else if (minutes >= 960 && minutes < 1020) {
+  } else if (minutes >= 720 && minutes < 1020) {
     currentMeal = 'Lunch';
-  } else {
+  } else if (minutes >= 1200 && minutes <= 1440) {
     currentMeal = 'Dinner';
+  } else {
+    currentMeal = 'Close';
   }
+
   final otherMeals = meals.where((m) => m != currentMeal).toList();
 
   return {
