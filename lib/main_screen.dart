@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'screens/dashboard_screen/dashboard_ui/dashboard_screen.dart';
-import 'screens/mealScreen.dart';
 import 'screens/expense_screen.dart';
 import 'screens/profile_screen.dart';
-// for kIsWeb
+import 'package:mess/screens/meal_screen/main_meal.dart' as MealScreens;
 
 class MainScreen extends StatelessWidget {
   final PersistentTabController navBarController =
       PersistentTabController(initialIndex: 0);
   final List<Widget> _screens = [
     DashboardScreen(),
-    MealScreen(),
+    MealScreens.MealScreen(),
     ExpenseScreen(),
     ProfileScreen(),
   ];

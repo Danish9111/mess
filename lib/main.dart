@@ -1,9 +1,13 @@
 import "package:flutter/material.dart";
 import 'main_screen.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // <-- Add this import
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MessApp());
+
+  // <-- Wrap your app with ProviderScope
+  runApp((ProviderScope(child: MessApp())));
 }
 
 class MessApp extends StatelessWidget {
