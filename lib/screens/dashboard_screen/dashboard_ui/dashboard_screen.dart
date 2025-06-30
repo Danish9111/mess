@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui';
 import 'dashboard_body.dart'; // Assuming you have a separate file for the body content
+import 'package:mess/extentions.dart'; // Importing the extension for color opacity
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -54,7 +55,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           children: [
                             CircleAvatar(
                               radius: 26,
-                              backgroundColor: Colors.white.withOpacity(0.3),
+                              backgroundColor: Colors.white.applyOpacity(0.3),
                               child: const Icon(Icons.person,
                                   size: 30, color: Colors.white),
                             ),
@@ -76,7 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   'Favourite Meal : Chicken Biryani 😍',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Colors.white.withOpacity(0.9),
+                                    color: Colors.white.applyOpacity(0.9),
                                     fontStyle: FontStyle.italic,
                                   ),
                                 ),
@@ -90,7 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         // Vertical action buttons
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
+                            color: Colors.white.applyOpacity(0.15),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Column(
@@ -123,17 +124,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Colors.white.withOpacity(0.25),
-                            Colors.white.withOpacity(0.15),
+                            Colors.white.applyOpacity(0.25),
+                            Colors.white.applyOpacity(0.15),
                           ],
                         ),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.applyOpacity(0.1),
                           width: 2,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.applyOpacity(0.2),
                             blurRadius: 30,
                             spreadRadius: 2,
                           )

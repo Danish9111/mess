@@ -11,7 +11,7 @@ class MainScreen extends StatelessWidget {
   final List<Widget> _screens = [
     DashboardScreen(),
     MealScreens.MealScreen(),
-    ExpenseScreen(),
+    ExpensesScreen(),
     ProfileScreen(),
   ];
   final List<PersistentBottomNavBarItem> _items = [

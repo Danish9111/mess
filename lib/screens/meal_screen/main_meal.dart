@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:mess/extentions.dart';
 
 class MealScreen extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class _MealScreenState extends State<MealScreen> {
     return Scaffold(
         backgroundColor: Colors.grey.shade200,
         // appBar: AppBar(
-        //   backgroundColor: Colors.lightBlueAccent.withOpacity(.9),
+        //   backgroundColor: Colors.lightBlueAccent.applyOpacity(.9),
         // ),
         appBar: GlassyAppBar(),
         body: SingleChildScrollView(
@@ -199,7 +200,7 @@ class GlassyAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: AppBar(
-          backgroundColor: Colors.lightBlueAccent.withOpacity(0.3),
+          backgroundColor: Colors.lightBlueAccent.applyOpacity(0.3),
           elevation: 0,
           title: const Text("Glassy AppBar"),
           centerTitle: true,

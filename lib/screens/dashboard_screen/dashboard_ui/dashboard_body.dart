@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'meal_cards.dart';
+import 'package:mess/extentions.dart';
 
 class DashboardBody extends StatefulWidget {
   const DashboardBody({super.key});
@@ -174,10 +175,10 @@ class _DashboardBodyState extends State<DashboardBody> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Colors.white.withOpacity(0.7),
+        color: Colors.white.applyOpacity(0.7),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.applyOpacity(0.1),
             blurRadius: 10,
             spreadRadius: 2,
           )
@@ -303,7 +304,7 @@ class _DashboardBodyState extends State<DashboardBody> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.lightBlue.withOpacity(0.2),
+            color: Colors.lightBlue.applyOpacity(0.2),
             blurRadius: 10,
             spreadRadius: 2,
           )

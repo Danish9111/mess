@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_utils/meal_cards_utils.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_utils/name_of_meal_utils.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/model_bottom_sheet.dart';
+import 'package:mess/extentions.dart';
 
 final _mealData = getMealStatus(TimeOfDay.now());
 
@@ -108,7 +109,7 @@ class SymmetricalMealGrid extends StatelessWidget {
               height: 70,
               width: 70,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.applyOpacity(0.3),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Icon(

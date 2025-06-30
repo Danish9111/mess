@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/meal_cards.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:mess/extentions.dart';
 
 Widget buildModelBottomSheet(context, String randomMeal, String timing) {
   final screenWidth = MediaQuery.of(context).size.width;
@@ -83,7 +82,7 @@ class BuildMealDetailRow extends StatelessWidget {
             heightFactor: .5,
             widthFactor: .5,
             child: CircleAvatar(
-              backgroundColor: Colors.white.withOpacity(.4),
+              backgroundColor: Colors.white.applyOpacity(.4),
               child: Image.asset(mealpath),
             ),
           ),
