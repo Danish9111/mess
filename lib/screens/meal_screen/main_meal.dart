@@ -1,172 +1,230 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'dart:ui';
 
-// Meal model
-class Meal {
-  final String id;
-  final String name;
-  final String time;
-  final IconData icon;
-  bool isAvailable;
-
-  Meal({
-    required this.id,
-    required this.name,
-    required this.time,
-    required this.icon,
-    this.isAvailable = true,
-  });
+class MealScreen extends StatefulWidget {
+  @override
+  State<MealScreen> createState() => _MealScreenState();
 }
 
-// Meal Provider
-final mealsProvider = StateNotifierProvider<MealsNotifier, List<Meal>>((ref) {
-  return MealsNotifier();
-});
+class _MealScreenState extends State<MealScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: GlassyAppBar(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final cardHeight = constraints.maxHeight * 0.32;
+          final plateSize = constraints.maxWidth * 0.25;
 
-class MealsNotifier extends StateNotifier<List<Meal>> {
-  MealsNotifier()
-      : super([
-          Meal(
-            id: '1',
-            name: 'Breakfast',
-            time: '7:00 - 10:00 AM',
-            icon: Icons.breakfast_dining,
-          ),
-          Meal(
-            id: '2',
-            name: 'Lunch',
-            time: '11:00 AM - 2:00 PM',
-            icon: Icons.lunch_dining,
-          ),
-          Meal(
-            id: '3',
-            name: 'Dinner',
-            time: '5:00 - 9:00 PM',
-            icon: Icons.dinner_dining,
-          ),
-          Meal(
-            id: '4',
-            name: 'Snacks',
-            time: 'All Day',
-            icon: Icons.cookie,
-          ),
-        ]);
-
-  void toggleAvailability(String id) {
-    state = [
-      for (final meal in state)
-        if (meal.id == id)
-          Meal(
-            id: meal.id,
-            name: meal.name,
-            time: meal.time,
-            icon: meal.icon,
-            isAvailable: !meal.isAvailable,
-          )
-        else
-          meal,
-    ];
+          return ListView.builder(
+            padding: EdgeInsets.symmetric(vertical: plateSize * 0.3),
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  bottom: cardHeight * 0.3,
+                  left: constraints.maxWidth * 0.05,
+                  right: constraints.maxWidth * 0.05,
+                ),
+                child: FoodCard(
+                  cardHeight: cardHeight,
+                  plateSize: plateSize,
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 }
 
-// Meal Card Widget
-class MealCard extends StatelessWidget {
-  final Meal meal;
-  final VoidCallback onTap;
+class FoodCard extends StatelessWidget {
+  final double cardHeight;
+  final double plateSize;
 
-  const MealCard({
+  const FoodCard({
+    required this.cardHeight,
+    required this.plateSize,
     Key? key,
-    required this.meal,
-    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+    final textTheme = Theme.of(context).textTheme;
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        // Card container
+        Container(
+          height: cardHeight,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          padding: EdgeInsets.only(
+            left: 16,
+            right: plateSize * 0.7,
+            top: 16,
+            bottom: 16,
+          ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                meal.icon,
-                size: 48,
-                color: meal.isAvailable ? Colors.lightBlueAccent : Colors.grey,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                meal.name,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              // Title and description
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Caesar Salad (Quinoa)",
+                    style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: meal.isAvailable ? null : Colors.grey,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    "Basic Caesar salad with curry olive oil dressing",
+                    style: textTheme.bodySmall,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                meal.time,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: meal.isAvailable
-                          ? Theme.of(context).colorScheme.secondary
-                          : Colors.grey,
+
+              // Price and add button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      text: 'Price: ',
+                      style: textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "100 Rupees",
+                          style: textTheme.bodyMedium,
+                        ),
+                      ],
                     ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add_circle, color: Colors.blue),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+
+              // Calories
+              Container(
+                height: cardHeight * 0.15,
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.local_fire_department, color: Colors.orange),
+                    SizedBox(width: 8),
+                    Text('Calories: 200', style: textTheme.bodyMedium),
+                  ],
+                ),
+              ),
+
+              // Rating
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.amber),
+                ),
+                child: Column(
+                  children: [
+                    Text('Rate this meal', style: textTheme.bodySmall),
+                    SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (index) {
+                        return Icon(
+                          index < 4 ? Icons.star : Icons.star_border,
+                          color: Colors.amber,
+                          size: 20,
+                        );
+                      }),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
-      ),
+
+        // Plate image
+        Positioned(
+          top: -plateSize * 0.25,
+          right: 0,
+          child: Container(
+            width: plateSize,
+            height: plateSize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.lightBlue.shade100,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 12,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(plateSize * 0.1),
+              child: Image.asset(
+                'assets/images/nashtapng.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-// Main Screen
-class MealScreen extends HookConsumerWidget {
-  const MealScreen({super.key});
+class GlassyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const GlassyAppBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final meals = ref.watch(mealsProvider);
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    // Responsive grid columns
-    final crossAxisCount = screenWidth < 600
-        ? 2
-        : screenWidth < 900
-            ? 3
-            : 4;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Daily Meals'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.8,
-          ),
-          itemCount: meals.length,
-          itemBuilder: (context, index) {
-            final meal = meals[index];
-            return MealCard(
-              meal: meal,
-              onTap: () =>
-                  ref.read(mealsProvider.notifier).toggleAvailability(meal.id),
-            );
-          },
+  Widget build(BuildContext context) {
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: AppBar(
+          backgroundColor: Colors.lightBlueAccent.withOpacity(0.3),
+          elevation: 0,
+          title: const Text("Meal Selection"),
+          centerTitle: true,
         ),
       ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

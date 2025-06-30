@@ -58,7 +58,8 @@ class BuildMealDetailRow extends StatelessWidget {
   final String meal;
 
   const BuildMealDetailRow(
-      {required this.screenWidth,
+      {super.key,
+      required this.screenWidth,
       required this.screenHeight,
       required this.meal,
       required this.mealpath});
