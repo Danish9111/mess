@@ -62,45 +62,31 @@ final paymentHistoryProvider = FutureProvider<List<Expense>>((ref) async {
   return [
     Expense(
       id: '1',
-      title: 'Monthly Mess Fee',
+      title: 'Breakfast',
       amount: 4000,
       date: DateTime.now().subtract(const Duration(days: 2)),
-      category: 'Food',
+      category: 'Monthly Payment', // changed from 'Paid monthly'
     ),
     Expense(
       id: '2',
-      title: 'Extra Fruit Order',
+      title: 'Lunch',
       amount: 1200,
       date: DateTime.now().subtract(const Duration(days: 5)),
-      category: 'Groceries',
+      category: 'Monthly Payment', // changed from 'Paid monthly'
     ),
     Expense(
       id: '3',
-      title: 'Snacks Party',
+      title: 'Dinner',
       amount: 4000,
       date: DateTime.now().subtract(const Duration(days: 8)),
-      category: 'Entertainment',
+      category: 'Monthly Payment', // changed from 'Paid monthly'
     ),
     Expense(
       id: '4',
-      title: 'Cleaning Supplies',
+      title: 'Extras(snacks,drinks etc)',
       amount: 650,
       date: DateTime.now().subtract(const Duration(days: 12)),
-      category: 'Maintenance',
-    ),
-    Expense(
-      id: '5',
-      title: 'Electricity Bill',
-      amount: 1850,
-      date: DateTime.now().subtract(const Duration(days: 15)),
-      category: 'Utilities',
-    ),
-    Expense(
-      id: '6',
-      title: 'Water Filter Replacement',
-      amount: 1200,
-      date: DateTime.now().subtract(const Duration(days: 20)),
-      category: 'Maintenance',
+      category: 'Extras', // changed from 'Paid monthly'
     ),
   ];
 });
@@ -245,14 +231,14 @@ class ExpensesScreen extends ConsumerWidget {
         child: Column(
           children: [
             _buildSummaryRow(
-              'Total Share',
-              '₹${summary.totalShare.toStringAsFixed(2)}',
+              'Total Expense',
+              'Rs.${summary.totalShare.toStringAsFixed(2)}',
               icon: Iconsax.profile_2user,
             ),
             const SizedBox(height: 20),
             _buildSummaryRow(
               'Amount Paid',
-              '₹${summary.amountPaid.toStringAsFixed(2)}',
+              'Rs.${summary.amountPaid.toStringAsFixed(2)}',
               icon: Iconsax.wallet,
             ),
             const SizedBox(height: 20),
@@ -280,8 +266,8 @@ class ExpensesScreen extends ConsumerWidget {
                 ),
                 Text(
                   summary.netBalance >= 0
-                      ? '+₹${summary.netBalance.abs().toStringAsFixed(2)}'
-                      : '-₹${summary.netBalance.abs().toStringAsFixed(2)}',
+                      ? 'Rs.${summary.netBalance.abs().toStringAsFixed(2)}'
+                      : 'Rs.${summary.netBalance.abs().toStringAsFixed(2)}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -372,25 +358,32 @@ class ExpensesScreen extends ConsumerWidget {
 
   Widget _buildPaymentItem(Expense payment) {
     final categoryColors = {
-      'Food': const Color(0xFFFF9F43),
-      'Groceries': const Color(0xFF2ECC71),
-      'Entertainment': const Color(0xFF9B59B6),
-      'Utilities': const Color(0xFF3498DB),
+      'Breakfast': const Color(0xFFFF9F43),
+      'Lunch': const Color(0xFF2ECC71),
+      'Dinner': const Color(0xFF9B59B6),
+      'Extras': const Color(0xFF3498DB),
       'Maintenance': const Color(0xFF1ABC9C),
+      'Monthly Payment': Colors.lightBlueAccent, // fallback for unknown titles
     };
 
     final iconForCategory = {
-      'Food': Iconsax.cake,
-      'Groceries': Iconsax.shopping_bag,
-      'Entertainment': Iconsax.music,
-      'Utilities': Iconsax.flash,
+      'Breakfast': Iconsax.cake,
+      'Lunch': Iconsax.shopping_bag,
+      'Dinner': Iconsax.music,
+      'Extras': Iconsax.flash,
       'Maintenance': Icons.pan_tool_sharp,
+      'Monthly Payment': Iconsax.wallet, // fallback for unknown titles
     };
 
-    // Use a fallback if category is null or not found
-    final category = payment.category ?? 'Food';
-    final color = categoryColors[category] ?? Colors.grey;
-    final icon = iconForCategory[category] ?? Icons.help_outline;
+    // If category is 'Monthly Payment', use the title to pick color/icon
+    String key = payment.category;
+    if (payment.category == 'Monthly Payment' &&
+        categoryColors.containsKey(payment.title)) {
+      key = payment.title;
+    }
+
+    final color = categoryColors[key] ?? Colors.grey;
+    final icon = iconForCategory[key] ?? Icons.help_outline;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -399,7 +392,7 @@ class ExpensesScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.applyOpacity(0.1),
+            color: Colors.grey.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -412,7 +405,7 @@ class ExpensesScreen extends ConsumerWidget {
           width: 50,
           height: 50,
           decoration: BoxDecoration(
-            color: color.applyOpacity(0.2),
+            color: color.withOpacity(0.2),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Icon(
@@ -443,11 +436,11 @@ class ExpensesScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: color.applyOpacity(0.1),
+                color: color.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
-                category,
+                payment.category,
                 style: TextStyle(
                   color: color,
                   fontSize: 12,
