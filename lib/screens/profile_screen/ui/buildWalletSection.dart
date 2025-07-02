@@ -35,7 +35,7 @@ Widget buildWalletSection() {
                 children: [
                   Text("Pending Dues",
                       style: TextStyle(fontSize: 14, color: Colors.grey[600])),
-                  Text("₹320",
+                  Text("Rs.320",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

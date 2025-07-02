@@ -36,81 +36,11 @@ class ProfileScreen extends StatelessWidget {
             buildProgressSection(context),
             buildMealActivity(),
             buildWalletSection(),
-            // _buildPreferences(),
             buildFeedback('1', '2'),
-            // _buildSettings(context),
             SizedBox(height: 30),
           ],
         ),
       ),
     );
   }
-}
-
-// 💸 Wallet Section
-
-// 🔄 Preferences Section
-
-// 📊 Feedback Section
-
-// 📱 Settings Section
-Widget _buildSettings(BuildContext context) {
-  return Container(
-    padding: EdgeInsets.all(16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Account Settings",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        SizedBox(height: 16),
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: [
-            _buildSettingsButton(
-                Icons.notifications, "Notifications", true, context),
-            _buildSettingsButton(Icons.language, "Language", false, context),
-            _buildSettingsButton(Icons.share, "Refer a Friend", false, context),
-            _buildSettingsButton(Icons.help, "Help Center", false, context),
-            _buildSettingsButton(
-                Icons.privacy_tip, "Privacy Policy", false, context),
-            _buildSettingsButton(Icons.exit_to_app, "Logout", false, context),
-          ],
-        )
-      ],
-    ),
-  );
-}
-
-Widget _buildSettingsButton(
-    IconData icon, String text, bool toggle, BuildContext context) {
-  return Container(
-    width: MediaQuery.of(context).size.width * 0.45,
-    child: Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(12),
-      elevation: 1,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () {},
-        child: Padding(
-          padding: EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Icon(icon, color: Colors.lightBlueAccent),
-              SizedBox(width: 12),
-              Expanded(child: Text(text)),
-              if (toggle)
-                Switch(
-                  value: true,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  activeColor: Colors.lightBlueAccent,
-                  onChanged: (value) {},
-                )
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
 }
