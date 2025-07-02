@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'screens/dashboard_screen/dashboard_ui/dashboard_screen.dart';
 import 'screens/expense_screen.dart';
-import 'screens/profile_screen.dart';
+import 'screens/profile_screen/profile_screen.dart';
 import 'package:mess/screens/meal_screen/main_meal.dart' as MealScreens;
 
 class MainScreen extends StatelessWidget {
