@@ -8,6 +8,8 @@ import 'package:mess/screens/profile_screen/ui/buildWalletSection.dart';
 import 'package:mess/screens/profile_screen/ui/buildFeedback.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

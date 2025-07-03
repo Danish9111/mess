@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:mess/extentions.dart';
 
 class MealScreen extends StatefulWidget {
+  const MealScreen({super.key});
+
   @override
   State<MealScreen> createState() => _MealScreenState();
 }
