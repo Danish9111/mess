@@ -4,6 +4,7 @@ import 'dashboard_screen/dashboard_ui/dashboard_screen.dart';
 import 'expense_screen.dart';
 import 'profile_screen/profile_screen.dart';
 import 'package:mess/screens/meal_screen/main_meal.dart' as MealScreens;
+import 'package:mess/screens/login.dart';
 
 class MainScreen extends StatelessWidget {
   final PersistentTabController navBarController =
@@ -12,7 +13,7 @@ class MainScreen extends StatelessWidget {
     DashboardScreen(),
     MealScreens.MealScreen(),
     ExpensesScreen(),
-    ProfileScreen(),
+    LoginScreen(),
   ];
   final List<PersistentBottomNavBarItem> _items = [
     PersistentBottomNavBarItem(
