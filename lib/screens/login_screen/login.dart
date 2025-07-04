@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mess/screens/login_screen/login_utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -198,7 +196,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(color: Colors.blueGrey.shade600),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamed('/signUp');
+                        },
                         child: Text(
                           'Sign Up',
                           style: TextStyle(
