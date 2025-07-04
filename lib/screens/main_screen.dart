@@ -4,7 +4,7 @@ import 'dashboard_screen/dashboard_ui/dashboard_screen.dart';
 import 'expense_screen.dart';
 import 'profile_screen/profile_screen.dart';
 import 'package:mess/screens/meal_screen/main_meal.dart' as MealScreens;
-import 'package:mess/screens/login.dart';
+import 'package:mess/screens/login_screen/login.dart';
 
 class MainScreen extends StatelessWidget {
   final PersistentTabController navBarController =
