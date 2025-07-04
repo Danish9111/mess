@@ -31,3 +31,25 @@ Future<void> signInWithGoogle({
     hideLoading();
   }
 }
+
+Future<UserCredential?> signUp({
+  required String email,
+  required String password,
+  required BuildContext context,
+}) async {
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('success')),
+    );
+
+    return userCredential;
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: ${e.toString()}')),
+    );
+    debugPrint("error : $e");
+    return null;
+  }
+}

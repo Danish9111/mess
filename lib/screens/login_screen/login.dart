@@ -106,7 +106,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        signUp(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            context: context);
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightBlueAccent,
                         shape: RoundedRectangleBorder(

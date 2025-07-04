@@ -4,11 +4,12 @@ import 'screens/main_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // <-- Add this import
 import 'package:mess/screens/login_screen/login.dart';
 import 'package:mess/screens/mealScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   // <-- Wrap your app with ProviderScope
   runApp((ProviderScope(child: MessApp())));

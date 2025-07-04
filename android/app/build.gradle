@@ -43,4 +43,12 @@ flutter {
     source = "../.."
 }
 //applied by me
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.7.0') // ✅ Firebase BOM
+    implementation 'com.google.firebase:firebase-auth'                 // ✅ Firebase Auth
+    // Add other Firebase services here if needed
+}
+
+// ✅ Always at the bottom
 apply plugin: 'com.google.gms.google-services'
