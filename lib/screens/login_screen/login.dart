@@ -1,5 +1,10 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mess/screens/login_screen/login_utils.dart';
+import 'package:mess/screens/signUp_screen/signUp_utils.dart';
+import 'package:mess/screens/signUp_screen/signUp.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +21,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF81D4FA),
+        surfaceTintColor: Colors.transparent,
+      ),
       body: Stack(
         children: [
           // Background Gradient
@@ -218,13 +227,24 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
 
-  Widget _buildInputField({
-    required TextEditingController controller,
-    required String hint,
-    required IconData icon,
-    bool isPassword = false,
-  }) {
+class _buildInputField extends ConsumerWidget {
+  final TextEditingController controller;
+  final String hint;
+  final IconData icon;
+  final bool isPassword;
+
+  const _buildInputField({
+    required this.controller,
+    required this.hint,
+    required this.icon,
+    this.isPassword = false,
+  });
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isPasswordVisible = ref.watch(passVisibilityProvider);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -239,7 +259,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       child: TextField(
         controller: controller,
-        obscureText: isPassword,
+        obscureText: !isPasswordVisible,
         style: TextStyle(color: Colors.blueGrey.shade800),
         decoration: InputDecoration(
           hintText: hint,
@@ -249,9 +269,14 @@ class _LoginScreenState extends State<LoginScreen> {
           contentPadding: const EdgeInsets.symmetric(vertical: 18),
           suffixIcon: isPassword
               ? IconButton(
-                  icon: Icon(Icons.visibility_off,
-                      color: Colors.blueGrey.shade300),
-                  onPressed: () {},
+                  icon: !isPasswordVisible
+                      ? Icon(Icons.visibility_off,
+                          color: Colors.blueGrey.shade300)
+                      : Icon(Icons.visibility, color: Colors.blueGrey.shade300),
+                  onPressed: () {
+                    ref.read(passVisibilityProvider.notifier).state =
+                        !isPasswordVisible;
+                  },
                 )
               : null,
         ),

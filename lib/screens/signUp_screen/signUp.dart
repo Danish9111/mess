@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mess/screens/signUp_screen/signUp_utils.dart';
+
+final passVisibilityProvider = StateProvider<bool>((ref) => false);
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -8,14 +12,199 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final controller = TextEditingController();
+  final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth > 600;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        backgroundColor: Color(0xFF81D4FA),
+        surfaceTintColor: Colors.transparent,
       ),
-      body: const Center(
-        child: Text('Sign Up Screen'),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF81D4FA),
+                  Color(0xFFB3E5FC),
+                  Color(0xFFE1F5FE),
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: isTablet ? 500 : double.infinity,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.lock_person,
+                        size: 100,
+                        color: Colors.lightBlueAccent,
+                      ),
+                      const SizedBox(height: 30),
+                      const Text(
+                        'Hi there!',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text('Sign Up to continue'),
+                      const SizedBox(height: 20),
+                      _buildInputField(
+                        controller: controller,
+                        hint: 'Email Address',
+                        icon: Icons.email,
+                      ),
+                      const SizedBox(height: 20),
+                      _buildInputField(
+                        controller: passwordController,
+                        hint: 'Enter Password',
+                        icon: Icons.lock,
+                        isPassword: true,
+                      ),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: const Text('Forget password?'),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          signUp(
+                            email: controller.text,
+                            password: passwordController.text,
+                            context: context,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlueAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          minimumSize: Size(screenWidth * 0.5, 60),
+                          elevation: 0,
+                        ),
+                        child: Text('Sign Up'),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: const [
+                          Expanded(
+                            child: Divider(color: Colors.grey, thickness: 1),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Text('OR'),
+                          ),
+                          Expanded(
+                            child: Divider(color: Colors.grey, thickness: 1),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 60),
+                        ),
+                        onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              height: 40,
+                              width: 20,
+                              child: Image.asset('assets/images/google.png'),
+                            ),
+                            const SizedBox(width: 10),
+                            const Text('Sign Up with Google'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _buildInputField extends ConsumerWidget {
+  final TextEditingController controller;
+  final String hint;
+  final IconData icon;
+  final bool isPassword;
+  const _buildInputField({
+    required this.controller,
+    required this.hint,
+    required this.icon,
+    this.isPassword = false,
+  });
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isPasswordVisible = ref.watch(passVisibilityProvider);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.shade100,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: controller,
+        obscureText: isPassword,
+        style: TextStyle(color: Colors.blueGrey.shade800),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TextStyle(color: Colors.blueGrey.shade300),
+          prefixIcon: Icon(icon, color: Colors.lightBlueAccent),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(vertical: 18),
+          suffixIcon: isPassword
+              ? IconButton(
+                  onPressed: () {
+                    ref.read(passVisibilityProvider.notifier).state =
+                        !isPasswordVisible;
+                  },
+                  icon: !isPasswordVisible
+                      ? Icon(
+                          Icons.visibility_off,
+                          color: Colors.grey,
+                        )
+                      : Icon(
+                          Icons.visibility,
+                          color: Colors.grey,
+                        ))
+              : null,
+        ),
       ),
     );
   }
