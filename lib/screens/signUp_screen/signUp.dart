@@ -87,12 +87,15 @@ class _SignUpState extends State<SignUp> {
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
-                        onPressed: () {
-                          signUp(
+                        onPressed: () async {
+                          await signUp(
                             email: controller.text,
                             password: passwordController.text,
                             context: context,
                           );
+                          controller.clear();
+                          passwordController.clear();
+                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.lightBlueAccent,

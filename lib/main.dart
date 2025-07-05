@@ -7,6 +7,7 @@ import 'package:mess/screens/mealScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mess/screens/login_screen/login.dart ';
 // import 'package:firebase_core/firebase_core.dart';
+import 'package:mess/providers/uid_firebase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,13 +17,13 @@ void main() async {
   runApp((ProviderScope(child: MessApp())));
 }
 
-class MessApp extends StatelessWidget {
+class MessApp extends ConsumerWidget {
   const MessApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    bool isLogedIn;
-    isLogedIn = true;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.watch(uidProvider);
+    bool isLogedIn = userId != null;
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
