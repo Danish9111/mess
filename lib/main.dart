@@ -1,20 +1,17 @@
-import "package:flutter/material.dart";
-import 'package:mess/screens/signUp_screen/signUp.dart';
-import 'screens/main_screen.dart';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // <-- Add this import
-import 'package:mess/screens/mealScreen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:mess/screens/login_screen/login.dart ';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:mess/screens/main_screen.dart';
+import 'package:mess/screens/login_screen/login.dart';
+import 'package:mess/screens/signUp_screen/signUp.dart';
+import 'package:mess/screens/mealScreen.dart';
 import 'package:mess/providers/uid_firebase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // <-- Wrap your app with ProviderScope
-  runApp((ProviderScope(child: MessApp())));
+  runApp(const ProviderScope(child: MessApp()));
 }
 
 class MessApp extends ConsumerWidget {
@@ -22,18 +19,27 @@ class MessApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userId = ref.watch(uidProvider);
-    bool isLogedIn = userId != null;
+    final authState = ref.watch(authStateProvider);
 
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'MessMate',
-        initialRoute: isLogedIn ? '/' : '/login',
-        routes: {
-          '/': (context) => MainScreen(),
-          '/login': (context) => LoginScreen(),
-          '/meal': (context) => MealScreen(),
-          '/signUp': (context) => SignUp(),
-        });
+      debugShowCheckedModeBanner: false,
+      title: 'MessMate',
+      home: authState.when(
+        data: (user) {
+          print("🔥 Firebase User: $user");
+          return user == null ? const LoginScreen() : MainScreen();
+        },
+        loading: () => const Scaffold(
+          body: Center(child: CircularProgressIndicator()),
+        ),
+        error: (e, _) => Scaffold(
+          body: Center(child: Text('Auth Error: $e')),
+        ),
+      ),
+      routes: {
+        '/meal': (context) => const MealScreen(),
+        '/signUp': (context) => const SignUp(),
+      },
+    );
   }
 }
