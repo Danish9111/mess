@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'meal_cards.dart';
 import 'package:mess/extentions.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_card.dart';
 
 class DashboardBody extends StatefulWidget {
   const DashboardBody({super.key});
@@ -39,6 +40,18 @@ class _DashboardBodyState extends State<DashboardBody> {
           const SizedBox(height: 24),
           _buildQuickActions(isSmallScreen),
           const SizedBox(height: 24),
+          HorizontalAttendanceBar(
+            attendanceMap: {
+              "2025-07-01": true,
+              "2025-07-02": false,
+              "2025-07-03": true,
+              "2025-07-04": true,
+              "2025-07-05": false,
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
           _buildTodaysSpecial(),
           SizedBox(height: 24),
         ],
@@ -68,53 +81,6 @@ class _DashboardBodyState extends State<DashboardBody> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildStatsGrid(bool isSmallScreen) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: isSmallScreen ? 1 : 3,
-      childAspectRatio: isSmallScreen ? 3.5 : 1.5,
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
-      children: [
-        _buildStatCard(
-            "Meals Taken", "$mealsTaken/$totalMeals", Icons.restaurant),
-        _buildStatCard("Missed Meals", "$missedMeals", Icons.no_meals),
-        _buildStatCard("Balance Left", "₹${balance.toStringAsFixed(0)}",
-            Icons.account_balance_wallet),
-      ],
-    );
-  }
-
-  Widget _buildStatCard(String title, String value, IconData icon) {
-    return Container(
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.lightBlue[100],
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: Colors.lightBlue[800]),
-          ),
-          const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(title, style: TextStyle(color: Colors.blueGrey[600])),
-              const SizedBox(height: 4),
-              Text(value,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold)),
-            ],
-          )
-        ],
-      ),
     );
   }
 
@@ -210,40 +176,9 @@ class _DashboardBodyState extends State<DashboardBody> {
               ],
             ),
             const SizedBox(height: 16),
-            _buildCountdownTimer(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildCountdownTimer() {
-    return StreamBuilder(
-      stream: Stream.periodic(const Duration(seconds: 1)),
-      builder: (context, snapshot) {
-        final now = DateTime.now();
-        final difference = nextMealTime.difference(now);
-        final hours = difference.inHours;
-        final minutes = difference.inMinutes.remainder(60);
-
-        return Row(
-          children: [
-            Icon(Icons.access_time, color: Colors.lightBlue[700]),
-            const SizedBox(width: 8),
-            Text(
-              "Next meal in ",
-              style: TextStyle(color: Colors.blueGrey[700]),
-            ),
-            Text(
-              "${hours}h ${minutes}m",
-              style: TextStyle(
-                color: Colors.lightBlue[800],
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 
