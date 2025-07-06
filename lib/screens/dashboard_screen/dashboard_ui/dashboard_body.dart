@@ -34,20 +34,11 @@ class _DashboardBodyState extends State<DashboardBody> {
           SizedBox(height: 15),
           _buildWelcomeHeader(isSmallScreen),
           _buildAttendenceMarker(),
-          _buildMealProgress(),
-          const SizedBox(height: 24),
-          _buildMessStatusCard(),
           const SizedBox(height: 24),
           _buildQuickActions(isSmallScreen),
           const SizedBox(height: 24),
           HorizontalAttendanceBar(
-            attendanceMap: {
-              "2025-07-01": true,
-              "2025-07-02": false,
-              "2025-07-03": true,
-              "2025-07-04": true,
-              "2025-07-05": false,
-            },
+            attendanceMap: {},
           ),
           SizedBox(
             height: 10,

@@ -7,57 +7,143 @@ class HorizontalAttendanceBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dates = attendanceMap.keys.toList()..sort();
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
 
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: dates.length,
-        itemBuilder: (context, index) {
-          final date = dates[index];
-          final isPresent = attendanceMap[date] ?? false;
-          final parsedDate = DateTime.parse(date);
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Column(
+    return Container(
+      height: screenHeight * 0.22,
+      width: double.infinity,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        elevation: 0,
+        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: InkWell(
+          onTap: () => Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 400),
+              pageBuilder: (_, __, ___) => AttendanceDetailsScreen(),
+              transitionsBuilder: (_, animation, __, child) =>
+                  FadeTransition(opacity: animation, child: child),
+            ),
+          ),
+          borderRadius: BorderRadius.circular(24),
+          splashFactory: InkRipple.splashFactory,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: isPresent ? Colors.green[100] : Colors.red[100],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        "${parsedDate.day}/${parsedDate.month}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                // Left Content
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "ATTENDANCE SUMMARY",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                        color: Colors.blue.shade700,
                       ),
-                      Icon(
-                        isPresent ? Icons.check_circle : Icons.cancel,
-                        color: isPresent ? Colors.green : Colors.red,
-                        size: 20,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "This Month",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.grey.shade800,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "Updated just now",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  _weekday(parsedDate.weekday),
-                  style: const TextStyle(fontSize: 12),
+
+                // Progress Indicator
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: screenHeight * 0.12,
+                      height: screenHeight * 0.12,
+                      child: CircularProgressIndicator(
+                        value: 0.82,
+                        strokeWidth: 20,
+                        backgroundColor: Colors.grey.shade300,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          _getStatusColor(0.82),
+                        ),
+                      ),
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "82%",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            color: _getStatusColor(0.82),
+                          ),
+                        ),
+                        Text(
+                          "Present",
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
+}
 
-  String _weekday(int day) {
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return days[day % 7];
+Color _getStatusColor(double value) {
+  return value >= 0.9
+      ? Colors.greenAccent.shade700
+      : value >= 0.75
+          ? Colors.lightBlue
+          : Colors.orange;
+}
+
+class AttendanceDetailsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Attendance Details'),
+      ),
+      body: Center(
+        child: Text(
+          'Attendance Details Screen',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
   }
 }
