@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'meal_cards.dart';
 import 'package:mess/extentions.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_card.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/attendence_card.dart';
 
 class DashboardBody extends StatefulWidget {
   const DashboardBody({super.key});

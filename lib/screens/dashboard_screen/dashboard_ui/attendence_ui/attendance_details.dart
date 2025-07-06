@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mess/extentions.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/select_month.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/scheduleAbsence.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/confirmAbsence.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/build_summery_card.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/show_day_options.dart';
 
 class AttendanceDetailsScreen extends StatelessWidget {
   AttendanceDetailsScreen({Key? key}) : super(key: key);
@@ -48,11 +52,11 @@ class AttendanceDetailsScreen extends StatelessWidget {
               color: Colors.grey.shade50,
               child: Row(
                 children: [
-                  _buildSummaryCard(context, 'Present', '18', Colors.green),
+                  buildSummaryCard(context, 'Present', '18', Colors.green),
                   const SizedBox(width: 16),
-                  _buildSummaryCard(context, 'Absent', '2', Colors.red),
+                  buildSummaryCard(context, 'Absent', '2', Colors.red),
                   const SizedBox(width: 16),
-                  _buildSummaryCard(
+                  buildSummaryCard(
                       context, 'Days', '$daysInMonth', Colors.lightBlue),
                 ],
               ),
@@ -76,7 +80,7 @@ class AttendanceDetailsScreen extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.calendar_today,
                         color: Colors.lightBlue.shade700),
-                    onPressed: () => _selectMonth(context),
+                    onPressed: () => selectMonth(context),
                   ),
                 ],
               ),
@@ -137,7 +141,7 @@ class AttendanceDetailsScreen extends StatelessWidget {
                       .contains(firstDay.add(Duration(days: dayIndex)).weekday);
 
                   return GestureDetector(
-                    onTap: () => isPast ? _showDayOptions(context, day) : null,
+                    onTap: () => isPast ? showDayOptions(context, day) : null,
                     child: Container(
                       margin: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
@@ -226,7 +230,7 @@ class AttendanceDetailsScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () => _scheduleAbsence(context),
+                              onPressed: () => scheduleAbsence(context),
                               style: OutlinedButton.styleFrom(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 14),
@@ -248,7 +252,7 @@ class AttendanceDetailsScreen extends StatelessWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: FilledButton(
-                              onPressed: () => _markTodayAbsent(context),
+                              onPressed: () => markTodayAbsent(context),
                               style: FilledButton.styleFrom(
                                 backgroundColor: Colors.lightBlue.shade500,
                                 padding:
@@ -276,242 +280,6 @@ class AttendanceDetailsScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildSummaryCard(
-      BuildContext context, String title, String value, Color color) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.applyOpacity(.05),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.grey.shade700,
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
-                color: color,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showDayOptions(BuildContext context, int day) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              '${DateFormat('MMMM d').format(DateTime(DateTime.now().year, DateTime.now().month, day))}',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.lightBlue.shade800,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ListTile(
-              leading: Icon(Icons.edit, color: Colors.lightBlue.shade700),
-              title: const Text('Mark as Absent'),
-              onTap: () {
-                Navigator.pop(context);
-                _confirmAbsence(context, day);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.info, color: Colors.lightBlue.shade700),
-              title: const Text('View Details'),
-              onTap: () {
-                Navigator.pop(context);
-                // Show day details
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _confirmAbsence(BuildContext context, int day) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Confirm Absence'),
-        content: Text(
-            'Mark ${DateFormat('MMMM d').format(DateTime(DateTime.now().year, DateTime.now().month, day))} as absent?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () {
-              // This is where you would update backend
-              // setState(() {
-              //   attendanceData[day] = 'absent';
-              // });
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Marked $day as absent'),
-                  backgroundColor: Colors.lightBlue.shade500,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              );
-            },
-            style: FilledButton.styleFrom(
-              backgroundColor: Colors.lightBlue.shade500,
-            ),
-            child: const Text('Confirm', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _markTodayAbsent(BuildContext context) {
-    final today = DateTime.now();
-    _confirmAbsence(context, today.day);
-  }
-
-  void _scheduleAbsence(BuildContext context) {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-      builder: (context, child) => Theme(
-        data: ThemeData.light().copyWith(
-          colorScheme: ColorScheme.light(
-            primary: Colors.lightBlue.shade500,
-          ),
-        ),
-        child: child!,
-      ),
-    ).then((selectedDate) {
-      if (selectedDate != null) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Schedule Absence'),
-            content: Text(
-                'Schedule absence for ${DateFormat.yMMMd().format(selectedDate)}?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              FilledButton(
-                onPressed: () {
-                  // This is where you would update backend
-                  // setState(() {
-                  //   attendanceData[selectedDate.day] = 'absent';
-                  // });
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                          'Scheduled absence for ${DateFormat.yMMMd().format(selectedDate)}'),
-                      backgroundColor: Colors.lightBlue.shade500,
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  );
-                },
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.lightBlue.shade500,
-                ),
-                child: const Text('Schedule',
-                    style: TextStyle(color: Colors.white)),
-              ),
-            ],
-          ),
-        );
-      }
-    });
-  }
-
-  void _selectMonth(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        int selectedMonth = DateTime.now().month;
-
-        return AlertDialog(
-          backgroundColor: Colors.grey.shade200,
-          title: Text("Select Month"),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: GridView.count(
-              crossAxisCount: 3,
-              shrinkWrap: true,
-              children: List.generate(12, (index) {
-                final monthName =
-                    DateFormat.MMMM().format(DateTime(0, index + 1));
-                return InkWell(
-                  onTap: () {
-                    Navigator.pop(context, index + 1); // month number
-                    // Do whatever with the selected month
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Chip(
-                      backgroundColor: Colors.white,
-                      label: Text(monthName, textAlign: TextAlign.center),
-                    ),
-                  ),
-                );
-              }),
-            ),
-          ),
-        );
-      },
     );
   }
 }
