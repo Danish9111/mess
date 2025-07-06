@@ -5,25 +5,31 @@ import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/schedul
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/confirmAbsence.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/build_summery_card.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/show_day_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AttendanceDetailsScreen extends StatelessWidget {
+class AttendanceDetailsScreen extends StatefulWidget {
   AttendanceDetailsScreen({Key? key}) : super(key: key);
+  @override
+  State<AttendanceDetailsScreen> createState() =>
+      _AttendanceDetailsScreenState();
+}
 
-  // This would typically come from your backend
-  final Map<int, String> attendanceData = {
-    1: 'present',
-    3: 'absent',
-    5: 'present',
-    7: 'absent',
-    10: 'present',
-    12: 'present',
-    15: 'absent',
-    18: 'present',
-    20: 'present',
-    22: 'present',
-    25: 'absent',
-    28: 'present',
-  };
+class _AttendanceDetailsScreenState extends State<AttendanceDetailsScreen> {
+  Future<Map<int, String>> fetchAttendance() async {
+    final now = DateTime.now();
+    final monthId = DateFormat('yyyy-MM').format(now);
+
+    final doc = await FirebaseFirestore.instance
+        .collection('attendance')
+        .doc('userId')
+        .collection('months')
+        .doc(monthId)
+        .get();
+
+    final attendanceData = doc.data() ?? {};
+    return attendanceData
+        .map((key, value) => MapEntry(int.parse(key), value.toString()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +141,7 @@ class AttendanceDetailsScreen extends StatelessWidget {
 
                   final day = dayIndex + 1;
                   final isToday = day == now.day;
-                  final status = attendanceData[day];
+                  final status = fetchAttendance();
                   final isPast = day < now.day;
                   final isWeekend = [DateTime.sunday, DateTime.saturday]
                       .contains(firstDay.add(Duration(days: dayIndex)).weekday);
