@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_details.dart';
 
 class HorizontalAttendanceBar extends StatelessWidget {
   final Map<String, bool> attendanceMap;
@@ -52,7 +53,7 @@ class HorizontalAttendanceBar extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 1.2,
-                        color: Colors.blue.shade700,
+                        color: Colors.lightBlueAccent,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -127,23 +128,6 @@ Color _getStatusColor(double value) {
   return value >= 0.9
       ? Colors.greenAccent.shade700
       : value >= 0.75
-          ? Colors.lightBlue
+          ? Colors.lightBlueAccent
           : Colors.orange;
-}
-
-class AttendanceDetailsScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Attendance Details'),
-      ),
-      body: Center(
-        child: Text(
-          'Attendance Details Screen',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
 }

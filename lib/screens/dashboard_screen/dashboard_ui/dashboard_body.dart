@@ -85,94 +85,6 @@ class _DashboardBodyState extends State<DashboardBody> {
     );
   }
 
-  Widget _buildMealProgress() {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: LinearGradient(
-            colors: [Colors.lightBlue[50]!, Colors.lightBlue[100]!],
-          ),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Meal Attendance",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey[800],
-                    )),
-                Text("${(attendancePercentage * 100).toInt()}%",
-                    style: TextStyle(
-                        color: Colors.lightBlue[800],
-                        fontWeight: FontWeight.bold)),
-              ],
-            ),
-            const SizedBox(height: 12),
-            LinearProgressIndicator(
-              value: attendancePercentage,
-              minHeight: 12,
-              backgroundColor: Colors.lightBlue[100],
-              color: Colors.lightBlue,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMessStatusCard() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.white.applyOpacity(0.7),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.applyOpacity(0.1),
-            blurRadius: 10,
-            spreadRadius: 2,
-          )
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Mess Status",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.blueGrey[800],
-                    )),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: _getStatusColor(),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(messStatus,
-                      style: const TextStyle(color: Colors.white)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildQuickActions(bool isSmallScreen) {
     final actions = [
       {'icon': Icons.check_circle, 'label': 'Mark Meal'},
@@ -265,19 +177,6 @@ class _DashboardBodyState extends State<DashboardBody> {
       "Food is not just eating energy, it's an experience"
     ];
     return quotes[DateTime.now().day % quotes.length];
-  }
-
-  Color _getStatusColor() {
-    switch (messStatus) {
-      case "Open":
-        return Colors.green;
-      case "Closed":
-        return Colors.red;
-      case "Dinner prep started":
-        return Colors.orange;
-      default:
-        return Colors.blue;
-    }
   }
 
   void _handleAction(String action) {
