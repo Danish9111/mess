@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/select_month.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/scheduleAbsence.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/confirmAbsence.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/build_summery_card.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/build_summery_card.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/show_day_options.dart';
 
 class AttendanceDetailsScreen extends StatelessWidget {
