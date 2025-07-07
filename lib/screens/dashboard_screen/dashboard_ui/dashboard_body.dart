@@ -102,29 +102,37 @@ class _DashboardBodyState extends State<DashboardBody> {
               color: Colors.blueGrey[800],
             )),
         const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: actions.map((action) {
-            return Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue[50],
-                    shape: BoxShape.circle,
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.lightBlue[50],
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.amber, width: 1)),
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: actions.map((action) {
+              return Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue[50],
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      iconSize: isSmallScreen ? 32 : 36,
+                      icon: Icon(action['icon'] as IconData,
+                          color: Colors.lightBlue[800]),
+                      onPressed: () => _handleAction(action['label'] as String),
+                    ),
                   ),
-                  child: IconButton(
-                    iconSize: isSmallScreen ? 32 : 36,
-                    icon: Icon(action['icon'] as IconData,
-                        color: Colors.lightBlue[800]),
-                    onPressed: () => _handleAction(action['label'] as String),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(action['label'] as String,
-                    style: TextStyle(fontSize: 12, color: Colors.blueGrey[700]))
-              ],
-            );
-          }).toList(),
+                  const SizedBox(height: 8),
+                  Text(action['label'] as String,
+                      style:
+                          TextStyle(fontSize: 12, color: Colors.blueGrey[700]))
+                ],
+              );
+            }).toList(),
+          ),
         ),
       ],
     );
