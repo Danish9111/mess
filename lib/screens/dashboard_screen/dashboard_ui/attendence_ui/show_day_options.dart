@@ -26,7 +26,8 @@ void showDayOptions(BuildContext context, int day) {
           ),
           const SizedBox(height: 16),
           Text(
-            '${DateFormat('MMMM d').format(DateTime(DateTime.now().year, DateTime.now().month, day))}',
+            DateFormat('MMMM d').format(
+                DateTime(DateTime.now().year, DateTime.now().month, day)),
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.lightBlue.shade800,

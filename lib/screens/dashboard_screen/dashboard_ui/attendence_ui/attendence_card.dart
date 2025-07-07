@@ -11,7 +11,7 @@ class HorizontalAttendanceBar extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
+    return SizedBox(
       height: screenHeight * 0.22,
       width: double.infinity,
       child: Card(

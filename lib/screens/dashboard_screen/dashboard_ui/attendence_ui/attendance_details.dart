@@ -8,7 +8,7 @@ import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/show_da
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AttendanceDetailsScreen extends StatefulWidget {
-  AttendanceDetailsScreen({Key? key}) : super(key: key);
+  const AttendanceDetailsScreen({super.key});
   @override
   State<AttendanceDetailsScreen> createState() =>
       _AttendanceDetailsScreenState();
@@ -172,7 +172,7 @@ class _AttendanceDetailsScreenState extends State<AttendanceDetailsScreen> {
                               color: isWeekend ? Colors.grey : Colors.black87,
                             ),
                           ),
-                          if (status != null) const SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           // if (status != null)
                           Container(
                             width: 8,
