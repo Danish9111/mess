@@ -55,12 +55,12 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
             Icon(
               Icons.whatshot,
               size: 40,
-              color: Colors.white,
+              color: Colors.grey,
             ),
             Text(
               '  2000 Calories',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.grey,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
