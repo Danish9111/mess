@@ -45,7 +45,8 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
         height: screenHeight * .18,
         width: screenWidth * .40,
         decoration: BoxDecoration(
-          color: Colors.lightBlueAccent,
+          // color: Colors.lightBlueAccent,
+          border: Border.all(color: Colors.lightBlueAccent, width: 1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
