@@ -31,3 +31,20 @@ Future<void> signInWithGoogle({
     hideLoading();
   }
 }
+
+Future<void> signIn(email, password, context) async {
+  try {
+    FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("login successful ")),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: ${e.toString()}')),
+    );
+  }
+}

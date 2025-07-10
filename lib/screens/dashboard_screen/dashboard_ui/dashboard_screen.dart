@@ -124,7 +124,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             ),
                                             TextButton(
                                               child: Text('logout'),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                bool result = confirmLogout();
+
+                                                if (result == true) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content:
+                                                              Text('success')));
+                                                }
+                                                Navigator.pop(context);
+                                              },
                                             )
                                           ]);
                                     });
@@ -275,5 +285,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 }
 
 confirmLogout() {
-  FirebaseAuth.instance.signOut();
+  try {
+    FirebaseAuth.instance.signOut();
+    return true;
+  } catch (e) {
+    return e;
+  }
 }
