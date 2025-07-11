@@ -5,8 +5,7 @@ import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/schedul
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/confirmAbsence.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/build_summery_card.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/show_day_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_utils/fetch_attendence.dart';
 
 class AttendanceDetailsScreen extends StatefulWidget {
   const AttendanceDetailsScreen({super.key});
@@ -16,27 +15,6 @@ class AttendanceDetailsScreen extends StatefulWidget {
 }
 
 class _AttendanceDetailsScreenState extends State<AttendanceDetailsScreen> {
-  Future<Map<int, String>> fetchAttendance() async {
-    final uid = FirebaseAuth.instance.currentUser!.uid; // real user
-    final monthId = DateFormat('yyyy-MM').format(DateTime.now()); // 2025-07
-
-    // 👇 pull ONE document: /members/{uid}/attendance/{yyyy-MM}
-    final snap = await FirebaseFirestore.instance
-        .collection('members')
-        .doc(uid)
-        .collection('attendance')
-        .doc(monthId)
-        .get();
-
-    final data = snap.data() ?? {}; // { "01": "present", ... }
-
-    // convert { "01": ... } → { 1: ... } for easy calendar indexing
-    return {
-      for (final e in data.entries)
-        int.tryParse(e.key) ?? -1: e.value.toString()
-    }..removeWhere((k, _) => k < 1); // kill parse fails
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
