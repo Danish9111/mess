@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/select_month.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/scheduleAbsence.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/confirmAbsence.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/build_summery_card.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/show_day_options.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_utils/fetch_attendence.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/select_month.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/scheduleAbsence.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/confirmAbsence.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/build_summery_card.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/show_day_options.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/fetch_attendance.dart';
 
 class AttendanceDetailsScreen extends StatefulWidget {
   const AttendanceDetailsScreen({super.key});

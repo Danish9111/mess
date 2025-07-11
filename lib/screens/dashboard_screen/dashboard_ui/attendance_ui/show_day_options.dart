@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/confirmAbsence.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/confirmAbsence.dart';
 
 void showDayOptions(BuildContext context, int day) {
   showModalBottomSheet(

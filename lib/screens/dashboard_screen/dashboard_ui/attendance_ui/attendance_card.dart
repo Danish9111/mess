@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendence_ui/attendance_details.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/attendance_details.dart';
 
 class HorizontalAttendanceBar extends StatelessWidget {
   final Map<String, bool> attendanceMap;
