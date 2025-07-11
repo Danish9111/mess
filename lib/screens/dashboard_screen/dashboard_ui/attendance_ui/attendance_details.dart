@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/select_month.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/scheduleAbsence.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/confirmAbsence.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/build_summery_card.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/show_day_options.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/fetch_attendance.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/count_attendance.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent_for_weekends.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent.dart';
 
+// '
 // final presentsCount = countAttendanceThisMonth();
 
 class AttendanceDetailsScreen extends StatefulWidget {
@@ -246,47 +248,70 @@ Widget _sliverPadding(BuildContext context) {
               const SizedBox(height: 20),
               Row(
                 children: [
+                  // ── Future date
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => scheduleAbsence(context),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                            borderRadius: BorderRadius.circular(12)),
                         side: BorderSide(color: Colors.lightBlue.shade400),
                       ),
-                      child: Text(
-                        'Schedule Future Date',
-                        style: TextStyle(
-                          color: Colors.lightBlue.shade700,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      child: Text('Schedule Future Date',
+                          style: TextStyle(
+                              color: Colors.lightBlue.shade700,
+                              fontWeight: FontWeight.w600)),
                     ),
                   ),
                   const SizedBox(width: 12),
+                  // ── Today
                   Expanded(
                     child: FilledButton(
-                      onPressed: () => markTodayAbsent(context),
+                      onPressed: () => scheduleAbsent(DateTime.now(), context),
                       style: FilledButton.styleFrom(
                         backgroundColor: Colors.lightBlue.shade500,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                            borderRadius: BorderRadius.circular(12)),
                       ),
-                      child: const Text(
-                        'Mark Today',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
+                      child: const Text('Mark Today',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white)),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // ── Weekends (NEW)
+                  Expanded(
+                    child: FilledButton.icon(
+                      icon: const Icon(Icons.weekend, size: 18),
+                      label: const Text('Mark Weekends'),
+                      onPressed: () async {
+                        await scheduleMonthWeekends(DateTime.now(), context);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  Text('All weekends this month marked absent'),
+                              backgroundColor: Colors.lightBlue.shade500,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                          );
+                        }
+                      },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Colors.lightBlue.shade700,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
                       ),
                     ),
                   ),
                 ],
-              ),
+              )
             ],
           ),
         ),

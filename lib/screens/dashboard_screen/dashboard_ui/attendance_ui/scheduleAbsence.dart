@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent.dart';
+
 void scheduleAbsence(BuildContext context) {
   showDatePicker(
     context: context,
@@ -29,11 +31,9 @@ void scheduleAbsence(BuildContext context) {
               child: const Text('Cancel'),
             ),
             FilledButton(
-              onPressed: () {
-                // This is where you would update backend
-                // setState(() {
-                //   attendanceData[selectedDate.day] = 'absent';
-                // });
+              onPressed: () async {
+                await scheduleAbsent(selectedDate, context);
+
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
