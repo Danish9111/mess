@@ -46,16 +46,16 @@ Future<void> backfillAttendance() async {
 
   // 3️⃣ commit if we actually added something
   if (writes == 0) {
-    if (kDebugMode) debugPrint('[ATT] 🟢 Nothing to back‑fill');
+    if (kDebugMode) debugPrint(' 🟢 Nothing to back‑fill');
     return;
   }
 
   try {
     await batch.commit();
-    if (kDebugMode) debugPrint('[ATT] ✅ Added $writes missing day(s)');
+    if (kDebugMode) debugPrint('✅ Added $writes missing day(s)');
   } catch (e, st) {
     if (kDebugMode) {
-      debugPrint('[ATT] ❌ Firestore error: $e');
+      debugPrint('❌ Firestore error: $e');
       debugPrint(st.toString());
     }
     rethrow;

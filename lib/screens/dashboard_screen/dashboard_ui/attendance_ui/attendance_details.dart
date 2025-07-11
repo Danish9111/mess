@@ -6,6 +6,9 @@ import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/confirm
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/build_summery_card.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/show_day_options.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/fetch_attendance.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/count_attendance.dart';
+
+// final presentsCount = countAttendanceThisMonth();
 
 class AttendanceDetailsScreen extends StatefulWidget {
   const AttendanceDetailsScreen({super.key});
@@ -42,12 +45,24 @@ class _AttendanceDetailsScreenState extends State<AttendanceDetailsScreen> {
               color: Colors.grey.shade50,
               child: Row(
                 children: [
-                  buildSummaryCard(context, 'Present', '18', Colors.green),
-                  const SizedBox(width: 16),
-                  buildSummaryCard(context, 'Absent', '2', Colors.red),
-                  const SizedBox(width: 16),
-                  buildSummaryCard(
-                      context, 'Days', '$daysInMonth', Colors.lightBlue),
+                  SummaryCard(
+                      title: 'Present',
+                      color: Colors.green,
+                      future: countAttendanceThisMonth(status: 'present')),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SummaryCard(
+                      title: 'Absent',
+                      color: Colors.red,
+                      future: countAttendanceThisMonth(status: 'absent')),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SummaryCard(
+                      title: 'Days',
+                      color: Colors.lightBlueAccent,
+                      future: countAttendanceThisMonth(status: 'days')),
                 ],
               ),
             ),
