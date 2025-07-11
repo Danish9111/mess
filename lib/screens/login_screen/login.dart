@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mess/screens/login_screen/login_utils.dart';
-import 'package:mess/screens/signUp_screen/signUp_utils.dart';
 import 'package:mess/screens/signUp_screen/signUp.dart';
 
 class LoginScreen extends StatefulWidget {
