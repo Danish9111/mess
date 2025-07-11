@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/backfill_attendance.dart';
 import 'package:mess/screens/main_screen.dart';
 import 'package:mess/screens/login_screen/login.dart';
 import 'package:mess/screens/signUp_screen/signUp.dart';
@@ -10,6 +11,7 @@ import 'package:mess/providers/uid_firebase.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await backfillAttendance();
 
   runApp(const ProviderScope(child: MessApp()));
 }
