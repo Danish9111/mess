@@ -5,14 +5,14 @@ import 'package:mess/screens/signUp_screen/signin_with_google.dart';
 
 final passVisibilityProvider = StateProvider<bool>((ref) => false);
 
-class SignUp extends StatefulWidget {
+class SignUp extends ConsumerStatefulWidget {
   const SignUp({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  ConsumerState<SignUp> createState() => _SignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpState extends ConsumerState<SignUp> {
   final controller = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -135,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                               color: Colors.lightBlueAccent), // border
                         ),
                         onPressed: () async {
-                          await signInWithGoogle(context);
+                          await signInWithGoogle(context, ref);
                           Navigator.pushReplacementNamed(
                               context, '/dashboard_screen');
                           controller.clear();

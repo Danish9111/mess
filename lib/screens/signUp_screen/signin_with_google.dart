@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mess/providers/google_user_provider.dart';
 
-Future<void> signInWithGoogle(BuildContext context) async {
+// ''
+Future<void> signInWithGoogle(BuildContext context, WidgetRef ref) async {
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
   try {
     // final user = await GoogleSignIn().signIn();
@@ -34,11 +37,10 @@ Future<void> signInWithGoogle(BuildContext context) async {
   }
 
   // ✅ Get profile info
-  final displayName = googleUser.displayName;
-  final email = googleUser.email;
-  final photoUrl = googleUser.photoUrl;
 
-  debugPrint("Name: $displayName");
-  debugPrint("Email: $email");
-  debugPrint("Profile Image URL: $photoUrl");
+  ref.read(userProvider.notifier).setUser(
+        name: googleUser.displayName,
+        email: googleUser.email,
+        photoUrl: googleUser.photoUrl,
+      );
 }
