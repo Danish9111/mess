@@ -127,9 +127,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                                                 if (result == true) {
                                                   ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'logout successfully '),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
-                                                          content:
-                                                              Text('success')));
+                                                          content: Text(
+                                                              'logout failed')));
                                                 }
                                                 Navigator.pop(context);
                                               },

@@ -240,7 +240,7 @@ Widget _sliverPadding(BuildContext context) {
               ),
               const SizedBox(height: 16),
               Text(
-                'Schedule time off or report an absence for today or future dates',
+                'Schedule off days  for today or future dates',
                 style: TextStyle(
                   color: Colors.grey.shade700,
                 ),
@@ -249,22 +249,7 @@ Widget _sliverPadding(BuildContext context) {
               Row(
                 children: [
                   // ── Future date
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => scheduleAbsence(context),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        side: BorderSide(color: Colors.lightBlue.shade400),
-                      ),
-                      child: Text('Schedule Future Date',
-                          style: TextStyle(
-                              color: Colors.lightBlue.shade700,
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
+
                   // ── Today
                   Expanded(
                     child: FilledButton(
@@ -311,7 +296,17 @@ Widget _sliverPadding(BuildContext context) {
                     ),
                   ),
                 ],
-              )
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () => scheduleAbsence(context),
+                  child: Text('Schedule Future Date',
+                      style: TextStyle(
+                          color: Colors.lightBlue.shade700,
+                          fontWeight: FontWeight.w600)),
+                ),
+              ),
             ],
           ),
         ),
