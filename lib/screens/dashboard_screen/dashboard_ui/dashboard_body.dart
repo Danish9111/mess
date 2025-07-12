@@ -104,9 +104,9 @@ class _DashboardBodyState extends State<DashboardBody> {
         const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
-              color: Colors.lightBlue[50],
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.amber, width: 1)),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
           padding: const EdgeInsets.all(16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -189,6 +189,6 @@ class _DashboardBodyState extends State<DashboardBody> {
 
   void _handleAction(String action) {
     // Add your action handling logic here
-    print("Action selected: $action");
+    debugPrint("Action selected: $action");
   }
 }
