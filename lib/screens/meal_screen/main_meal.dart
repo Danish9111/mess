@@ -20,7 +20,7 @@ class _MealScreenState extends State<MealScreen> {
         // appBar: AppBar(
         //   backgroundColor: Colors.lightBlueAccent.applyOpacity(.9),
         // ),
-        appBar: GlassyAppBar(),
+        appBar: const GlassyAppBar(),
         body: SingleChildScrollView(
           clipBehavior: Clip.none,
           child: Column(
@@ -48,7 +48,7 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
           border: Border.all(color: Colors.lightBlueAccent, width: 1),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
@@ -79,7 +79,7 @@ Widget foodCard(double screenWidth, double screenHeight) {
         height: screenHeight * .3,
         padding: const EdgeInsets.all(16),
         // margin: const EdgeInsets.only(bottom: 60), // give space for plate image
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
@@ -88,74 +88,74 @@ Widget foodCard(double screenWidth, double screenHeight) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FractionallySizedBox(
+            const FractionallySizedBox(
               widthFactor: .6,
               child: Column(
                 children: [
                   // reserve space for image overlap
-                  const Text("Caesar Salad (Quinoa)",
+                  Text("Caesar Salad (Quinoa)",
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  const Text("Basic Caesar salad with curry olive"),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 4),
+                  Text("Basic Caesar salad with curry olive"),
+                  SizedBox(height: 8),
                 ],
               ),
             ),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    const Text('Price:',
+                    Text('Price:',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    const SizedBox(
+                    SizedBox(
                         width: 4), // Add space between price and value
-                    const Text("100 Rupees")
+                    Text("100 Rupees")
                   ],
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Container(
               height: screenHeight * .05,
               width: screenWidth * .4,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Row(
+              child: const Row(
                 children: [Icon(Icons.whatshot), Text('Calories : 200')],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               width: screenWidth * .4,
               height: screenHeight * .09,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                   border: Border.all(
                     width: 1,
                     color: Colors.amber,
                   )),
               child: Column(
                 children: [
-                  Text('Give this Meal a rating '),
+                  const Text('Give this Meal a rating '),
                   SizedBox(
                     height: screenWidth * .01,
                   ),
                   Row(children: [
                     ...List.generate(
                       4,
-                      (index) => Icon(
+                      (index) => const Icon(
                         Icons.star_border,
                         color: Colors.amber,
                       ),
                     ),
-                    Text('(4.5)')
+                    const Text('(4.5)')
                   ])
                 ],
               ),
@@ -170,7 +170,7 @@ Widget foodCard(double screenWidth, double screenHeight) {
           child: Container(
             height: 150,
             width: 150,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.lightBlueAccent,
                 boxShadow: [

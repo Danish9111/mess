@@ -8,7 +8,7 @@ Widget buildModelBottomSheet(context, String randomMeal, String timing) {
   return Container(
     height: screenHeight * .9,
     width: double.infinity,
-    decoration: BoxDecoration(
+    decoration: const BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -17,7 +17,7 @@ Widget buildModelBottomSheet(context, String randomMeal, String timing) {
         child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.all(20),
           child: Text(
             'Meal Details',
@@ -43,7 +43,7 @@ Widget buildModelBottomSheet(context, String randomMeal, String timing) {
                 mealpath: 'assets/images/tea.png'),
           ],
         ),
-        Row()
+        const Row()
       ],
     )),
   );
@@ -70,7 +70,7 @@ class BuildMealDetailRow extends StatelessWidget {
         Container(
           height: screenHeight * .15,
           width: screenWidth * .5,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: Colors.lightBlueAccent,
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20),
@@ -109,7 +109,7 @@ class BuildMealDetailRow extends StatelessWidget {
               Row(
                 children: [
                   Icon(Icons.schedule, size: 16, color: Colors.grey.shade600),
-                  SizedBox(width: 6),
+                  const SizedBox(width: 6),
                   Text(
                     "8:00 AM",
                     style: TextStyle(

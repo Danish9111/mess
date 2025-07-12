@@ -37,15 +37,15 @@ class SymmetricalMealGrid extends StatelessWidget {
   final List<Meal> meals = [
     Meal(
         type: 'Breakfast',
-        time: TimeOfDay(hour: 8, minute: 0),
+        time: const TimeOfDay(hour: 8, minute: 0),
         isCurrent: false),
     Meal(
         type: '  Lunch  ',
-        time: TimeOfDay(hour: 13, minute: 0),
+        time: const TimeOfDay(hour: 13, minute: 0),
         isCurrent: true),
     Meal(
         type: ' Dinner      ',
-        time: TimeOfDay(hour: 20, minute: 0),
+        time: const TimeOfDay(hour: 20, minute: 0),
         isCurrent: false),
   ];
 
@@ -112,7 +112,7 @@ class SymmetricalMealGrid extends StatelessWidget {
                 color: Colors.white.applyOpacity(0.3),
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.restaurant,
                 color: Colors.white,
                 size: 40,
@@ -130,13 +130,13 @@ class SymmetricalMealGrid extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: Text(
                 _mealTimingForCurrent(),
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
-            MealCountdown()
+            const MealCountdown()
           ],
         ),
       ),
@@ -174,10 +174,10 @@ class SymmetricalMealGrid extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: Text(
                 timing,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),

@@ -22,7 +22,7 @@ class _SignUpState extends State<SignUp> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF81D4FA),
+        backgroundColor: const Color(0xFF81D4FA),
         surfaceTintColor: Colors.transparent,
       ),
       body: Stack(
@@ -105,11 +105,14 @@ class _SignUpState extends State<SignUp> {
                           minimumSize: Size(screenWidth * 0.5, 60),
                           elevation: 0,
                         ),
-                        child: Text('Sign Up'),
+                        child: const Text(
+                          'Sign Up',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                       const SizedBox(height: 20),
-                      Row(
-                        children: const [
+                      const Row(
+                        children: [
                           Expanded(
                             child: Divider(color: Colors.grey, thickness: 1),
                           ),
@@ -125,7 +128,10 @@ class _SignUpState extends State<SignUp> {
                       const SizedBox(height: 30),
                       OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 60),
+                          minimumSize: const Size(double.infinity, 60),
+                          side: const BorderSide(
+                              width: 1,
+                              color: Colors.lightBlueAccent), // border
                         ),
                         onPressed: () {},
                         child: Row(
@@ -138,7 +144,10 @@ class _SignUpState extends State<SignUp> {
                               child: Image.asset('assets/images/google.png'),
                             ),
                             const SizedBox(width: 10),
-                            const Text('Sign Up with Google'),
+                            const Text(
+                              'Sign Up with Google',
+                              style: TextStyle(color: Colors.lightBlueAccent),
+                            ),
                           ],
                         ),
                       ),
@@ -198,11 +207,11 @@ class _buildInputField extends ConsumerWidget {
                         !isPasswordVisible;
                   },
                   icon: !isPasswordVisible
-                      ? Icon(
+                      ? const Icon(
                           Icons.visibility_off,
                           color: Colors.grey,
                         )
-                      : Icon(
+                      : const Icon(
                           Icons.visibility,
                           color: Colors.grey,
                         ))

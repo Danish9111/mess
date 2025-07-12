@@ -26,7 +26,7 @@ class HorizontalAttendanceBar extends StatelessWidget {
             context,
             PageRouteBuilder(
               transitionDuration: const Duration(milliseconds: 400),
-              pageBuilder: (_, __, ___) => AttendanceDetailsScreen(),
+              pageBuilder: (_, __, ___) => const AttendanceDetailsScreen(),
               transitionsBuilder: (_, animation, __, child) =>
                   FadeTransition(opacity: animation, child: child),
             ),
@@ -47,7 +47,7 @@ class HorizontalAttendanceBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "ATTENDANCE SUMMARY",
                       style: TextStyle(
                         fontSize: 12,

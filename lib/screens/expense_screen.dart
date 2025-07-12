@@ -118,13 +118,13 @@ class ExpensesScreen extends ConsumerWidget {
         onRefresh: () => ref.refresh(expenseSummaryProvider.future),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                padding: EdgeInsets.only(top: 24, left: 20, right: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'June 2023 Expenses',
                       style: TextStyle(
                         fontSize: 22,
@@ -132,15 +132,15 @@ class ExpensesScreen extends ConsumerWidget {
                         color: Colors.lightBlueAccent,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: 8),
+                    Text(
                       'Your mess expense details for this month',
                       style: TextStyle(
                         fontSize: 14,
                         color: Color(0xFF7E8CA0),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(height: 24),
                   ],
                 ),
               ),

@@ -14,7 +14,7 @@ Future<void> signUp({
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Signed up Successfully 🎉')),
+      const SnackBar(content: Text('Signed up Successfully 🎉')),
     );
     _createAttendance();
 

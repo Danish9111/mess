@@ -20,10 +20,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
+      key: scaffoldKey,
+      drawer: buildDrawer(context),
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(40),
@@ -33,9 +37,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             // Gradient background
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.lightBlueAccent,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40),
                 ),
               ),
@@ -106,45 +110,63 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             IconButton(
                               icon: const Icon(Icons.settings,
                                   color: Colors.white, size: 26),
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                          title: Text('Confirm Logout'),
-                                          content:
-                                              Text('Are you sure to Logout?'),
-                                          actions: [
-                                            TextButton(
-                                              child: Text('cancel'),
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                            ),
-                                            TextButton(
-                                              child: Text('logout'),
-                                              onPressed: () {
-                                                bool result = confirmLogout();
+                              onPressed: () =>
+                                  scaffoldKey.currentState?.openDrawer(), //() {
+                              //   showDialog(
+                              //       context: context,
+                              //       builder: (context) {
+                              //         return AlertDialog(
+                              //             backgroundColor:
+                              //                 Colors.lightBlueAccent,
+                              //             title: Text(
+                              //               'Confirm Logout',
+                              //               style:
+                              //                   TextStyle(color: Colors.white),
+                              //             ),
+                              //             content: Text(
+                              //               'Are you sure to Logout?',
+                              //               style:
+                              //                   TextStyle(color: Colors.white),
+                              //             ),
+                              //             actions: [
+                              //               TextButton(
+                              //                 child: Text(
+                              //                   'cancel',
+                              //                   style: TextStyle(
+                              //                       color: Colors.white),
+                              //                 ),
+                              //                 onPressed: () =>
+                              //                     Navigator.pop(context),
+                              //               ),
+                              //               TextButton(
+                              //                 child: Text(
+                              //                   'logout',
+                              //                   style: TextStyle(
+                              //                       color: Colors.white),
+                              //                 ),
+                              //                 onPressed: () {
+                              //                   bool result = confirmLogout();
 
-                                                if (result == true) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                          'logout successfully '),
-                                                    ),
-                                                  );
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                          content: Text(
-                                                              'logout failed')));
-                                                }
-                                                Navigator.pop(context);
-                                              },
-                                            )
-                                          ]);
-                                    });
-                              },
+                              //                   if (result == true) {
+                              //                     ScaffoldMessenger.of(context)
+                              //                         .showSnackBar(
+                              //                       SnackBar(
+                              //                         content: Text(
+                              //                             'logout successfully '),
+                              //                       ),
+                              //                     );
+                              //                   } else {
+                              //                     ScaffoldMessenger.of(context)
+                              //                         .showSnackBar(SnackBar(
+                              //                             content: Text(
+                              //                                 'logout failed')));
+                              //                   }
+                              //                   Navigator.pop(context);
+                              //                 },
+                              //               )
+                              //             ]);
+                              //       });
+                              // },
                             ),
                           ],
                         ),
@@ -275,7 +297,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 height: double.infinity,
                 width: double.infinity,
-                child: Center(
+                child: const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: DashboardBody(),
@@ -297,4 +319,57 @@ confirmLogout() {
   } catch (e) {
     return e;
   }
+}
+
+Widget buildDrawer(BuildContext context) {
+  return Drawer(
+    child: ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.lightBlueAccent),
+            child: Center(
+              child: Text('Settings',
+                  style: TextStyle(color: Colors.white, fontSize: 30)),
+            )),
+        ListTile(
+          leading: const Icon(Icons.language),
+          title: const Text('Language'),
+          onTap: () async {
+            // simple bottom‑sheet language picker
+            final locale = await showModalBottomSheet<String>(
+              context: context,
+              builder: (_) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    title: const Text('English'),
+                    onTap: () => Navigator.pop(context, 'en'),
+                  ),
+                  ListTile(
+                    title: const Text('اردو'),
+                    onTap: () => Navigator.pop(context, 'ur'),
+                  ),
+                ],
+              ),
+            );
+            if (locale != null) {
+              // TODO: save locale in prefs / provider
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Language set to $locale')));
+            }
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Log out'),
+          onTap: () async {
+            await FirebaseAuth.instance.signOut();
+            if (!context.mounted) return;
+            Navigator.pushReplacementNamed(context, '/login'); // or your route
+          },
+        ),
+      ],
+    ),
+  );
 }

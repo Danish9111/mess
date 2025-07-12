@@ -40,7 +40,7 @@ Future<void> signIn(email, password, context) async {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("login successful ")),
+      const SnackBar(content: Text("login successful ")),
     );
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(

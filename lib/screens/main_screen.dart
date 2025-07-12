@@ -9,32 +9,32 @@ class MainScreen extends StatelessWidget {
   final PersistentTabController navBarController =
       PersistentTabController(initialIndex: 0);
   final List<Widget> _screens = [
-    DashboardScreen(),
-    MealScreens.MealScreen(),
-    ExpensesScreen(),
-    ProfileScreen()
+    const DashboardScreen(),
+    const MealScreens.MealScreen(),
+    const ExpensesScreen(),
+    const ProfileScreen()
   ];
   final List<PersistentBottomNavBarItem> _items = [
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.home_rounded),
+      icon: const Icon(Icons.home_rounded),
       title: 'Home',
       activeColorPrimary: Colors.lightBlueAccent,
       inactiveColorPrimary: Colors.grey,
     ),
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.fastfood),
+      icon: const Icon(Icons.fastfood),
       title: 'Meal',
       activeColorPrimary: Colors.lightBlueAccent,
       inactiveColorPrimary: Colors.grey,
     ),
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.monetization_on),
+      icon: const Icon(Icons.monetization_on),
       title: 'Expense',
       activeColorPrimary: Colors.lightBlueAccent,
       inactiveColorPrimary: Colors.grey,
     ),
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.person),
+      icon: const Icon(Icons.person),
       title: 'Profile',
       activeColorPrimary: Colors.lightBlueAccent,
       inactiveColorPrimary: Colors.grey,
@@ -45,7 +45,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       context,
       navBarHeight: 70,
       controller: navBarController,

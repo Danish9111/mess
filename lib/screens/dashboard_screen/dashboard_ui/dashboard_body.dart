@@ -31,20 +31,20 @@ class _DashboardBodyState extends State<DashboardBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           _buildWelcomeHeader(isSmallScreen),
           _buildAttendenceMarker(),
           const SizedBox(height: 24),
           _buildQuickActions(isSmallScreen),
           const SizedBox(height: 24),
-          HorizontalAttendanceBar(
+          const HorizontalAttendanceBar(
             attendanceMap: {},
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           _buildTodaysSpecial(),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
         ],
       ),
     );

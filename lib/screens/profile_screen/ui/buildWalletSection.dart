@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 Widget buildWalletSection() {
   return Container(
-    padding: EdgeInsets.all(16),
+    padding: const EdgeInsets.all(16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Mess Wallet",
+        const Text("Mess Wallet",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
               color: Colors.lightBlueAccent[50],
               borderRadius: BorderRadius.circular(16),
@@ -29,7 +29,7 @@ Widget buildWalletSection() {
                           color: Colors.lightBlueAccent[700])),
                 ],
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -42,13 +42,13 @@ Widget buildWalletSection() {
                           color: Colors.orange[800])),
                 ],
               ),
-              SizedBox(height: 16),
-              Divider(height: 1),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
+              const Divider(height: 1),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Auto Recharge",
+                  const Text("Auto Recharge",
                       style: TextStyle(fontWeight: FontWeight.w500)),
                   Switch(
                     value: true,
@@ -57,7 +57,7 @@ Widget buildWalletSection() {
                   )
                 ],
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(

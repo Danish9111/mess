@@ -34,7 +34,7 @@ class _MealCountdownState extends State<MealCountdown> {
 
   void _startTimer() {
     _updateStatus();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _updateStatus();
     });
   }
@@ -43,14 +43,14 @@ class _MealCountdownState extends State<MealCountdown> {
     final now = DateTime.now();
 
     // Correct meal times
-    final startBreakfast = convertToDateTime(TimeOfDay(hour: 7, minute: 0));
-    final endBreakfast = convertToDateTime(TimeOfDay(hour: 8, minute: 59));
+    final startBreakfast = convertToDateTime(const TimeOfDay(hour: 7, minute: 0));
+    final endBreakfast = convertToDateTime(const TimeOfDay(hour: 8, minute: 59));
 
-    final startLunch = convertToDateTime(TimeOfDay(hour: 12, minute: 0));
-    final endLunch = convertToDateTime(TimeOfDay(hour: 17, minute: 59));
+    final startLunch = convertToDateTime(const TimeOfDay(hour: 12, minute: 0));
+    final endLunch = convertToDateTime(const TimeOfDay(hour: 17, minute: 59));
 
-    final startDinner = convertToDateTime(TimeOfDay(hour: 20, minute: 0));
-    final endDinner = convertToDateTime(TimeOfDay(hour: 24, minute: 0));
+    final startDinner = convertToDateTime(const TimeOfDay(hour: 20, minute: 0));
+    final endDinner = convertToDateTime(const TimeOfDay(hour: 24, minute: 0));
 
     String status = "";
     String meal = "";

@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF81D4FA),
+        backgroundColor: const Color(0xFF81D4FA),
         surfaceTintColor: Colors.transparent,
       ),
       body: Stack(
@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _emailController,
                     hint: 'Email Address',
                     icon: Icons.email,
-                    isPassword: false,
+                    // isPassword: false,
                   ),
                   const SizedBox(height: 20),
 
@@ -110,30 +110,41 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
-                      onPressed: () {
-                        signIn(_emailController.text, _passwordController.text,
-                            context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightBlueAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                        onPressed: () {
+                          signIn(_emailController.text,
+                              _passwordController.text, context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlueAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                        elevation: 3,
-                      ),
-                      child: _isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : Text(
-                              'LOGIN',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white)
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Login',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
-                            ),
-                    ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  const Icon(
+                                    Icons.login,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              )),
                   ),
                   const SizedBox(height: 30),
 
@@ -184,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: Colors.blueGrey.shade300),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
                     ),
@@ -254,7 +265,7 @@ class _buildInputField extends ConsumerWidget {
       ),
       child: TextField(
         controller: controller,
-        obscureText: !isPasswordVisible,
+        obscureText: isPassword && !isPasswordVisible,
         style: TextStyle(color: Colors.blueGrey.shade800),
         decoration: InputDecoration(
           hintText: hint,

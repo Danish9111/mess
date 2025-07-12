@@ -9,7 +9,7 @@ Widget buildFeedback(String value, String label) {
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Colors.lightBlueAccent[700])),
-      SizedBox(height: 4),
+      const SizedBox(height: 4),
       Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
     ],
   );
@@ -17,8 +17,8 @@ Widget buildFeedback(String value, String label) {
 
 Widget buildFeedbackItem(String meal, String comment, double rating) {
   return Container(
-    margin: EdgeInsets.only(bottom: 12),
-    padding: EdgeInsets.all(12),
+    margin: const EdgeInsets.only(bottom: 12),
+    padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
         color: Colors.grey[50],
         borderRadius: BorderRadius.circular(12),
@@ -29,8 +29,8 @@ Widget buildFeedbackItem(String meal, String comment, double rating) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(meal, style: TextStyle(fontWeight: FontWeight.w500)),
-              SizedBox(height: 4),
+              Text(meal, style: const TextStyle(fontWeight: FontWeight.w500)),
+              const SizedBox(height: 4),
               Text(comment,
                   style: TextStyle(fontSize: 14, color: Colors.grey[700])),
             ],
@@ -38,7 +38,7 @@ Widget buildFeedbackItem(String meal, String comment, double rating) {
         ),
         RatingBarIndicator(
           rating: rating,
-          itemBuilder: (context, index) => Icon(
+          itemBuilder: (context, index) => const Icon(
             Icons.star,
             color: Colors.amber,
           ),

@@ -20,12 +20,12 @@ class ProfileScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold)),
         // backgroundColor: Colors.lightBlueAccent,
         flexibleSpace:
-            Container(decoration: BoxDecoration(color: Colors.lightBlueAccent)),
+            Container(decoration: const BoxDecoration(color: Colors.lightBlueAccent)),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.settings, color: Colors.white),
+            icon: const Icon(Icons.settings, color: Colors.white),
             onPressed: () {},
           )
         ],
@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
             buildMealActivity(),
             buildWalletSection(),
             buildFeedback('1', '2'),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
           ],
         ),
       ),

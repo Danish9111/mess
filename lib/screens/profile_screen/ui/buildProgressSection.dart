@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 Widget buildProgressSection(BuildContext context) {
   return Container(
-    padding: EdgeInsets.all(16),
+    padding: const EdgeInsets.all(16),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Loyalty Points",
+            const Text("Loyalty Points",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             Text("340/500",
                 style: TextStyle(
@@ -17,7 +17,7 @@ Widget buildProgressSection(BuildContext context) {
                     fontWeight: FontWeight.bold)),
           ],
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Stack(
           children: [
             Container(
@@ -30,7 +30,7 @@ Widget buildProgressSection(BuildContext context) {
               width: 340 / 500 * MediaQuery.of(context).size.width * 0.8,
               height: 20,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                       colors: [Colors.lightBlueAccent, Colors.blueAccent]),
                   borderRadius: BorderRadius.circular(20)),
             ),
@@ -40,8 +40,8 @@ Widget buildProgressSection(BuildContext context) {
         // SizedBox(height: 16),
         // Text("Badges Earned",
         //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        SizedBox(height: 8),
-        SingleChildScrollView(
+        const SizedBox(height: 8),
+        const SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [

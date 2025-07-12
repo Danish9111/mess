@@ -51,14 +51,14 @@ class _AttendanceDetailsScreenState extends State<AttendanceDetailsScreen> {
                       title: 'Present',
                       color: Colors.green,
                       future: countAttendanceThisMonth(status: 'present')),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   SummaryCard(
                       title: 'Absent',
                       color: Colors.red,
                       future: countAttendanceThisMonth(status: 'absent')),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   SummaryCard(
@@ -278,7 +278,7 @@ Widget _sliverPadding(BuildContext context) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content:
-                                  Text('All weekends this month marked absent'),
+                                  const Text('All weekends this month marked absent'),
                               backgroundColor: Colors.lightBlue.shade500,
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(

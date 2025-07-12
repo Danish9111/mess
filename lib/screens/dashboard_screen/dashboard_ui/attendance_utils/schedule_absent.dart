@@ -16,10 +16,10 @@ Future<void> scheduleAbsent(DateTime date, BuildContext context) async {
         .set({day: 'absent'},
             SetOptions(merge: true)); // merge keeps other days intact
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('successfully updated attendance')));
+        const SnackBar(content: Text('successfully updated attendance')));
   } catch (e) {
     debugPrint(e.toString());
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('failed to update attendance')));
+        .showSnackBar(const SnackBar(content: Text('failed to update attendance')));
   }
 }
