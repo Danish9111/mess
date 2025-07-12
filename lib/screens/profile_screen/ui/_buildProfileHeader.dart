@@ -10,7 +10,8 @@ Widget buildProfileHeader(BuildContext context) {
         CircleAvatar(
           radius: 40,
           backgroundColor: Colors.lightBlueAccent[100],
-          backgroundImage: const NetworkImage('https://example.com/profile.jpg'),
+          backgroundImage:
+              const NetworkImage('https://example.com/profile.jpg'),
         ),
         const SizedBox(width: 16),
         Expanded(

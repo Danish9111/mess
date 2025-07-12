@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'dashboard_body.dart'; // Assuming you have a separate file for the body content
 import 'package:mess/extentions.dart'; // Importing the extension for color opacity
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -312,15 +313,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-confirmLogout() {
-  try {
-    FirebaseAuth.instance.signOut();
-    return true;
-  } catch (e) {
-    return e;
-  }
-}
-
 Widget buildDrawer(BuildContext context) {
   return Drawer(
     child: ListView(
@@ -363,13 +355,27 @@ Widget buildDrawer(BuildContext context) {
         ListTile(
           leading: const Icon(Icons.logout),
           title: const Text('Log out'),
-          onTap: () async {
-            await FirebaseAuth.instance.signOut();
-            if (!context.mounted) return;
-            Navigator.pushReplacementNamed(context, '/login'); // or your route
+          onTap: () {
+            confirmLogout(context);
           },
         ),
       ],
     ),
   );
+}
+
+confirmLogout(BuildContext context) async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
+    if (!context.mounted) return;
+    Navigator.pushReplacementNamed(context, '/login'); // or your route
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(e.toString()),
+      ),
+    );
+    debugPrint("error : ${e.toString()}");
+  }
 }

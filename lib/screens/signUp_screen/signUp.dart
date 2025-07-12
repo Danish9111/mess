@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mess/screens/signUp_screen/signUp_utils.dart';
+import 'package:mess/screens/signUp_screen/signin_with_google.dart';
 
 final passVisibilityProvider = StateProvider<bool>((ref) => false);
 
@@ -133,7 +134,13 @@ class _SignUpState extends State<SignUp> {
                               width: 1,
                               color: Colors.lightBlueAccent), // border
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          await signInWithGoogle(context);
+                          Navigator.pushReplacementNamed(
+                              context, '/dashboard_screen');
+                          controller.clear();
+                          passwordController.clear();
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,

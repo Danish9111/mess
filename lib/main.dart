@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/backfill_attendance.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/dashboard_screen.dart';
 import 'package:mess/screens/main_screen.dart';
 import 'package:mess/screens/login_screen/login.dart';
 import 'package:mess/screens/signUp_screen/signUp.dart';
@@ -41,6 +42,8 @@ class MessApp extends ConsumerWidget {
       routes: {
         '/meal': (context) => const MealScreen(),
         '/signUp': (context) => const SignUp(),
+        '/dashboard_screen': (context) => const DashboardScreen(),
+        '/login': (context) => const LoginScreen(),
       },
     );
   }
