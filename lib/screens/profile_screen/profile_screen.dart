@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:mess/screens/profile_screen/ui/_buildProfileHeader.dart';
-import 'package:mess/screens/profile_screen/ui/buildProgressSection.dart';
-import 'package:mess/screens/profile_screen/ui/buildMealActivity.dart';
-import 'package:mess/screens/profile_screen/ui/buildWalletSection.dart';
-import 'package:mess/screens/profile_screen/ui/buildFeedback.dart';
+import 'package:mess/screens/profile_screen/profileHeader/buildProfileHeader.dart';
+import 'package:mess/screens/profile_screen/buildProgressSection.dart';
+import 'package:mess/screens/profile_screen/buildMealActivity.dart';
+import 'package:mess/screens/profile_screen/buildWalletSection.dart';
+import 'package:mess/screens/profile_screen/buildFeedback.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   @override
