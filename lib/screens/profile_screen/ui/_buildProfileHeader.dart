@@ -1,10 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:mess/providers/attendance_provider.dart';
 import 'package:mess/providers/google_user_provider.dart';
 
 Widget buildProfileHeader(BuildContext context, WidgetRef ref) {
   final googleUser = ref.watch(userProvider);
+  final totalMealsAsync = ref.watch(totalMealsProvider);
   final url = googleUser?.photoUrl;
+
+  final totalMealsText = totalMealsAsync.when(
+    data: (count) => '$count Meals',
+    loading: () => '...',
+    error: (e, s) => 'Error',
+  );
   debugPrint('this is the url $url');
 
   return Container(
@@ -24,9 +34,9 @@ Widget buildProfileHeader(BuildContext context, WidgetRef ref) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Nadeem Danish",
-                style: TextStyle(
+              Text(
+                googleUser?.name ?? "Guest User",
+                style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
@@ -46,9 +56,10 @@ Widget buildProfileHeader(BuildContext context, WidgetRef ref) {
               const SizedBox(height: 8),
               Row(
                 children: [
-                  _buildStatItem(Icons.calendar_today, "Mar 2023"),
-                  _buildStatItem(Icons.restaurant, "487 Meals"),
-                  _buildStatItem(Icons.timelapse, "1.5 Years"),
+                  _buildStatItem(Icons.calendar_today,
+                      DateFormat('MMM yyyy').format(DateTime.now())),
+                  _buildStatItem(Icons.restaurant, totalMealsText),
+                  _buildStatItem(Icons.timelapse, _getMembershipDuration()),
                 ],
               ),
             ],
@@ -57,6 +68,27 @@ Widget buildProfileHeader(BuildContext context, WidgetRef ref) {
       ],
     ),
   );
+}
+
+String _getMembershipDuration() {
+  final creationTime = FirebaseAuth.instance.currentUser?.metadata.creationTime;
+  if (creationTime == null) {
+    return "New Member";
+  }
+
+  final duration = DateTime.now().difference(creationTime);
+  final years = duration.inDays / 365;
+
+  if (years >= 1) {
+    return "${years.toStringAsFixed(1)} Years";
+  }
+
+  final months = duration.inDays / 30;
+  if (months >= 1) {
+    return "${months.round()} Months";
+  }
+
+  return "${duration.inDays} Days";
 }
 
 Widget _buildStatItem(IconData icon, String text) {
