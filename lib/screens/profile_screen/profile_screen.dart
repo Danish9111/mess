@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:mess/screens/profile_screen/profileHeader/buildProfileHeader.dart';
+import 'package:mess/screens/profile_screen/profileHeader/build_profile_header.dart';
 import 'package:mess/screens/profile_screen/buildProgressSection.dart';
 import 'package:mess/screens/profile_screen/buildMealActivity.dart';
 import 'package:mess/screens/profile_screen/buildWalletSection.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:mess/providers/attendance_provider.dart';
+import 'package:mess/providers/total_meals_provider.dart';
 import 'package:mess/providers/google_user_provider.dart';
 import 'package:mess/screens/profile_screen/profileHeader/profileHeader_utils.dart';
 
@@ -15,7 +15,6 @@ Widget buildProfileHeader(BuildContext context, WidgetRef ref) {
     loading: () => '...',
     error: (e, s) => 'Error',
   );
-  debugPrint('this is the url $url');
 
   return Container(
     padding: const EdgeInsets.all(20),
@@ -26,8 +25,21 @@ Widget buildProfileHeader(BuildContext context, WidgetRef ref) {
         CircleAvatar(
           radius: 40,
           backgroundColor: Colors.lightBlueAccent[100],
-          backgroundImage:
-              NetworkImage(url ?? 'https://example.com/profile.jpg'),
+          child: ClipOval(
+            child: url != null && url.isNotEmpty
+                ? Image.network(
+                    url,
+                    fit: BoxFit.cover,
+                    width: 80.0, // 2 * radius
+                    height: 80.0,
+                    errorBuilder: (context, error, stackTrace) {
+                      // This widget is shown if the image fails to load.
+                      return const Icon(Icons.person,
+                          size: 40, color: Colors.white);
+                    },
+                  )
+                : const Icon(Icons.person, size: 40, color: Colors.white),
+          ),
         ),
         const SizedBox(width: 16),
         Expanded(
