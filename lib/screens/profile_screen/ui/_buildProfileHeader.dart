@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mess/providers/google_user_provider.dart';
 
-Widget buildProfileHeader(BuildContext context) {
+Widget buildProfileHeader(BuildContext context, WidgetRef ref) {
+  final googleUser = ref.watch(userProvider);
+  final url = googleUser?.photoUrl;
+  debugPrint('this is the url $url');
+
   return Container(
     padding: const EdgeInsets.all(20),
     decoration: const BoxDecoration(color: Colors.lightBlueAccent),
@@ -11,7 +17,7 @@ Widget buildProfileHeader(BuildContext context) {
           radius: 40,
           backgroundColor: Colors.lightBlueAccent[100],
           backgroundImage:
-              const NetworkImage('https://example.com/profile.jpg'),
+              NetworkImage(url ?? 'https://example.com/profile.jpg'),
         ),
         const SizedBox(width: 16),
         Expanded(

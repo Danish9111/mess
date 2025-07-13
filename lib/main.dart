@@ -8,6 +8,8 @@ import 'package:mess/screens/login_screen/login.dart';
 import 'package:mess/screens/signUp_screen/signUp.dart';
 import 'package:mess/screens/mealScreen.dart';
 import 'package:mess/providers/uid_firebase.dart';
+import 'package:mess/providers/google_user_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,33 +19,44 @@ void main() async {
   runApp(const ProviderScope(child: MessApp()));
 }
 
-class MessApp extends ConsumerWidget {
+class MessApp extends ConsumerStatefulWidget {
   const MessApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
+  ConsumerState<MessApp> createState() => _MessAppState();
+}
 
+class _MessAppState extends ConsumerState<MessApp> {
+  @override
+  Widget build(BuildContext context) {
+    // ✅ safe zone: inside build
+    ref.listen<AsyncValue<User?>>(authStateProvider, (prev, next) {
+      next.whenData((u) {
+        ref.read(userProvider.notifier).setUser(
+              name: u?.displayName,
+              email: u?.email,
+              photoUrl: u?.photoURL,
+            );
+      });
+    });
+
+    final authState = ref.watch(authStateProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MessMate',
       home: authState.when(
-        data: (user) {
-          print("🔥 Firebase User: $user");
-          return user == null ? const LoginScreen() : MainScreen();
-        },
+        data: (user) => user == null ? const LoginScreen() : MainScreen(),
         loading: () => const Scaffold(
           body: Center(child: CircularProgressIndicator()),
         ),
-        error: (e, _) => Scaffold(
-          body: Center(child: Text('Auth Error: $e')),
-        ),
+        error: (e, _) => Scaffold(body: Center(child: Text('Auth error: $e'))),
       ),
       routes: {
-        '/meal': (context) => const MealScreen(),
-        '/signUp': (context) => const SignUp(),
-        '/dashboard_screen': (context) => const DashboardScreen(),
-        '/login': (context) => const LoginScreen(),
+        '/meal': (_) => const MealScreen(),
+        '/signUp': (_) => const SignUp(),
+        '/dashboard_screen': (_) => const DashboardScreen(),
+        '/login': (_) => const LoginScreen(),
+        '/mainScreen': (_) => MainScreen(),
       },
     );
   }

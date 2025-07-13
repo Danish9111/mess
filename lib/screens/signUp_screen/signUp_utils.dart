@@ -31,7 +31,7 @@ Future<void> _createAttendance() async {
   final userId = FirebaseAuth.instance.currentUser?.uid;
 
   if (userId == null) {
-    if (kDebugMode) print('[ATT] 🔴 No user signed in');
+    if (kDebugMode) print('🔴 No user signed in');
     return;
   }
 
@@ -49,7 +49,7 @@ Future<void> _createAttendance() async {
         .set(payload, SetOptions(merge: true));
   } catch (e, stack) {
     if (kDebugMode) {
-      print('[ATT] ❌ Firestore error: $e');
+      print('❌ Firestore error: $e');
       print(stack);
     }
     rethrow; // bubble up if you want

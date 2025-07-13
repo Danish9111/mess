@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:mess/screens/profile_screen/ui/_buildProfileHeader.dart';
 import 'package:mess/screens/profile_screen/ui/buildProgressSection.dart';
@@ -6,9 +7,13 @@ import 'package:mess/screens/profile_screen/ui/buildMealActivity.dart';
 import 'package:mess/screens/profile_screen/ui/buildWalletSection.dart';
 import 'package:mess/screens/profile_screen/ui/buildFeedback.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
   const ProfileScreen({super.key});
+}
 
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +24,8 @@ class ProfileScreen extends StatelessWidget {
                 color: Colors.lightBlueAccent[700],
                 fontWeight: FontWeight.bold)),
         // backgroundColor: Colors.lightBlueAccent,
-        flexibleSpace:
-            Container(decoration: const BoxDecoration(color: Colors.lightBlueAccent)),
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(color: Colors.lightBlueAccent)),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         actions: [
@@ -33,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildProfileHeader(context),
+            buildProfileHeader(context, ref),
             buildProgressSection(context),
             buildMealActivity(),
             buildWalletSection(),

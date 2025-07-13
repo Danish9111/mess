@@ -137,7 +137,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                         onPressed: () async {
                           await signInWithGoogle(context, ref);
                           Navigator.pushReplacementNamed(
-                              context, '/dashboard_screen');
+                              context, '/mainScreen');
                           controller.clear();
                           passwordController.clear();
                         },

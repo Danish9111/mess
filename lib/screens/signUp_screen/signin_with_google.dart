@@ -22,6 +22,7 @@ Future<void> signInWithGoogle(BuildContext context, WidgetRef ref) async {
 
   final GoogleSignInAuthentication googleAuth =
       await googleUser!.authentication;
+  final user = FirebaseAuth.instance.currentUser;
 
   final credential = GoogleAuthProvider.credential(
     accessToken: googleAuth.accessToken,
@@ -29,6 +30,11 @@ Future<void> signInWithGoogle(BuildContext context, WidgetRef ref) async {
   );
   try {
     await FirebaseAuth.instance.signInWithCredential(credential);
+    debugPrint('signed up successully');
+    debugPrint('$user here is other user');
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('successfully signed up'),
+    ));
   } catch (e) {
     debugPrint('❌error: $e');
     ScaffoldMessenger.of(context)
@@ -41,6 +47,6 @@ Future<void> signInWithGoogle(BuildContext context, WidgetRef ref) async {
   ref.read(userProvider.notifier).setUser(
         name: googleUser.displayName,
         email: googleUser.email,
-        photoUrl: googleUser.photoUrl,
+        photoUrl: FirebaseAuth.instance.currentUser?.photoURL,
       );
 }
