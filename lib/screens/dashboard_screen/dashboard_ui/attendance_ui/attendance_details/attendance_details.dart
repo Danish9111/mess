@@ -6,14 +6,9 @@ import 'package:mess/providers/connectivity_provider.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/attendance_details/absence_marking_card.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/attendance_details/calendar_days.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/select_month.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/scheduleAbsence.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/build_summery_card.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/show_day_options.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/fetch_attendance.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/count_attendance.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent_for_weekends.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/attendance_details/weekly_headers.dart';
-import 'package:mess/services.dart';
 
 class AttendanceDetailsScreen extends ConsumerStatefulWidget {
   const AttendanceDetailsScreen({super.key});
@@ -105,16 +100,15 @@ class _AttendanceDetailsScreenState
             ),
           ),
 
-          // Weekday headers
+          // Weekday headers :check respective files
           weeklyHeaders(context, isOnline, ref),
-          calendarDays(context, isOnline, ref),
-
           // Calendar days
+
+          calendarDays(context, isOnline, ref),
+          // Absence Marking Card
 
           absenceMarkingCard(context,
               isOnline.value == InternetConnectionStatus.connected, ref)
-
-          // Absence Marking Card
         ],
       ),
     );
