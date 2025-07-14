@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
+import 'package:mess/providers/connectivity_provider.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/select_month.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/scheduleAbsence.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/build_summery_card.dart';
@@ -8,17 +11,29 @@ import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/fetc
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/count_attendance.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent_for_weekends.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent.dart';
+import 'package:mess/has_internet.dart';
 
-class AttendanceDetailsScreen extends StatefulWidget {
+class AttendanceDetailsScreen extends ConsumerStatefulWidget {
   const AttendanceDetailsScreen({super.key});
   @override
-  State<AttendanceDetailsScreen> createState() =>
+  ConsumerState<AttendanceDetailsScreen> createState() =>
       _AttendanceDetailsScreenState();
 }
 
-class _AttendanceDetailsScreenState extends State<AttendanceDetailsScreen> {
+class _AttendanceDetailsScreenState
+    extends ConsumerState<AttendanceDetailsScreen> {
+  final checker = InternetConnectionChecker.createInstance(
+    addresses: [
+      AddressCheckOption(
+        uri: Uri.parse('https://clients3.google.com/generate_204'),
+        timeout: const Duration(milliseconds: 100),
+      ),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
+    final isOnline = ref.watch(internetProvider);
     final theme = Theme.of(context);
     final now = DateTime.now();
     final daysInMonth = DateUtils.getDaysInMonth(now.year, now.month);
@@ -198,7 +213,8 @@ class _AttendanceDetailsScreenState extends State<AttendanceDetailsScreen> {
               },
             ),
           ),
-          _sliverPadding(context)
+          _sliverPadding(context,
+              isOnline.value == InternetConnectionStatus.connected, ref)
 
           // Absence Marking Card
         ],
@@ -207,7 +223,7 @@ class _AttendanceDetailsScreenState extends State<AttendanceDetailsScreen> {
   }
 }
 
-Widget _sliverPadding(BuildContext context) {
+Widget _sliverPadding(BuildContext context, bool isOnline, WidgetRef ref) {
   return SliverPadding(
     padding: const EdgeInsets.all(20),
     sliver: SliverToBoxAdapter(
@@ -250,7 +266,16 @@ Widget _sliverPadding(BuildContext context) {
                   // ── Today
                   Expanded(
                     child: FilledButton(
-                      onPressed: () => scheduleAbsent(DateTime.now(), context),
+                      onPressed: () async {
+                        // final isOnline =
+                        //     ref.read(internetProvider); // grab the latest bool
+
+                        if (isOnline) {
+                          scheduleAbsence(context);
+                        } else {
+                          showInternetSnackBar(context);
+                        }
+                      },
                       style: FilledButton.styleFrom(
                         backgroundColor: Colors.lightBlue.shade500,
                         padding: const EdgeInsets.symmetric(vertical: 14),
@@ -270,7 +295,28 @@ Widget _sliverPadding(BuildContext context) {
                       icon: const Icon(Icons.weekend, size: 18),
                       label: const Text('Mark Weekends'),
                       onPressed: () async {
+                        // fail‑fast: give it max 300 ms
+                        // final isOnline = await Future.any([
+                        //   hasInternet(),
+                        //   Future.delayed(
+                        //       const Duration(milliseconds: 0), () => false),
+                        // ]);
+
+                        if (!isOnline) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('No internet connection'),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                          }
+                          return; // stop right here if offline
+                        }
+
+                        // internet is up—do your thing
                         await scheduleMonthWeekends(DateTime.now(), context);
+
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -279,7 +325,8 @@ Widget _sliverPadding(BuildContext context) {
                               backgroundColor: Colors.lightBlue.shade500,
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
                           );
                         }
@@ -309,5 +356,14 @@ Widget _sliverPadding(BuildContext context) {
         ),
       ),
     ),
+  );
+}
+
+void showInternetSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+        content:
+            Text('No internet connection Check your internet and try again')),
+    snackBarAnimationStyle: AnimationStyle(curve: Curves.easeOut),
   );
 }

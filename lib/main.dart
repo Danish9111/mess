@@ -10,10 +10,24 @@ import 'package:mess/screens/mealScreen.dart';
 import 'package:mess/providers/uid_firebase.dart';
 import 'package:mess/providers/google_user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'dart:core';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // final checker = InternetConnectionChecker.createInstance(
+  //   addresses: [
+  //     AddressCheckOption(
+  //       uri: Uri.parse('https://clients3.google.com/generate_204'),
+  //       timeout: const Duration(milliseconds: 700),
+  //     ),
+  //   ],
+  // );
+
+// reuse `checker` wherever you need it
+  // final online = await checker.hasConnection;
+
   await backfillAttendance();
 
   runApp(const ProviderScope(child: MessApp()));
