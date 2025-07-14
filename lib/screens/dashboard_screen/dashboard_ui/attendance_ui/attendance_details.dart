@@ -9,9 +9,6 @@ import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/coun
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent_for_weekends.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent.dart';
 
-// '
-// final presentsCount = countAttendanceThisMonth();
-
 class AttendanceDetailsScreen extends StatefulWidget {
   const AttendanceDetailsScreen({super.key});
   @override
@@ -277,8 +274,8 @@ Widget _sliverPadding(BuildContext context) {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content:
-                                  const Text('All weekends this month marked absent'),
+                              content: const Text(
+                                  'All weekends this month marked absent'),
                               backgroundColor: Colors.lightBlue.shade500,
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
