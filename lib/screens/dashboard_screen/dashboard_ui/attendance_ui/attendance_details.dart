@@ -10,8 +10,8 @@ import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/show_da
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/fetch_attendance.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/count_attendance.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent_for_weekends.dart';
-import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/schedule_absent.dart';
-import 'package:mess/has_internet.dart';
+
+import 'package:mess/services.dart';
 
 class AttendanceDetailsScreen extends ConsumerStatefulWidget {
   const AttendanceDetailsScreen({super.key});
@@ -273,7 +273,8 @@ Widget _sliverPadding(BuildContext context, bool isOnline, WidgetRef ref) {
                         if (isOnline) {
                           scheduleAbsence(context);
                         } else {
-                          showInternetSnackBar(context);
+                          showInternetSnackBar(context, Colors.redAccent,
+                              'No internet connection Check your internet and try again');
                         }
                       },
                       style: FilledButton.styleFrom(
@@ -295,19 +296,19 @@ Widget _sliverPadding(BuildContext context, bool isOnline, WidgetRef ref) {
                       icon: const Icon(Icons.weekend, size: 18),
                       label: const Text('Mark Weekends'),
                       onPressed: () async {
-                        // fail‑fast: give it max 300 ms
-                        // final isOnline = await Future.any([
-                        //   hasInternet(),
-                        //   Future.delayed(
-                        //       const Duration(milliseconds: 0), () => false),
-                        // ]);
-
                         if (!isOnline) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('No internet connection'),
-                                behavior: SnackBarBehavior.floating,
+                                content: SizedBox(
+                                    // height: 10,
+                                    width: double.infinity,
+                                    child: Flexible(
+                                      child: Text(
+                                          'No internet connection Check your internet and try again'),
+                                    )),
+                                backgroundColor: Colors.redAccent,
+                                // margin: EdgeInsets.only(top: 20),
                               ),
                             );
                           }
@@ -323,10 +324,7 @@ Widget _sliverPadding(BuildContext context, bool isOnline, WidgetRef ref) {
                               content: const Text(
                                   'All weekends this month marked absent'),
                               backgroundColor: Colors.lightBlue.shade500,
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                              // behavior: SnackBarBehavior.floating,
                             ),
                           );
                         }
@@ -344,7 +342,10 @@ Widget _sliverPadding(BuildContext context, bool isOnline, WidgetRef ref) {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () => scheduleAbsence(context),
+                  onPressed: () => isOnline
+                      ? scheduleAbsence(context)
+                      : showInternetSnackBar(context, Colors.redAccent,
+                          'No internet connection Check your internet and try again'),
                   child: Text('Schedule Future Date',
                       style: TextStyle(
                           color: Colors.lightBlue.shade700,
@@ -356,14 +357,5 @@ Widget _sliverPadding(BuildContext context, bool isOnline, WidgetRef ref) {
         ),
       ),
     ),
-  );
-}
-
-void showInternetSnackBar(BuildContext context) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-        content:
-            Text('No internet connection Check your internet and try again')),
-    snackBarAnimationStyle: AnimationStyle(curve: Curves.easeOut),
   );
 }
