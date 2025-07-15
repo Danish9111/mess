@@ -89,6 +89,8 @@ class _DashboardBodyState extends State<DashboardBody> {
   }
 
   Widget _buildQuickActions(bool isSmallScreen, screenHeight) {
+    final formKey = GlobalKey<FormState>();
+
     final actions = [
       {'icon': Icons.check_circle, 'label': 'Mark Meal'},
       {'icon': Icons.money_off, 'label': 'Request Refund'},
@@ -122,18 +124,18 @@ class _DashboardBodyState extends State<DashboardBody> {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                        iconSize: isSmallScreen ? 32 : 36,
-                        icon: Icon(action['icon'] as IconData,
-                            color: Colors.lightBlue[800]),
-                        onPressed: () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (_) => const Scaffold(
-                              body: ShowMenuSuggestionSheet(),
-                            ),
-                          );
-                        }),
+                      iconSize: isSmallScreen ? 32 : 36,
+                      icon: Icon(action['icon'] as IconData,
+                          color: Colors.lightBlue[800]),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.white,
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (_) => const ShowMenuSuggestionSheet(),
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(action['label'] as String,
