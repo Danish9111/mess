@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'meal_cards.dart';
 import 'package:mess/extentions.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/attendance_card.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/show_menu_suggestion_sheet.dart';
 
 class DashboardBody extends StatefulWidget {
   const DashboardBody({super.key});
@@ -26,6 +27,8 @@ class _DashboardBodyState extends State<DashboardBody> {
   @override
   Widget build(BuildContext context) {
     final isSmallScreen = MediaQuery.of(context).size.width < 600;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
       child: Column(
@@ -35,7 +38,7 @@ class _DashboardBodyState extends State<DashboardBody> {
           _buildWelcomeHeader(isSmallScreen),
           _buildAttendenceMarker(),
           const SizedBox(height: 24),
-          _buildQuickActions(isSmallScreen),
+          _buildQuickActions(isSmallScreen, screenHeight),
           const SizedBox(height: 24),
           const HorizontalAttendanceBar(
             attendanceMap: {},
@@ -85,7 +88,7 @@ class _DashboardBodyState extends State<DashboardBody> {
     );
   }
 
-  Widget _buildQuickActions(bool isSmallScreen) {
+  Widget _buildQuickActions(bool isSmallScreen, screenHeight) {
     final actions = [
       {'icon': Icons.check_circle, 'label': 'Mark Meal'},
       {'icon': Icons.money_off, 'label': 'Request Refund'},
@@ -119,11 +122,12 @@ class _DashboardBodyState extends State<DashboardBody> {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      iconSize: isSmallScreen ? 32 : 36,
-                      icon: Icon(action['icon'] as IconData,
-                          color: Colors.lightBlue[800]),
-                      onPressed: () => _handleAction(action['label'] as String),
-                    ),
+                        iconSize: isSmallScreen ? 32 : 36,
+                        icon: Icon(action['icon'] as IconData,
+                            color: Colors.lightBlue[800]),
+                        onPressed: () {
+                          showMenuSuggestionSheet(context);
+                        }),
                   ),
                   const SizedBox(height: 8),
                   Text(action['label'] as String,
@@ -185,10 +189,5 @@ class _DashboardBodyState extends State<DashboardBody> {
       "Food is not just eating energy, it's an experience"
     ];
     return quotes[DateTime.now().day % quotes.length];
-  }
-
-  void _handleAction(String action) {
-    // Add your action handling logic here
-    debugPrint("Action selected: $action");
   }
 }
