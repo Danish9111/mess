@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/confirmAbsence.dart';
 import 'package:mess/services.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/scheduleAbsence.dart';
 
@@ -53,7 +54,7 @@ Widget absenceMarkingCard(BuildContext context, bool isOnline, WidgetRef ref) {
                         //     ref.read(internetProvider); // grab the latest bool
 
                         if (isOnline) {
-                          scheduleAbsence(context);
+                          markTodayAbsent(context);
                         } else {
                           showInternetSnackBar(context, Colors.redAccent,
                               'No internet connection Check your internet and try again');

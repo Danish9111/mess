@@ -19,14 +19,14 @@ class AttendanceDetailsScreen extends ConsumerStatefulWidget {
 
 class _AttendanceDetailsScreenState
     extends ConsumerState<AttendanceDetailsScreen> {
-  final checker = InternetConnectionChecker.createInstance(
-    addresses: [
-      AddressCheckOption(
-        uri: Uri.parse('https://clients3.google.com/generate_204'),
-        timeout: const Duration(milliseconds: 100),
-      ),
-    ],
-  );
+  // final checker = InternetConnectionChecker.createInstance(
+  //   addresses: [
+  //     AddressCheckOption(
+  //       uri: Uri.parse('https://clients3.google.com/generate_204'),
+  //       timeout: const Duration(milliseconds: 100),
+  //     ),
+  //   ],
+  // );
 
   @override
   Widget build(BuildContext context) {

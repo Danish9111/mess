@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:ui';
-import 'dashboard_body.dart'; // Assuming you have a separate file for the body content
-import 'package:mess/extentions.dart'; // Importing the extension for color opacity
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mess/providers/google_user_provider.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/glassy_days_container.dart';
+import 'dashboard_body.dart';
+import 'package:mess/extentions.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/dashboard_drawer.dart';
+import 'dart:developer';
 
-class DashboardScreen extends StatefulWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  DashboardScreenState createState() => DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
-  int _selectedDay = DateTime.now().weekday % 7; // Initialize with today
+class DashboardScreenState extends ConsumerState<DashboardScreen> {
   final List<String> days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final googleUser = ref.watch(userProvider);
+    log('i am from  dashboard screen');
+    final url = googleUser?.photoUrl;
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
@@ -60,11 +62,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Row(
                         children: [
                           CircleAvatar(
-                            radius: 26,
-                            backgroundColor: Colors.white.applyOpacity(0.3),
-                            child: const Icon(Icons.person,
-                                size: 30, color: Colors.white),
-                          ),
+                              radius: 26,
+                              backgroundColor: Colors.white.applyOpacity(0.3),
+                              child: url == null
+                                  ? const Icon(Icons.person,
+                                      size: 30, color: Colors.white)
+                                  : ClipOval(
+                                      child: Image.network(url),
+                                    )),
                           const SizedBox(width: 15),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,61 +118,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   color: Colors.white, size: 26),
                               onPressed: () =>
                                   scaffoldKey.currentState?.openDrawer(), //() {
-                              //   showDialog(
-                              //       context: context,
-                              //       builder: (context) {
-                              //         return AlertDialog(
-                              //             backgroundColor:
-                              //                 Colors.lightBlueAccent,
-                              //             title: Text(
-                              //               'Confirm Logout',
-                              //               style:
-                              //                   TextStyle(color: Colors.white),
-                              //             ),
-                              //             content: Text(
-                              //               'Are you sure to Logout?',
-                              //               style:
-                              //                   TextStyle(color: Colors.white),
-                              //             ),
-                              //             actions: [
-                              //               TextButton(
-                              //                 child: Text(
-                              //                   'cancel',
-                              //                   style: TextStyle(
-                              //                       color: Colors.white),
-                              //                 ),
-                              //                 onPressed: () =>
-                              //                     Navigator.pop(context),
-                              //               ),
-                              //               TextButton(
-                              //                 child: Text(
-                              //                   'logout',
-                              //                   style: TextStyle(
-                              //                       color: Colors.white),
-                              //                 ),
-                              //                 onPressed: () {
-                              //                   bool result = confirmLogout();
-
-                              //                   if (result == true) {
-                              //                     ScaffoldMessenger.of(context)
-                              //                         .showSnackBar(
-                              //                       SnackBar(
-                              //                         content: Text(
-                              //                             'logout successfully '),
-                              //                       ),
-                              //                     );
-                              //                   } else {
-                              //                     ScaffoldMessenger.of(context)
-                              //                         .showSnackBar(SnackBar(
-                              //                             content: Text(
-                              //                                 'logout failed')));
-                              //                   }
-                              //                   Navigator.pop(context);
-                              //                 },
-                              //               )
-                              //             ]);
-                              //       });
-                              // },
                             ),
                           ],
                         ),
@@ -175,97 +125,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ],
                   ),
                   const Spacer(),
+                  const GlassyDaysContainer(),
 
                   // Enhanced glassy days bar with click functionality
-                  Container(
-                    height: 70,
-                    margin: const EdgeInsets.only(bottom: 30),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.white.applyOpacity(0.25),
-                          Colors.white.applyOpacity(0.15),
-                        ],
-                      ),
-                      border: Border.all(
-                        color: Colors.white.applyOpacity(0.1),
-                        width: 2,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.applyOpacity(0.2),
-                          blurRadius: 30,
-                          spreadRadius: 2,
-                        )
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            final containerWidth = constraints.maxWidth;
-                            final dayWidth = containerWidth / 7;
-                            return Stack(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: List.generate(7, (index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _selectedDay = index;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: dayWidth,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
-                                        child: Center(
-                                          child: Text(
-                                            days[index],
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: _selectedDay == index
-                                                  ? FontWeight.bold
-                                                  : FontWeight.w500,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ),
-                                // Animated indicator
-                                AnimatedPositioned(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                  left: _selectedDay * dayWidth +
-                                      (dayWidth / 2) -
-                                      15,
-                                  bottom: 10,
-                                  child: Container(
-                                    width: 30,
-                                    height: 4,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(2),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -310,72 +172,5 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
     );
-  }
-}
-
-Widget buildDrawer(BuildContext context) {
-  return Drawer(
-    child: ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.lightBlueAccent),
-            child: Center(
-              child: Text('Settings',
-                  style: TextStyle(color: Colors.white, fontSize: 30)),
-            )),
-        ListTile(
-          leading: const Icon(Icons.language),
-          title: const Text('Language'),
-          onTap: () async {
-            // simple bottom‑sheet language picker
-            final locale = await showModalBottomSheet<String>(
-              context: context,
-              builder: (_) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    title: const Text('English'),
-                    onTap: () => Navigator.pop(context, 'en'),
-                  ),
-                  ListTile(
-                    title: const Text('اردو'),
-                    onTap: () => Navigator.pop(context, 'ur'),
-                  ),
-                ],
-              ),
-            );
-            if (locale != null) {
-              // TODO: save locale in prefs / provider
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Language set to $locale')));
-            }
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.logout),
-          title: const Text('Log out'),
-          onTap: () {
-            confirmLogout(context);
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-confirmLogout(BuildContext context) async {
-  try {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
-    if (!context.mounted) return;
-    Navigator.pushReplacementNamed(context, '/login'); // or your route
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(e.toString()),
-      ),
-    );
-    debugPrint("error : ${e.toString()}");
   }
 }

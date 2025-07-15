@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mess/services.dart';
 
 void confirmAbsence(BuildContext context, int day) {
   showDialog(
@@ -20,16 +21,18 @@ void confirmAbsence(BuildContext context, int day) {
             //   attendanceData[day] = 'absent';
             // });
             Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Marked $day as absent'),
-                backgroundColor: Colors.lightBlue.shade500,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text(),
+            //     backgroundColor: Colors.lightBlue.shade500,
+            //     behavior: SnackBarBehavior.floating,
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),
+            //   ),
+            // );
+            showInternetSnackBar(
+                context, Colors.lightBlueAccent, 'Marked $day as absent');
           },
           style: FilledButton.styleFrom(
             backgroundColor: Colors.lightBlue.shade500,
