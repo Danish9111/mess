@@ -126,7 +126,13 @@ class _DashboardBodyState extends State<DashboardBody> {
                         icon: Icon(action['icon'] as IconData,
                             color: Colors.lightBlue[800]),
                         onPressed: () {
-                          const showMenuSuggestionSheet();
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (_) => const Scaffold(
+                              body: ShowMenuSuggestionSheet(),
+                            ),
+                          );
                         }),
                   ),
                   const SizedBox(height: 8),
