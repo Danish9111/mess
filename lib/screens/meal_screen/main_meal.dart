@@ -108,8 +108,7 @@ Widget foodCard(double screenWidth, double screenHeight) {
                   children: [
                     Text('Price:',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    SizedBox(
-                        width: 4), // Add space between price and value
+                    SizedBox(width: 4), // Add space between price and value
                     Text("100 Rupees")
                   ],
                 ),
