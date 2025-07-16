@@ -92,7 +92,8 @@ class _ShowMenuSuggestionSheetState
               TextFormField(
                 controller: menuController,
                 maxLines: 4,
-                decoration: _inputDecoration('Enter your menu '),
+                decoration:
+                    _inputDecoration('Enter your menu suggestion here  '),
                 validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
               ),
               SizedBox(height: screenHeight * .06),
