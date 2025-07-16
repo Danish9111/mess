@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mess/providers/isloading_provider.dart';
 import 'meal_cards.dart';
 import 'package:mess/extentions.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/attendance_card.dart';
@@ -91,8 +90,8 @@ class _DashboardBodyState extends ConsumerState<DashboardBody> {
   }
 
   Widget _buildQuickActions(bool isSmallScreen, screenHeight, ref) {
-    final formKey = GlobalKey<FormState>();
-    final isloading = ref.watch(isLoadingProvider);
+    // final formKey = GlobalKey<FormState>();
+    // final isloading = ref.watch(isLoadingProvider);
 
     final actions = [
       {'icon': Icons.check_circle, 'label': 'Mark Meal'},

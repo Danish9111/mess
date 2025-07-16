@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:mess/extentions.dart';
 import 'package:mess/providers/isloading_provider.dart';
 
@@ -74,35 +73,6 @@ class _ShowMenuSuggestionSheetState
               ),
               const SizedBox(height: 20),
 
-              // ---------- Date ----------
-              GestureDetector(
-                onTap: _pickDate,
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.calendar_today,
-                          size: 20, color: Colors.blue),
-                      const SizedBox(width: 10),
-                      Text(
-                        selectedDate == null
-                            ? 'Select date'
-                            : DateFormat('MMM dd, yyyy').format(selectedDate!),
-                        style: TextStyle(
-                          color:
-                              selectedDate == null ? Colors.grey : Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-
               // ---------- Meal Type ----------
               DropdownButtonFormField<String>(
                 value: selectedMealType,
@@ -127,23 +97,20 @@ class _ShowMenuSuggestionSheetState
                 validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
               ),
               SizedBox(height: screenHeight * .06),
-              // Show loading indicator if needed
               // ---------- Submit ----------
               SizedBox(
                 width: screenHeight * .4,
                 child: isLoading
-                    ? const FractionallySizedBox(
-                        widthFactor: 1,
-                        heightFactor: 1,
-                        child: CircularProgressIndicator())
+                    ? const ShowLoading(
+                        isLoading: true,
+                      )
                     : ElevatedButton(
                         onPressed: () async {
                           FocusScope.of(context).unfocus(); // close keyboard
                           ref.read(isLoadingProvider.notifier).state = true;
                           if (formKey.currentState!.validate()) {
                             final suggestion = {
-                              'date': DateFormat('yyyy-MM-dd')
-                                  .format(selectedDate!),
+                              'date': DateTime.now(),
                               'mealType': selectedMealType,
                               'menu': menuController.text,
                             };
@@ -153,14 +120,17 @@ class _ShowMenuSuggestionSheetState
                             // Replace print with your API call etc.
                             debugPrint('Suggestion submitted: $suggestion');
 
-                            Navigator.pop(context); // close sheet
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text('Suggestion submitted successfully!'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
+                            ref.read(isLoadingProvider.notifier).state = false;
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Suggestion submitted successfully!'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
