@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:mess/extentions.dart';
+import 'package:mess/providers/isloading_provider.dart';
 
 class ShowMenuSuggestionSheet extends ConsumerStatefulWidget {
   const ShowMenuSuggestionSheet({super.key});
@@ -47,6 +50,7 @@ class _ShowMenuSuggestionSheetState
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final isLoading = ref.watch(isLoadingProvider);
 
     return Padding(
       padding: EdgeInsets.only(
@@ -123,39 +127,51 @@ class _ShowMenuSuggestionSheetState
                 validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
               ),
               SizedBox(height: screenHeight * .06),
+              // Show loading indicator if needed
               // ---------- Submit ----------
               SizedBox(
                 width: screenHeight * .4,
-                child: ElevatedButton(
-                  onPressed: () {
-                    FocusScope.of(context).unfocus(); // close keyboard
-                    if (formKey.currentState!.validate()) {
-                      final suggestion = {
-                        'date': DateFormat('yyyy-MM-dd').format(selectedDate!),
-                        'mealType': selectedMealType,
-                        'menu': menuController.text,
-                      };
-                      // Replace print with your API call etc.
-                      debugPrint('Suggestion submitted: $suggestion');
+                child: isLoading
+                    ? const FractionallySizedBox(
+                        widthFactor: 1,
+                        heightFactor: 1,
+                        child: CircularProgressIndicator())
+                    : ElevatedButton(
+                        onPressed: () async {
+                          FocusScope.of(context).unfocus(); // close keyboard
+                          ref.read(isLoadingProvider.notifier).state = true;
+                          if (formKey.currentState!.validate()) {
+                            final suggestion = {
+                              'date': DateFormat('yyyy-MM-dd')
+                                  .format(selectedDate!),
+                              'mealType': selectedMealType,
+                              'menu': menuController.text,
+                            };
+                            await FirebaseFirestore.instance
+                                .collection('suggestions')
+                                .add(suggestion);
+                            // Replace print with your API call etc.
+                            debugPrint('Suggestion submitted: $suggestion');
 
-                      Navigator.pop(context); // close sheet
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Suggestion submitted successfully!'),
-                          backgroundColor: Colors.green,
+                            Navigator.pop(context); // close sheet
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Suggestion submitted successfully!'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlueAccent,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightBlueAccent,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text(
-                    'Submit Suggestion',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+                        child: const Text(
+                          'Submit Suggestion',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
               ),
             ],
           ),

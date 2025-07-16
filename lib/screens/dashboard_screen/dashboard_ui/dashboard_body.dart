@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mess/providers/isloading_provider.dart';
 import 'meal_cards.dart';
 import 'package:mess/extentions.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/attendance_card.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/show_menu_suggestion_sheet.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DashboardBody extends StatefulWidget {
+class DashboardBody extends ConsumerStatefulWidget {
   const DashboardBody({super.key});
 
   @override
-  State<DashboardBody> createState() => _DashboardBodyState();
+  ConsumerState<DashboardBody> createState() => _DashboardBodyState();
 }
 
-class _DashboardBodyState extends State<DashboardBody> {
+class _DashboardBodyState extends ConsumerState<DashboardBody> {
   // Sample data - replace with your actual data source
   final String userName = "Nadeem";
   final int mealsTaken = 15;
@@ -38,7 +40,7 @@ class _DashboardBodyState extends State<DashboardBody> {
           _buildWelcomeHeader(isSmallScreen),
           _buildAttendenceMarker(),
           const SizedBox(height: 24),
-          _buildQuickActions(isSmallScreen, screenHeight),
+          _buildQuickActions(isSmallScreen, screenHeight, ref),
           const SizedBox(height: 24),
           const HorizontalAttendanceBar(
             attendanceMap: {},
@@ -88,8 +90,9 @@ class _DashboardBodyState extends State<DashboardBody> {
     );
   }
 
-  Widget _buildQuickActions(bool isSmallScreen, screenHeight) {
+  Widget _buildQuickActions(bool isSmallScreen, screenHeight, ref) {
     final formKey = GlobalKey<FormState>();
+    final isloading = ref.watch(isLoadingProvider);
 
     final actions = [
       {'icon': Icons.check_circle, 'label': 'Mark Meal'},
