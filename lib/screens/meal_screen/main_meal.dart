@@ -31,6 +31,9 @@ class _MealScreenState extends State<MealScreen> {
               foodCard(screenWidth, screenHeight),
               foodCard(screenWidth, screenHeight),
               foodCard(screenWidth, screenHeight),
+              SizedBox(
+                height: screenHeight * .02,
+              )
             ],
           ),
         ));
@@ -71,7 +74,7 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
 
 Widget foodCard(double screenWidth, double screenHeight) {
   return Container(
-    padding: const EdgeInsets.all(20),
+    padding: const EdgeInsets.only(left: 20, top: 20, bottom: 20),
     width: screenWidth * .9,
     height: screenHeight * .3,
     decoration: BoxDecoration(
@@ -178,25 +181,39 @@ Widget foodCard(double screenWidth, double screenHeight) {
         // Image Section
         Expanded(
           flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Stack(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                  height: screenHeight * .03,
+                  width: screenWidth * .2,
+                  color: Colors.redAccent.shade100,
+                  child: const Center(
+                      child: Text(
+                    'حلال',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16, // optional: increase for better readability
+                      fontFamily: 'NotoNastaliqUrdu', // optional: see below
+                    ),
+                  ))),
+
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Stack(
                   alignment: Alignment.center,
                   children: [
                     SizedBox(
-                      width: 140,
-                      height: 140,
+                      width: 100,
+                      height: 100,
                       child: ClipOval(
                         child: Container(
-                          color: Colors.lightBlueAccent.withOpacity(0.3),
+                          color: Colors.lightBlueAccent.applyOpacity(.3),
                         ),
                       ),
                     ),
                     Container(
-                      height: screenHeight * 0.2,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -205,8 +222,11 @@ Widget foodCard(double screenWidth, double screenHeight) {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                SizedBox(
+              ),
+              // const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: SizedBox(
                   width: double.infinity,
                   height: 30,
                   child: TextButton.icon(
@@ -231,8 +251,8 @@ Widget foodCard(double screenWidth, double screenHeight) {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],
