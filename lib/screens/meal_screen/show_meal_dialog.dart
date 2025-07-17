@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MealRatingDialog extends StatefulWidget {
@@ -15,6 +17,7 @@ class __MealRatingDialogState extends State<MealRatingDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     return AlertDialog(
       backgroundColor: Colors.white,
       title: Text(
@@ -69,28 +72,44 @@ class __MealRatingDialogState extends State<MealRatingDialog> {
             backgroundColor: Colors.blue,
             foregroundColor: Colors.white,
           ),
-          onPressed: () {
+          onPressed: () async {
             if (_selectedRating > 0) {
-              // Process the rating data
               final ratingData = {
                 'meal': widget.mealName,
                 'rating': _selectedRating,
-                'comment': _commentController.text,
+                'comment': _commentController.text.trim(),
                 'timestamp': DateTime.now(),
+                'userId': uid,
               };
 
-              // Print for demonstration (replace with your logic)
-              print('Meal Rating Submitted: $ratingData');
+              try {
+                await FirebaseFirestore.instance
+                    .collection('ratings')
+                    .add(ratingData);
 
-              Navigator.pop(context);
-              _showConfirmation(context);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  _showConfirmation(context);
+                }
+              } catch (e) {
+                debugPrint('Rating submission error: $e');
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error submitting rating: $e'),
+                    ),
+                  );
+                }
+              }
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Please select a rating'),
-                  duration: Duration(seconds: 2),
-                ),
-              );
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Please select a rating'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+              }
             }
           },
           child: const Text('SUBMIT'),
