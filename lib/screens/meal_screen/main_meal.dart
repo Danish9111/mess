@@ -24,7 +24,7 @@ class _MealScreenState extends State<MealScreen> {
         body: SingleChildScrollView(
           clipBehavior: Clip.none,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             spacing: 20,
             children: [
               caloriCounter(screenWidth, screenHeight),
@@ -70,124 +70,173 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
 }
 
 Widget foodCard(double screenWidth, double screenHeight) {
-  return Stack(
-    clipBehavior: Clip.none, // allow overflow!
-    children: [
-      // Card below
-      Container(
-        width: screenWidth * .7,
-        height: screenHeight * .3,
-        padding: const EdgeInsets.all(16),
-        // margin: const EdgeInsets.only(bottom: 60), // give space for plate image
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-          boxShadow: [BoxShadow(blurRadius: 6, color: Colors.black12)],
+  return Container(
+    padding: const EdgeInsets.all(20),
+    width: screenWidth * .9,
+    height: screenHeight * .3,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 3,
+          blurRadius: 7,
+          offset: const Offset(0, 3),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const FractionallySizedBox(
-              widthFactor: .6,
-              child: Column(
-                children: [
-                  // reserve space for image overlap
-                  Text("Caesar Salad (Quinoa)",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  SizedBox(height: 4),
-                  Text("Basic Caesar salad with curry olive"),
-                  SizedBox(height: 8),
-                ],
-              ),
-            ),
-            const Row(
+      ],
+    ),
+    child: Row(
+      children: [
+        // Food Information Section
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Avocado Toast',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.grey[800],
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Sourdough bread with mashed avocado, ',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey[600],
+                        height: 1.4,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
                 Row(
                   children: [
-                    Text('Price:',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    SizedBox(width: 4), // Add space between price and value
-                    Text("100 Rupees")
+                    Text(
+                      'Rs120',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[700],
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Row(
+                      children: [
+                        Icon(Icons.local_fire_department,
+                            size: 18, color: Colors.orange[300]),
+                        const SizedBox(width: 4),
+                        Text(
+                          '320 cal',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: List.generate(
+                          5,
+                          (index) => Icon(
+                                index < 4 ? Icons.star : Icons.star_half,
+                                size: 20,
+                                color: Colors.amber,
+                              )),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '4.6 (128 reviews)',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey[600],
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Container(
-              height: screenHeight * .05,
-              width: screenWidth * .4,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: const Row(
-                children: [Icon(Icons.whatshot), Text('Calories : 200')],
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              width: screenWidth * .4,
-              height: screenHeight * .09,
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  border: Border.all(
-                    width: 1,
-                    color: Colors.amber,
-                  )),
-              child: Column(
-                children: [
-                  const Text('Give this Meal a rating '),
-                  SizedBox(
-                    height: screenWidth * .01,
-                  ),
-                  Row(children: [
-                    ...List.generate(
-                      4,
-                      (index) => const Icon(
-                        Icons.star_border,
-                        color: Colors.amber,
+          ),
+        ),
+
+        // Image Section
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: 140,
+                      height: 140,
+                      child: ClipOval(
+                        child: Container(
+                          color: Colors.lightBlueAccent.withOpacity(0.3),
+                        ),
                       ),
                     ),
-                    const Text('(4.5)')
-                  ])
-                ],
-              ),
+                    Container(
+                      height: screenHeight * 0.2,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: const Image(
+                          image: AssetImage('assets/images/nashtapng.png')),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  height: 30,
+                  child: TextButton.icon(
+                    icon:
+                        Icon(Icons.thumb_up, size: 16, color: Colors.blue[700]),
+                    label: Text(
+                      'RATE DISH',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.blue[50],
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
-      // Plate image on top of card
-      Positioned(
-          top: screenHeight * .065,
-          left: screenWidth * .5,
-          child: Container(
-            height: 150,
-            width: 150,
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.lightBlueAccent,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    spreadRadius: 1,
-                    blurRadius: 10,
-                    offset: Offset(0, 0),
-                  )
-                ]),
-            child: Image.asset(
-              'assets/images/nashtapng.png', // your image here
-              height: 150,
-              width: 150,
-              // fit: BoxFit.cover,
-            ),
-          )),
-    ],
+      ],
+    ),
   );
 }
 
@@ -213,3 +262,51 @@ class GlassyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Plate image on top of card
+      // Positioned(
+      //     top: screenHeight * .065,
+      //     left: screenWidth * .5,
+      //     child: Container(
+      //       height: 150,
+      //       width: 150,
+      //       decoration: const BoxDecoration(
+      //           shape: BoxShape.circle,
+      //           color: Colors.lightBlueAccent,
+      //           boxShadow: [
+      //             BoxShadow(
+      //               color: Colors.grey,
+      //               spreadRadius: 1,
+      //               blurRadius: 10,
+      //               offset: Offset(0, 0),
+      //             )
+      //           ]),
+      //       child: Image.asset(
+      //         'assets/images/nashtapng.png', // your image here
+      //         height: 150,
+      //         width: 150,
+      //         // fit: BoxFit.cover,
+      //       ),
+      //     )),

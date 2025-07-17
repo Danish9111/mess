@@ -117,7 +117,6 @@ class _ShowMenuSuggestionSheetState
                             await FirebaseFirestore.instance
                                 .collection('suggestions')
                                 .add(suggestion);
-                            // Replace print with your API call etc.
                             debugPrint('Suggestion submitted: $suggestion');
 
                             ref.read(isLoadingProvider.notifier).state = false;
