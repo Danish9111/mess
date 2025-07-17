@@ -31,9 +31,18 @@ class _MealScreenState extends State<MealScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 spacing: 20,
                 children: [
-                  FoodCard(),
-                  FoodCard(),
-                  FoodCard(),
+                  const FoodCard(
+                    foodTime: 'Lunch',
+                    foodTitle: 'Avacardo Toast',
+                    foodDescription: 'Sourdough bread with mashed avocado',
+                    price: 120,
+                    calories: 320,
+                    image: 'assets/images/nashtapng.png',
+                    reviewCount: 128,
+                    ratings: 4.6,
+                  ),
+                  // FoodCard(),
+                  // FoodCard(),
                   SizedBox(
                     height: screenHeight * .02,
                   )

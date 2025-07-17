@@ -4,7 +4,25 @@ import 'package:mess/extentions.dart';
 import 'package:mess/screens/meal_screen/show_meal_dialog.dart';
 
 class FoodCard extends ConsumerStatefulWidget {
-  const FoodCard({super.key});
+  final String foodTime;
+  final String foodTitle;
+  final String foodDescription;
+  final int price;
+  final int calories;
+  final String image;
+  final int reviewCount;
+  final double ratings;
+
+  const FoodCard(
+      {required this.foodTime,
+      required this.foodTitle,
+      required this.foodDescription,
+      required this.price,
+      required this.calories,
+      required this.image,
+      required this.reviewCount,
+      required this.ratings,
+      super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _FoodCardState();
@@ -46,23 +64,23 @@ class _FoodCardState extends ConsumerState<FoodCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'BreakFast',
+                        widget.foodTime,
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
                           color: Colors.grey[800],
                         ),
                       ),
-                      const Text(
-                        'Avacardo Toast',
-                        style: TextStyle(
+                      Text(
+                        widget.foodTitle,
+                        style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: Colors.grey),
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Sourdough bread with mashed avocado, ',
+                        widget.foodDescription,
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.grey[600],
@@ -76,7 +94,7 @@ class _FoodCardState extends ConsumerState<FoodCard> {
                   Row(
                     children: [
                       Text(
-                        'Rs120',
+                        widget.price.toString(),
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -90,7 +108,7 @@ class _FoodCardState extends ConsumerState<FoodCard> {
                               size: 18, color: Colors.orange[300]),
                           const SizedBox(width: 4),
                           Text(
-                            '320 cal',
+                            widget.calories.toString(),
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.grey[600],
@@ -114,7 +132,7 @@ class _FoodCardState extends ConsumerState<FoodCard> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        '4.6 (128 reviews)',
+                        '${widget.ratings} (${(widget.reviewCount).toString()})',
                         style: TextStyle(
                           fontSize: 13,
                           color: Colors.grey[600],
@@ -167,8 +185,7 @@ class _FoodCardState extends ConsumerState<FoodCard> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: const Image(
-                            image: AssetImage('assets/images/nashtapng.png')),
+                        child: Image(image: AssetImage(widget.image)),
                       ),
                     ],
                   ),
