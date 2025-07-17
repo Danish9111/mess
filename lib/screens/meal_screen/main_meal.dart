@@ -20,23 +20,28 @@ class _MealScreenState extends State<MealScreen> {
         // appBar: AppBar(
         //   backgroundColor: Colors.lightBlueAccent.applyOpacity(.9),
         // ),
-        appBar: const GlassyAppBar(),
+        appBar: AppBar(
+          toolbarHeight: screenHeight * .150,
+          backgroundColor: Colors.lightBlueAccent.applyOpacity(.9),
+          title: caloriCounter(screenWidth, screenHeight),
+        ),
         body: SingleChildScrollView(
-          clipBehavior: Clip.none,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 20,
-            children: [
-              caloriCounter(screenWidth, screenHeight),
-              foodCard(screenWidth, screenHeight),
-              foodCard(screenWidth, screenHeight),
-              foodCard(screenWidth, screenHeight),
-              SizedBox(
-                height: screenHeight * .02,
-              )
-            ],
-          ),
-        ));
+            clipBehavior: Clip.none,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                spacing: 20,
+                children: [
+                  foodCard(screenWidth, screenHeight),
+                  foodCard(screenWidth, screenHeight),
+                  foodCard(screenWidth, screenHeight),
+                  SizedBox(
+                    height: screenHeight * .02,
+                  )
+                ],
+              ),
+            )));
   }
 }
 
@@ -48,7 +53,7 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
         height: screenHeight * .18,
         width: screenWidth * .40,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.lightBlueAccent, width: 1),
+          border: Border.all(color: Colors.white, width: 1),
           borderRadius: BorderRadius.circular(20),
         ),
         child: const Row(
@@ -57,12 +62,12 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
             Icon(
               Icons.whatshot,
               size: 40,
-              color: Colors.grey,
+              color: Colors.amberAccent,
             ),
             Text(
-              '  2000 Calories',
+              '  2000 Calories Today',
               style: TextStyle(
-                color: Colors.grey,
+                color: Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -104,12 +109,19 @@ Widget foodCard(double screenWidth, double screenHeight) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Avocado Toast',
+                      'BreakFast',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
                         color: Colors.grey[800],
                       ),
+                    ),
+                    const Text(
+                      'Avacardo Toast',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey),
                     ),
                     const SizedBox(height: 6),
                     Text(
@@ -143,7 +155,7 @@ Widget foodCard(double screenWidth, double screenHeight) {
                         Text(
                           '320 cal',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 15,
                             color: Colors.grey[600],
                           ),
                         ),
@@ -266,14 +278,16 @@ class GlassyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRect(
-      // ⛔ keeps blur inside bounds
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: AppBar(
-          backgroundColor: Colors.lightBlueAccent.applyOpacity(0.3),
-          elevation: 0,
-          title: const Text("Glassy AppBar"),
-          centerTitle: true,
+        child: PreferredSize(
+          preferredSize: const Size.fromHeight(100),
+          child: AppBar(
+            backgroundColor: Colors.lightBlueAccent.withOpacity(0.3),
+            elevation: 0,
+            title: const Text("Glassy AppBar"),
+            centerTitle: true,
+          ),
         ),
       ),
     );
