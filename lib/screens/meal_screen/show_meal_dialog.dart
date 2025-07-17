@@ -8,10 +8,10 @@ class MealRatingDialog extends StatefulWidget {
   const MealRatingDialog({super.key, required this.mealName});
 
   @override
-  __MealRatingDialogState createState() => __MealRatingDialogState();
+  MealRatingDialogState createState() => MealRatingDialogState();
 }
 
-class __MealRatingDialogState extends State<MealRatingDialog> {
+class MealRatingDialogState extends State<MealRatingDialog> {
   int _selectedRating = 0;
   final TextEditingController _commentController = TextEditingController();
 

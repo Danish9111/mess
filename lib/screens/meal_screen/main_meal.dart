@@ -31,9 +31,9 @@ class _MealScreenState extends State<MealScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 spacing: 20,
                 children: [
-                  foodCard(screenWidth, screenHeight, context),
-                  foodCard(screenWidth, screenHeight, context),
-                  foodCard(screenWidth, screenHeight, context),
+                  FoodCard(),
+                  FoodCard(),
+                  FoodCard(),
                   SizedBox(
                     height: screenHeight * .02,
                   )
