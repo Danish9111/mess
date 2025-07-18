@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mess/extentions.dart';
 import 'package:mess/screens/meal_screen/food_card.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 // ignore: must_be_immutable'
 class MealScreen extends StatefulWidget {
@@ -32,6 +33,16 @@ class _MealScreenState extends State<MealScreen> {
                 spacing: 20,
                 children: [
                   const FoodCard(
+                    foodTime: 'Breakfast',
+                    foodTitle: 'Avacardo Toast',
+                    foodDescription: 'Sourdough bread with mashed avocado',
+                    price: 120,
+                    calories: 320,
+                    image: 'assets/images/nashtapng.png',
+                    reviewCount: 128,
+                    ratings: 4.6,
+                  ),
+                  const FoodCard(
                     foodTime: 'Lunch',
                     foodTitle: 'Avacardo Toast',
                     foodDescription: 'Sourdough bread with mashed avocado',
@@ -41,8 +52,16 @@ class _MealScreenState extends State<MealScreen> {
                     reviewCount: 128,
                     ratings: 4.6,
                   ),
-                  // FoodCard(),
-                  // FoodCard(),
+                  const FoodCard(
+                    foodTime: 'Dinner',
+                    foodTitle: 'Avacardo Toast',
+                    foodDescription: 'Sourdough bread with mashed avocado',
+                    price: 120,
+                    calories: 320,
+                    image: 'assets/images/nashtapng.png',
+                    reviewCount: 128,
+                    ratings: 4.6,
+                  ),
                   SizedBox(
                     height: screenHeight * .02,
                   )
