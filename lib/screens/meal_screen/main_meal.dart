@@ -32,36 +32,53 @@ class _MealScreenState extends State<MealScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 spacing: 20,
                 children: [
-                  const FoodCard(
-                    foodTime: 'Breakfast',
-                    foodTitle: 'Avacardo Toast',
-                    foodDescription: 'Sourdough bread with mashed avocado',
-                    price: 120,
-                    calories: 320,
-                    image: 'assets/images/nashtapng.png',
-                    reviewCount: 128,
-                    ratings: 4.6,
-                  ),
-                  const FoodCard(
-                    foodTime: 'Lunch',
-                    foodTitle: 'Avacardo Toast',
-                    foodDescription: 'Sourdough bread with mashed avocado',
-                    price: 120,
-                    calories: 320,
-                    image: 'assets/images/nashtapng.png',
-                    reviewCount: 128,
-                    ratings: 4.6,
-                  ),
-                  const FoodCard(
-                    foodTime: 'Dinner',
-                    foodTitle: 'Avacardo Toast',
-                    foodDescription: 'Sourdough bread with mashed avocado',
-                    price: 120,
-                    calories: 320,
-                    image: 'assets/images/nashtapng.png',
-                    reviewCount: 128,
-                    ratings: 4.6,
-                  ),
+                  CarouselSlider(
+                      items: [
+                        const FoodCard(
+                          foodTime: 'Breakfast',
+                          foodTitle: 'Avacardo Toast',
+                          foodDescription:
+                              'Sourdough bread with mashed avocado',
+                          price: 120,
+                          calories: 320,
+                          image: 'assets/images/nashtapng.png',
+                          reviewCount: 128,
+                          ratings: 4.6,
+                        ),
+                        const FoodCard(
+                          foodTime: 'Lunch',
+                          foodTitle: 'Avacardo Toast',
+                          foodDescription:
+                              'Sourdough bread with mashed avocado',
+                          price: 120,
+                          calories: 320,
+                          image: 'assets/images/nashtapng.png',
+                          reviewCount: 128,
+                          ratings: 4.6,
+                        ),
+                        const FoodCard(
+                          foodTime: 'Dinner',
+                          foodTitle: 'Avacardo Toast',
+                          foodDescription:
+                              'Sourdough bread with mashed avocado',
+                          price: 120,
+                          calories: 320,
+                          image: 'assets/images/nashtapng.png',
+                          reviewCount: 128,
+                          ratings: 4.6,
+                        ),
+                      ],
+                      options: CarouselOptions(
+                          height: 300,
+                          autoPlay: false,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 800),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          pauseAutoPlayOnTouch: true,
+                          enlargeCenterPage: true,
+                          viewportFraction: .8,
+                          enableInfiniteScroll: false)),
                   SizedBox(
                     height: screenHeight * .02,
                   )
