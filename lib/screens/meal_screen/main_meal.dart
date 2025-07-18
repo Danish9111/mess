@@ -18,84 +18,101 @@ class _MealScreenState extends State<MealScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        appBar: AppBar(
-          toolbarHeight: screenHeight * .150,
+      backgroundColor: Colors.grey.shade200,
+      appBar: AppBar(
+          toolbarHeight: screenHeight * .15,
           backgroundColor: Colors.lightBlueAccent.applyOpacity(.9),
-          title: caloriCounter(screenWidth, screenHeight),
-        ),
-        body: SingleChildScrollView(
-            clipBehavior: Clip.none,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
+          title: caloriCounter(screenHeight, screenWidth)),
+      body: SingleChildScrollView(
+        clipBehavior: Clip.none,
+        child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                spacing: 20,
                 children: [
+                  // 🔹 Day Selector (Chips)
+
+                  // 🔹 Carousel
                   CarouselSlider(
-                      items: [
-                        const FoodCard(
-                          foodTime: 'Breakfast',
-                          foodTitle: 'Avacardo Toast',
-                          foodDescription:
-                              'Sourdough bread with mashed avocado',
-                          price: 120,
-                          calories: 320,
-                          image: 'assets/images/nashtapng.png',
-                          reviewCount: 128,
-                          ratings: 4.6,
+                    items: const [
+                      FoodCard(
+                        foodTime: 'Breakfast',
+                        foodTitle: 'Avacardo Toast',
+                        foodDescription: 'Sourdough bread with mashed avocado',
+                        price: 120,
+                        calories: 320,
+                        image: 'assets/images/nashtapng.png',
+                        reviewCount: 128,
+                        ratings: 4.6,
+                      ),
+                      FoodCard(
+                        foodTime: 'Lunch',
+                        foodTitle: 'Avacardo Toast',
+                        foodDescription: 'Sourdough bread with mashed avocado',
+                        price: 120,
+                        calories: 320,
+                        image: 'assets/images/nashtapng.png',
+                        reviewCount: 128,
+                        ratings: 4.6,
+                      ),
+                      FoodCard(
+                        foodTime: 'Dinner',
+                        foodTitle: 'Avacardo Toast',
+                        foodDescription: 'Sourdough bread with mashed avocado',
+                        price: 120,
+                        calories: 320,
+                        image: 'assets/images/nashtapng.png',
+                        reviewCount: 128,
+                        ratings: 4.6,
+                      ),
+                    ],
+                    options: CarouselOptions(
+                      height: 300,
+                      autoPlay: false,
+                      enlargeCenterPage: true,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  Wrap(
+                    children: [
+                      'Sunday',
+                      'Monday',
+                      'Tuesday',
+                      'Wednesday',
+                      'Thursday',
+                      'Friday',
+                      'Saturday'
+                    ].map((day) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: ChoiceChip(
+                          backgroundColor: Colors.white,
+                          side: const BorderSide(color: Colors.transparent),
+                          label: Text(day),
+                          selected: day == 'Today',
+                          selectedColor: Colors.lightBlueAccent,
+                          onSelected: (selected) {
+                            // handle logic here if needed
+                          },
                         ),
-                        const FoodCard(
-                          foodTime: 'Lunch',
-                          foodTitle: 'Avacardo Toast',
-                          foodDescription:
-                              'Sourdough bread with mashed avocado',
-                          price: 120,
-                          calories: 320,
-                          image: 'assets/images/nashtapng.png',
-                          reviewCount: 128,
-                          ratings: 4.6,
-                        ),
-                        const FoodCard(
-                          foodTime: 'Dinner',
-                          foodTitle: 'Avacardo Toast',
-                          foodDescription:
-                              'Sourdough bread with mashed avocado',
-                          price: 120,
-                          calories: 320,
-                          image: 'assets/images/nashtapng.png',
-                          reviewCount: 128,
-                          ratings: 4.6,
-                        ),
-                      ],
-                      options: CarouselOptions(
-                          height: 300,
-                          autoPlay: false,
-                          autoPlayInterval: const Duration(seconds: 3),
-                          autoPlayAnimationDuration:
-                              const Duration(milliseconds: 800),
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          pauseAutoPlayOnTouch: true,
-                          enlargeCenterPage: true,
-                          viewportFraction: .8,
-                          enableInfiniteScroll: false)),
-                  SizedBox(
-                    height: screenHeight * .02,
-                  )
-                ],
-              ),
-            )));
+                      );
+                    }).toList(),
+                  ),
+                ]),),
+      ),
+    );
   }
 }
 
 Widget caloriCounter(double screenHeight, double screenWidth) {
   return Container(
     alignment: Alignment.center,
-    margin: EdgeInsets.only(top: screenHeight * .05),
     child: Container(
-        height: screenHeight * .18,
-        width: screenWidth * .40,
+        height: screenHeight * .1,
+        width: double.infinity,
         decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(color: Colors.white, width: 1),
           borderRadius: BorderRadius.circular(20),
         ),
@@ -108,9 +125,9 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
               color: Colors.amberAccent,
             ),
             Text(
-              '  2000 Calories Today',
+              '  2000 calories Today',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.lightBlueAccent,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
