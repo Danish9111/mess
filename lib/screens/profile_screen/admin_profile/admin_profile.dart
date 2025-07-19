@@ -15,6 +15,10 @@ class AdminPanelScreen extends StatelessWidget {
               Tab(text: 'Meals'),
               Tab(text: 'Users'),
               Tab(text: 'Billing'),
+              Tab(text: 'Settings'),
+              Tab(
+                text: 'Logout',
+              )
             ],
           ),
         ),
