@@ -106,7 +106,8 @@ class ExpensesScreen extends ConsumerWidget {
             style: TextStyle(fontWeight: FontWeight.w600)),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.lightBlueAccent,
+        // backgroundColor: Colors.lightBlueAccent,
+
         actions: [
           IconButton(
             icon: const Icon(Iconsax.notification),
