@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class AdminProfileScreen extends StatelessWidget {
   const AdminProfileScreen({super.key});
@@ -6,440 +7,551 @@ class AdminProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MessHub Admin',
-      debugShowCheckedModeBanner: false,
+      title: 'MessPro Admin',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
-        scaffoldBackgroundColor: const Color(0xFFf9f9f9),
-        fontFamily: 'Poppins',
+        primarySwatch: Colors.lightBlue,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.lightBlue,
+          accentColor: Colors.lightBlueAccent,
+        ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
+          foregroundColor: Colors.black87,
           elevation: 1,
-          iconTheme: IconThemeData(color: Color(0xFF2c3e50)),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.lightBlueAccent,
         ),
       ),
-      home: const AdminDashboard(),
+      home: const MainDashboard(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class AdminDashboard extends StatefulWidget {
-  const AdminDashboard({super.key});
+class MainDashboard extends StatefulWidget {
+  const MainDashboard({super.key});
 
   @override
-  State<AdminDashboard> createState() => _AdminDashboardState();
+  _MainDashboardState createState() => _MainDashboardState();
 }
 
-class _AdminDashboardState extends State<AdminDashboard> {
-  final int _selectedIndex = 0;
-  String messName = "Delicious Mess";
-  String ownerName = "John Doe";
-  String email = "john@deliciousmess.com";
-  String phone = "+1 (555) 123-4567";
-
-  final List<Map<String, dynamic>> stats = [
-    {
-      "title": "Total Subscribers",
-      "value": "142",
-      "icon": Icons.people,
-      "color": Colors.green
-    },
-    {
-      "title": "Meals Served Today",
-      "value": "87",
-      "icon": Icons.restaurant,
-      "color": Colors.orange
-    },
-    {
-      "title": "Weekly Earnings",
-      "value": "₹15,680",
-      "icon": Icons.attach_money,
-      "color": Colors.green
-    },
-    {
-      "title": "Pending Orders",
-      "value": "12",
-      "icon": Icons.access_time,
-      "color": Colors.blue
-    },
-  ];
-
-  final List<Map<String, dynamic>> editableOptions = [
-    {"title": "Edit Profile", "icon": Icons.edit, "color": Colors.blue},
-    {"title": "Change Logo", "icon": Icons.image, "color": Colors.purple},
-    {
-      "title": "Update Location",
-      "icon": Icons.location_on,
-      "color": Colors.red
-    },
-    {"title": "Update Contact", "icon": Icons.phone, "color": Colors.teal},
-  ];
-
-  final List<Map<String, dynamic>> quickActions = [
-    {"title": "View Reports", "icon": Icons.bar_chart, "color": Colors.indigo},
-    {
-      "title": "Manage Meals",
-      "icon": Icons.restaurant_menu,
-      "color": Colors.orange
-    },
-    {"title": "User Messages", "icon": Icons.message, "color": Colors.blue},
-    {"title": "System Settings", "icon": Icons.settings, "color": Colors.grey},
-  ];
-
-  final List<Map<String, dynamic>> securityOptions = [
-    {"title": "Change Password", "icon": Icons.lock, "color": Colors.blue},
-    {"title": "Logout", "icon": Icons.logout, "color": Colors.blue},
-    {"title": "Delete Account", "icon": Icons.delete, "color": Colors.red},
+class _MainDashboardState extends State<MainDashboard> {
+  int _currentIndex = 0;
+  final List<Widget> _screens = [
+    const MealManagementScreen(),
+    const UserManagementScreen(),
+    const AttendanceScreen(),
+    const FeedbackScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Admin Dashboard',
-          style:
-              TextStyle(color: Color(0xFF2c3e50), fontWeight: FontWeight.w600),
-        ),
+        title: const Text('MessPro Admin'),
         actions: [
+          IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
           IconButton(
-            icon: const Icon(Icons.notifications, color: Color(0xFF2c3e50)),
-            onPressed: () {},
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.orange[300],
-              child: const Text('JD', style: TextStyle(color: Colors.white)),
-            ),
-          ),
+              icon: const CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/nashtapng.png')),
+              onPressed: () {}),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+      body: _screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.lightBlueAccent,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.restaurant_menu), label: 'Meals'),
+          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.checklist), label: 'Attendance'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.feedback), label: 'Feedback'),
+        ],
+        onTap: (index) => setState(() => _currentIndex = index),
+      ),
+    );
+  }
+}
+
+// Meal Management Module
+class MealManagementScreen extends StatefulWidget {
+  const MealManagementScreen({super.key});
+
+  @override
+  MealManagementScreenState createState() => MealManagementScreenState();
+}
+
+class MealManagementScreenState extends State<MealManagementScreen> {
+  final List<Map<String, dynamic>> _meals = [
+    {
+      'id': '1',
+      'name': 'Vegetable Pasta',
+      'type': 'Lunch',
+      'calories': 420,
+      'active': true
+    },
+    {
+      'id': '2',
+      'name': 'Chicken Sandwich',
+      'type': 'Breakfast',
+      'calories': 320,
+      'active': false
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Meal Management',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.add),
+                label: const Text('Add Meal'),
+                onPressed: () => _showMealForm(),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightBlueAccent),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _meals.length,
+            itemBuilder: (context, index) => _buildMealCard(_meals[index]),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMealCard(Map<String, dynamic> meal) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(16),
+        leading:
+            const CircleAvatar(backgroundImage: AssetImage('assets/meal.jpg')),
+        title: Text(meal['name']),
+        subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Basic Info Card
-            _buildBasicInfoCard(),
-            const SizedBox(height: 20),
-
-            // Stats Overview
-            const Text(
-              "Mess Stats Overview",
+            Text('${meal['type']} • ${meal['calories']} kcal'),
+            const SizedBox(height: 4),
+            Wrap(
+              spacing: 8,
+              children: [
+                Chip(
+                    label: Text(meal['active'] ? 'Active' : 'Inactive',
+                        style: TextStyle(
+                            color:
+                                meal['active'] ? Colors.green : Colors.red))),
+                const Chip(
+                    label: Text('Veg', style: TextStyle(color: Colors.green))),
+              ],
             ),
-            const SizedBox(height: 10),
-            _buildStatsGrid(),
-            const SizedBox(height: 20),
-
-            // Editable Sections
-            const Text(
-              "Editable Sections",
-            ),
-            const SizedBox(height: 10),
-            _buildEditableGrid(),
-            const SizedBox(height: 20),
-
-            // Quick Actions
-            const Text(
-              "Quick Actions",
-            ),
-            const SizedBox(height: 10),
-            _buildQuickActionsGrid(),
-            const SizedBox(height: 20),
-
-            // Security Options
-            const Text(
-              "Security Options",
-            ),
-            const SizedBox(height: 10),
-            _buildSecurityOptions(),
-            const SizedBox(height: 20),
+          ],
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+                icon: const Icon(Icons.edit, color: Colors.lightBlue),
+                onPressed: () {}),
+            IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () {}),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBasicInfoCard() {
+  void _showMealForm() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => const MealForm(),
+    );
+  }
+}
+
+class MealForm extends StatefulWidget {
+  const MealForm({super.key});
+
+  @override
+  MealFormState createState() => MealFormState();
+}
+
+class MealFormState extends State<MealForm> {
+  // Form state management here
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('Add New Meal',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 16),
+          TextFormField(
+              decoration: const InputDecoration(labelText: 'Meal Name')),
+          TextFormField(
+              decoration: const InputDecoration(labelText: 'Description')),
+          TextFormField(
+              decoration: const InputDecoration(labelText: 'Ingredients')),
+          Row(
+            children: [
+              Expanded(
+                  child: TextFormField(
+                      decoration:
+                          const InputDecoration(labelText: 'Calories'))),
+              const SizedBox(width: 16),
+              Expanded(
+                child: DropdownButtonFormField(
+                  items: const [
+                    DropdownMenuItem(
+                        value: 'Breakfast', child: Text('Breakfast')),
+                    DropdownMenuItem(value: 'Lunch', child: Text('Lunch')),
+                    DropdownMenuItem(value: 'Dinner', child: Text('Dinner')),
+                  ],
+                  decoration: const InputDecoration(labelText: 'Meal Type'),
+                  onChanged: (value) {},
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.lightBlueAccent,
+              minimumSize: const Size(double.infinity, 50),
+            ),
+            child: const Text('Save Meal'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// User Management Module
+class UserManagementScreen extends StatelessWidget {
+  const UserManagementScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('User Management',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search users...',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: 10,
+            itemBuilder: (context, index) => const UserListItem(),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class UserListItem extends StatelessWidget {
+  const UserListItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: ListTile(
+        leading: const CircleAvatar(child: Icon(Icons.person)),
+        title: const Text('Rahul Sharma'),
+        subtitle: const Text('Room 205 • Roll No: 2023001'),
+        trailing: Switch(
+          value: true,
+          activeColor: Colors.lightBlueAccent,
+          onChanged: (value) {},
+        ),
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const UserDetailScreen())),
+      ),
+    );
+  }
+}
+
+class UserDetailScreen extends StatelessWidget {
+  const UserDetailScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('User Details')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Center(
+                child: CircleAvatar(
+                    radius: 50, child: Icon(Icons.person, size: 50))),
+            const SizedBox(height: 20),
+            const Text('Rahul Sharma',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            const Text('Room 205 • Roll No: 2023001'),
+            const Divider(height: 30),
+            const Text('Dietary Preference: Vegetarian',
+                style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 10),
+            const Text('Meals Skipped: 3 this week',
+                style: TextStyle(color: Colors.red)),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightBlueAccent),
+                  child: const Text('View History'),
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: const Text('Block User'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Attendance Module
+class AttendanceScreen extends StatelessWidget {
+  const AttendanceScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Today\'s Attendance',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightBlueAccent),
+                child: const Text('Mark Attendance'),
+              ),
+            ],
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              Expanded(
+                  child: _AttendanceStatCard(
+                      title: 'Total', value: '320', color: Colors.blue)),
+              SizedBox(width: 10),
+              Expanded(
+                  child: _AttendanceStatCard(
+                      title: 'Present', value: '285', color: Colors.green)),
+              SizedBox(width: 10),
+              Expanded(
+                  child: _AttendanceStatCard(
+                      title: 'Absent', value: '35', color: Colors.red)),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        const Expanded(
+          child: DefaultTabController(
+            length: 3,
+            child: Column(
+              children: [
+                TabBar(
+                  tabs: [
+                    Tab(text: 'Breakfast'),
+                    Tab(text: 'Lunch'),
+                    Tab(text: 'Dinner'),
+                  ],
+                  indicatorColor: Colors.lightBlueAccent,
+                  labelColor: Colors.lightBlueAccent,
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      Center(child: Text('Breakfast Attendance Data')),
+                      Center(child: Text('Lunch Attendance Data')),
+                      Center(child: Text('Dinner Attendance Data')),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AttendanceStatCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final Color color;
+
+  const _AttendanceStatCard(
+      {required this.title, required this.value, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: color.withOpacity(0.1),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            Text(title,
+                style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 5),
+            Text(value,
+                style: TextStyle(
+                    fontSize: 24, fontWeight: FontWeight.bold, color: color)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Feedback Module
+class FeedbackScreen extends StatelessWidget {
+  const FeedbackScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Meal Feedback',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.lightBlueAccent),
+                child: const Text('Generate Report'),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: 5,
+            itemBuilder: (context, index) => const FeedbackCard(),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class FeedbackCard extends StatelessWidget {
+  const FeedbackCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(16),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Basic Information",
-                    style: Theme.of(context).textTheme.titleLarge),
-                const Icon(Icons.info, color: Colors.orange, size: 28),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Stack(
-                  children: [
-                    const CircleAvatar(
-                      radius: 40,
-                      backgroundImage: NetworkImage(
-                          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&h=500&q=80"),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Icon(Icons.edit,
-                            size: 18, color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(messName,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      Text("Owner: $ownerName"),
-                      Text("Email: $email"),
-                      Text("Phone: $phone"),
-                    ],
-                  ),
+                const CircleAvatar(radius: 20, child: Icon(Icons.person)),
+                const SizedBox(width: 10),
+                const Text('Rahul Sharma',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const Spacer(),
+                Row(
+                  children: List.generate(
+                      5,
+                      (i) => Icon(
+                            Icons.star,
+                            color: i < 4 ? Colors.amber : Colors.grey,
+                            size: 20,
+                          )),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            const Text("Add new members by sending them an invitation:"),
+            const SizedBox(height: 10),
+            const Text('Vegetable Pasta - Lunch',
+                style: TextStyle(color: Colors.blueGrey)),
+            const SizedBox(height: 10),
+            const Text(
+                'The pasta was excellent today! Perfectly cooked with fresh vegetables. Would love to have this more often.'),
             const SizedBox(height: 10),
             Row(
               children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Enter email address",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                    ),
-                  ),
+                TextButton.icon(
+                  icon: const Icon(Icons.reply, color: Colors.lightBlueAccent),
+                  label: const Text('Reply',
+                      style: TextStyle(color: Colors.lightBlueAccent)),
+                  onPressed: () {},
                 ),
-                const SizedBox(width: 10),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.send, color: Colors.white),
-                    onPressed: () {},
-                  ),
+                const Spacer(),
+                TextButton(
+                  child:
+                      const Text('Flag', style: TextStyle(color: Colors.red)),
+                  onPressed: () {},
                 ),
               ],
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildStatsGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.5,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: stats.length,
-      itemBuilder: (context, index) {
-        final stat = stats[index];
-
-        return Card(
-          elevation: 5,
-          color: Colors.white,
-          shadowColor: Colors.grey.shade100,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: Padding(
-            padding: const EdgeInsets.all(.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(stat["icon"], size: 32, color: stat["color"]),
-                const SizedBox(height: 10),
-                Text(stat["value"],
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold)),
-                Text(stat["title"],
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildEditableGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.5,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: editableOptions.length,
-      itemBuilder: (context, index) {
-        final option = editableOptions[index];
-        return Card(
-          elevation: 2,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          color: Colors.blue[50],
-          child: InkWell(
-            borderRadius: BorderRadius.circular(16),
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(option["icon"], size: 32, color: option["color"]),
-                  const SizedBox(height: 10),
-                  Text(option["title"],
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildQuickActionsGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1.5,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: quickActions.length,
-      itemBuilder: (context, index) {
-        final action = quickActions[index];
-        return Card(
-          elevation: 2,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          color: Colors.green[50],
-          child: InkWell(
-            borderRadius: BorderRadius.circular(16),
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(action["icon"], size: 32, color: action["color"]),
-                  const SizedBox(height: 10),
-                  Text(action["title"],
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildSecurityOptions() {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Column(
-        children: securityOptions.map((option) {
-          return ListTile(
-            leading: Icon(option["icon"], color: option["color"]),
-            title: Text(option["title"]),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              if (option["title"] == "Delete Account") {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text("Delete Account"),
-                    content: const Text(
-                        "Are you sure you want to delete your account? This action cannot be undone."),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text("Cancel"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              backgroundColor: Colors.white,
-                              title: const Text("Confirm Deletion"),
-                              content: const Text(
-                                  "This will permanently delete all your data. Please confirm again."),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text("Cancel"),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              "Account deletion process initiated")),
-                                    );
-                                  },
-                                  child: const Text("Delete",
-                                      style: TextStyle(color: Colors.red)),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        child: const Text("Delete",
-                            style: TextStyle(color: Colors.red)),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            },
-          );
-        }).toList(),
       ),
     );
   }
