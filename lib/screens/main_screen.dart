@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mess/screens/profile_screen/admin_profile/admin_profile.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'dashboard_screen/dashboard_ui/dashboard_screen.dart';
 import 'expense_screen.dart';
@@ -12,7 +13,7 @@ class MainScreen extends StatelessWidget {
     const DashboardScreen(),
     const MealScreens.MealScreen(),
     const ExpensesScreen(),
-    const ProfileScreen()
+    const AdminProfileScreen(),
   ];
   final List<PersistentBottomNavBarItem> _items = [
     PersistentBottomNavBarItem(

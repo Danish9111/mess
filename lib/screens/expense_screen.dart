@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:iconsax/iconsax.dart';
-
 import 'package:mess/extentions.dart';
 
 void main() {
@@ -102,18 +101,23 @@ class ExpensesScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
-        title: const Text('Monthly Expenses',
-            style: TextStyle(fontWeight: FontWeight.w600)),
+        toolbarHeight: 80,
+        title: const Text('Monthly Expenses'),
         centerTitle: true,
-        elevation: 0,
-        // backgroundColor: Colors.lightBlueAccent,
-
-        actions: [
-          IconButton(
-            icon: const Icon(Iconsax.notification),
-            onPressed: () {},
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                // Colors.white,
+                Colors.lightBlueAccent.applyOpacity(.5),
+                Colors.lightBlueAccent,
+                // Colors.blueAccent,
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
           ),
-        ],
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: () => ref.refresh(expenseSummaryProvider.future),
