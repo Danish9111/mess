@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
 
@@ -95,11 +94,15 @@ class _TimePicker24HourState extends State<TimePicker24Hour> {
                       ),
                       dialogBackgroundColor: Colors.white,
                       timePickerTheme: const TimePickerThemeData(
-                        dayPeriodColor:
-                            Colors.lightBlueAccent, // <- AM/PM background
-                        dayPeriodTextColor: Colors.white, // <- AM/PM text
+                        dayPeriodColor: Colors.lightBlueAccent,
+                        dayPeriodTextColor: Colors.black,
                         hourMinuteColor: Colors.white,
                         hourMinuteTextColor: Colors.black,
+                        dialHandColor: Colors.lightBlueAccent,
+                        dayPeriodBorderSide: BorderSide(
+                          color: Colors.lightBlueAccent,
+                          width: 2,
+                        ),
                       ),
                     ),
                     child: child!,
