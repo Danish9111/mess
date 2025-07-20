@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
-    as picker;
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
