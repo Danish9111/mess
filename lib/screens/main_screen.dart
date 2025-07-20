@@ -12,7 +12,7 @@ class MainScreen extends StatelessWidget {
     const DashboardScreen(),
     const MealScreens.MealScreen(),
     const ExpensesScreen(),
-    const AdminPanelScreen(),
+    const AdminProfileScreen(),
   ];
   final List<PersistentBottomNavBarItem> _items = [
     PersistentBottomNavBarItem(

@@ -1,71 +1,29 @@
 import 'package:flutter/material.dart';
 
-class AdminPanelScreen extends StatelessWidget {
-  const AdminPanelScreen({super.key});
+class AdminProfileScreen extends StatefulWidget {
+  const AdminProfileScreen({super.key});
 
+  @override
+  State<AdminProfileScreen> createState() => _AdminProfileScreenState();
+}
+
+class _AdminProfileScreenState extends State<AdminProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3, // 3 tabs
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Mess Admin Panel'),
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Meals'),
-              Tab(text: 'Users'),
-              Tab(text: 'Billing'),
-              Tab(text: 'Settings'),
-              Tab(
-                text: 'Logout',
-              )
-            ],
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Admin Profile'),
+            centerTitle: true,
+            bottom: const TabBar(
+                indicatorColor: Colors.lightBlueAccent,
+                indicatorWeight: 3,
+                labelColor: Colors.lightBlueAccent,
+                unselectedLabelColor: Colors.grey,
+                labelStyle: TextStyle(fontSize: 15),
+                tabs: [Text('meal'), Text('expense'), Text('profile')]),
           ),
-        ),
-        body: const TabBarView(
-          children: [
-            MealsTab(),
-            UsersTab(),
-            BillingTab(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Meals Tab
-class MealsTab extends StatelessWidget {
-  const MealsTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Manage Daily Meals Here'),
-    );
-  }
-}
-
-// Users Tab
-class UsersTab extends StatelessWidget {
-  const UsersTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('View & Manage Users'),
-    );
-  }
-}
-
-// Billing Tab
-class BillingTab extends StatelessWidget {
-  const BillingTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Billing & Payments Info'),
-    );
+        ));
   }
 }
