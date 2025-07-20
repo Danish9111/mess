@@ -109,8 +109,6 @@ class _TimePicker24HourState extends State<TimePicker24Hour> {
                   ),
                 );
               },
-              hourLabelText: 'Hours',
-              minuteLabelText: 'Minutes',
             );
 
             if (time != null) {
