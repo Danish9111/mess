@@ -34,7 +34,7 @@ Future<void> signInWithGoogle({
 
 Future<void> signIn(email, password, context) async {
   try {
-    FirebaseAuth.instance.signInWithEmailAndPassword(
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
