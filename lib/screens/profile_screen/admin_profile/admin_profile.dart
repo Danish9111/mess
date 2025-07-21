@@ -146,45 +146,63 @@ class _ExpandableContainerListState extends State<ExpandableContainerList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 2, // number of cousin containers
-      itemBuilder: (context, index) {
-        bool isExpanded = expandedIndex == index;
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              expandedIndex = isExpanded ? -1 : index;
-            });
-          },
-          child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.all(12),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              height: isExpanded ? 200 : 80, // toggle height
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    index == 0 ? const Text("Saturday") : const Text('Sunday'),
-                    if (isExpanded) ...[
-                      const SizedBox(height: 16),
-                      const Text("More field 1",
-                          style: TextStyle(color: Colors.white70)),
-                      const Text("More field 2",
-                          style: TextStyle(color: Colors.white70)),
-                      // Add more widgets here
-                    ],
-                  ],
+    return SingleChildScrollView(
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 7, // number of cousin containers
+        itemBuilder: (context, index) {
+          bool isExpanded = expandedIndex == index;
+          final days = [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday'
+          ];
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                expandedIndex = isExpanded ? -1 : index;
+              });
+            },
+            child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                margin: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              )),
-        );
-      },
+                height: isExpanded ? 200 : 80, // toggle height
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          days[index],
+                          style: const TextStyle(
+                              color: Colors.white70, fontSize: 18),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      if (isExpanded) ...[
+                        const SizedBox(height: 16),
+                        const Text("More field 1",
+                            style: TextStyle(color: Colors.white70)),
+                        const Text("More field 2",
+                            style: TextStyle(color: Colors.white70)),
+                        // Add more widgets here
+                      ],
+                    ],
+                  ),
+                )),
+          );
+        },
+      ),
     );
   }
 }
