@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_ui/attendance_details/attendance_details.dart';
+import 'package:mess/screens/dashboard_screen/dashboard_ui/attendance_utils/count_attendance.dart';
 
+//'
 class HorizontalAttendanceBar extends StatelessWidget {
   final Map<String, bool> attendanceMap;
 
@@ -20,7 +22,7 @@ class HorizontalAttendanceBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         elevation: 0,
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: InkWell(
           onTap: () => Navigator.push(
             context,
@@ -95,14 +97,23 @@ class HorizontalAttendanceBar extends StatelessWidget {
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          "82%",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            color: _getStatusColor(0.82),
-                          ),
-                        ),
+                        FutureBuilder(
+                            future: countAttendancePercentage(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              if (snapshot.hasData) {
+                                final perAtten =
+                                    snapshot.data!.toStringAsFixed(1);
+                                return Text("$perAtten%");
+                              } else {
+                                return const Icon(Icons.error);
+                              }
+                            }),
                         Text(
                           "Present",
                           style: TextStyle(
