@@ -74,6 +74,8 @@ class _WeeklyMealManagerState extends State<MealTab>
         backgroundColor: Colors.grey.shade100,
         title: null,
         bottom: TabBar(
+          indicatorColor: Colors.lightBlueAccent,
+          labelColor: Colors.lightBlueAccent,
           controller: _tabController,
           isScrollable: true,
           tabs: days.map((day) => Tab(text: _capitalize(day))).toList(),
@@ -91,11 +93,15 @@ class _WeeklyMealManagerState extends State<MealTab>
   Widget _buildDayView(String day) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: mealTypes.map((mealType) {
+      child: Column(children: [
+        ...mealTypes.map((mealType) {
           return _buildMealSection(day, mealType);
-        }).toList(),
-      ),
+        }),
+        ElevatedButton(
+          child: const Text('Save all'),
+          onPressed: () {},
+        )
+      ]),
     );
   }
 
@@ -117,10 +123,10 @@ class _WeeklyMealManagerState extends State<MealTab>
           children: [
             Text(
               _capitalize(mealType),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600, // Semi-bold
-                color: Colors.grey[800], // Darker text
+                color: Colors.lightBlueAccent, // Darker text
               ),
             ),
             const SizedBox(height: 12),
