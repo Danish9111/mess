@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mess/screens/profile_screen/admin_profile/save_meal_to_firestore.dart';
+import 'package:mess/screens/profile_screen/admin_profile/format_time.dart';
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
@@ -102,33 +104,6 @@ class _MealTimeSetterScreenState extends State<MealTimeSetterScreen> {
     }
   }
 
-  Future<void> saveMealTimesToFirestore() async {
-    final firestore = FirebaseFirestore.instance;
-    for (var meal in mealTimings.entries) {
-      await firestore.collection('meals').doc(meal.key.toLowerCase()).set({
-        'startTime': formatTime(meal.value['start']!),
-        'endTime': formatTime(meal.value['end']!),
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-    }
-
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Meal times saved successfully!'),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
-  }
-
-  String formatTime(TimeOfDay time) {
-    final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
-    final minute = time.minute.toString().padLeft(2, '0');
-    final period = time.period == DayPeriod.am ? 'AM' : 'PM';
-    return '$hour:$minute $period';
-  }
-
   @override
   Widget build(BuildContext context) {
     final isSmallScreen = MediaQuery.of(context).size.width < 600;
@@ -157,7 +132,9 @@ class _MealTimeSetterScreenState extends State<MealTimeSetterScreen> {
           SizedBox(
             width: double.infinity,
             child: FilledButton.icon(
-              onPressed: saveMealTimesToFirestore,
+              onPressed: () {
+                saveMealTimesToFirestore(context);
+              },
               icon: const Icon(Icons.save_rounded),
               label: const Text('SAVE ALL MEAL TIMES'),
               style: FilledButton.styleFrom(
