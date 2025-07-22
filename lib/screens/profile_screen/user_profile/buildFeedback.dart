@@ -4,11 +4,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 Widget buildFeedback(String value, String label) {
   return Column(
     children: [
-      Text(value,
-          style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.lightBlueAccent[700])),
+      Text(
+        value,
+        style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Colors.lightBlueAccent[700]),
+      ),
       const SizedBox(height: 4),
       Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
     ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mess/screens/profile_screen/admin_profile/meal_tab/meal_tab.dart';
 import 'package:mess/screens/profile_screen/admin_profile/timing_tab/timing_tab.dart';
 
 class AdminProfileScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
           ),
         ),
         body: const TabBarView(children: [
-          Center(child: Text('meal')),
+          MealTab(),
           MealTimeSetterScreen(),
           Center(child: Text('expense'))
         ]),
