@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import "package:mess/screens/profile_screen/admin_profile/format_time.dart";
+import "package:mess/screens/profile_screen/admin_profile/timing_tab/format_time.dart";
 
 Future<void> saveMealTimesToFirestore(BuildContext context) async {
   final firestore = FirebaseFirestore.instance;
