@@ -69,8 +69,10 @@ class _WeeklyMealManagerState extends State<MealTab>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('Weekly Meal Manager'),
+        backgroundColor: Colors.grey.shade100,
+        title: null,
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
@@ -102,8 +104,12 @@ class _WeeklyMealManagerState extends State<MealTab>
     final TextEditingController controller = TextEditingController();
 
     return Card(
-      col
+      elevation: 1, // Subtle elevation for depth
+      color: Colors.white,
       margin: const EdgeInsets.only(bottom: 16.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12), // Rounded corners
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -111,42 +117,75 @@ class _WeeklyMealManagerState extends State<MealTab>
           children: [
             Text(
               _capitalize(mealType),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600, // Semi-bold
+                color: Colors.grey[800], // Darker text
               ),
             ),
-            const SizedBox(height: 8),
-            ...items.asMap().entries.map((entry) {
-              final index = entry.key;
-              final item = entry.value;
-              return ListTile(
-                title: Text(item),
-                trailing: IconButton(
-                  icon: const Icon(Icons.close, size: 20),
-                  onPressed: () => _removeMealItem(day, mealType, index),
-                ),
-              );
-            }),
+            const SizedBox(height: 12),
+
+            // Meal Items as Chips
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: items.asMap().entries.map((entry) {
+                final index = entry.key;
+                final item = entry.value;
+                return Chip(
+                  label: Text(item),
+                  backgroundColor: Colors.lightBlueAccent,
+                  labelStyle: const TextStyle(color: Colors.white),
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 0, color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  deleteIcon: const Icon(
+                    Icons.close,
+                    size: 16,
+                    color: Colors.white,
+                  ),
+                  onDeleted: () => _removeMealItem(day, mealType, index),
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                );
+              }).toList(),
+            ),
+
+            const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Add new meal item',
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                    decoration: InputDecoration(
+                      hintText: 'Add meal item...',
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[100],
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    if (controller.text.trim().isNotEmpty) {
-                      _addMealItem(day, mealType, controller.text.trim());
-                      controller.clear();
-                    }
-                  },
+                const SizedBox(width: 8),
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.lightBlueAccent, // Modern accent color
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.add, color: Colors.white),
+                    onPressed: () {
+                      if (controller.text.trim().isNotEmpty) {
+                        _addMealItem(day, mealType, controller.text.trim());
+                        controller.clear();
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
