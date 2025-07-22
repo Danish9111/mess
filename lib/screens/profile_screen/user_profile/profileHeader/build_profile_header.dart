@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mess/providers/total_meals_provider.dart';
 import 'package:mess/providers/google_user_provider.dart';
-import 'package:mess/screens/profile_screen/profileHeader/profileHeader_utils.dart';
+import 'package:mess/screens/profile_screen/user_profile/profileHeader/profileHeader_utils.dart';
 
 Widget buildProfileHeader(BuildContext context, WidgetRef ref) {
   final googleUser = ref.watch(userProvider);
