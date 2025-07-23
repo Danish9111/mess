@@ -21,10 +21,28 @@ class _MealScreenState extends State<MealScreen> {
 
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-          toolbarHeight: screenHeight * .15,
-          backgroundColor: Colors.lightBlueAccent.applyOpacity(.9),
-          title: caloriCounter(screenHeight, screenWidth)),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.lightBlueAccent.applyOpacity(.5),
+                Colors.lightBlueAccent,
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: const Text('Meals Details',
+                style: TextStyle(color: Colors.white)),
+            centerTitle: true,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         clipBehavior: Clip.none,
         child: Padding(
