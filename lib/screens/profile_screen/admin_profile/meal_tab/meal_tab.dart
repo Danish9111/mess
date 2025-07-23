@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mess/providers/weekly_meal_provider.dart';
-import 'dart:developer';
 
 class MealTab extends ConsumerStatefulWidget {
   const MealTab({super.key});
@@ -84,77 +83,80 @@ class _WeeklyMealManagerState extends ConsumerState<MealTab>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        backgroundColor: Colors.grey.shade100,
-        title: null,
-        bottom: TabBar(
-          indicatorColor: Colors.lightBlueAccent,
-          labelColor: Colors.lightBlueAccent,
-          controller: _tabController,
-          isScrollable: true,
-          tabs: days.map((day) => Tab(text: _capitalize(day))).toList(),
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: days.map((day) {
-          return _buildDayView(day);
-        }).toList(),
-      ),
-    );
+    return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          backgroundColor: Colors.grey.shade100,
+          appBar: AppBar(
+            backgroundColor: Colors.grey.shade100,
+            title: null,
+            bottom: TabBar(
+              indicatorColor: Colors.lightBlueAccent,
+              labelColor: Colors.lightBlueAccent,
+              controller: _tabController,
+              isScrollable: true,
+              tabs: days.map((day) => Tab(text: _capitalize(day))).toList(),
+            ),
+          ),
+          body: TabBarView(
+            controller: _tabController,
+            children: days.map((day) {
+              return _buildDayView(day);
+            }).toList(),
+          ),
+        ));
   }
 
   Widget _buildDayView(String day) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(children: [
-        ...mealTypes.map((mealType) {
-          return _buildMealSection(day, mealType);
-        }),
-        SizedBox(
-          width: screenWidth * .7,
-          height: screenHeight * .06,
-          child: OutlinedButton(
-            style: OutlinedButton.styleFrom(
-                surfaceTintColor: Colors.lightBlueAccent,
-                side: const BorderSide(color: Colors.lightBlueAccent)
-                // backgroundColor: Colors.lightBlueAccent,
-                ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.save,
-                  color: Colors.lightBlueAccent,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Save all',
-                  style: TextStyle(color: Colors.lightBlue),
-                ),
-              ],
+        padding: const EdgeInsets.all(16.0),
+        child: Column(children: [
+          ...mealTypes.map((mealType) {
+            return _buildMealSection(day, mealType);
+          }),
+          SizedBox(
+            width: screenWidth * .7,
+            height: screenHeight * .06,
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                  surfaceTintColor: Colors.lightBlueAccent,
+                  side: const BorderSide(color: Colors.lightBlueAccent)
+                  // backgroundColor: Colors.lightBlueAccent,
+                  ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.save,
+                    color: Colors.lightBlueAccent,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Save all',
+                    style: TextStyle(color: Colors.lightBlue),
+                  ),
+                ],
+              ),
+              onPressed: () async {
+                try {
+                  await saveMealsToFirebase();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('successfully saved data')));
+                } catch (e) {
+                  debugPrint(e.toString());
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("error saving data:$e")));
+                }
+              },
             ),
-            onPressed: () async {
-              try {
-                await saveMealsToFirebase();
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('successfully saved data')));
-              } catch (e) {
-                debugPrint(e.toString());
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("error saving data:$e")));
-              }
-            },
-          ),
-        )
-      ]),
-    );
+          )
+        ]));
   }
 
   Widget _buildMealSection(String day, String mealType) {
