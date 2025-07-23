@@ -36,6 +36,38 @@ class _WeeklyMealManagerState extends ConsumerState<MealTab>
     super.dispose();
   }
 
+  void _copyFromPreviousDay(String day) {
+    final currentIndex = days.indexOf(day);
+    if (currentIndex <= 0) return; // No previous day for Monday
+
+    final previousDay = days[currentIndex - 1];
+    final notifier = ref.read(weeklyMealProvider.notifier);
+    final currentState = notifier.state;
+
+    final previousDayMeals = currentState[previousDay];
+    if (previousDayMeals == null) return; // No meals to copy
+
+    // Create a deep copy of the state to modify
+    final newState =
+        Map<String, Map<String, List<String>>>.from(currentState).map(
+      (dayKey, mealMap) => MapEntry(
+        dayKey,
+        Map<String, List<String>>.from(mealMap).map(
+          (mealTypeKey, mealList) =>
+              MapEntry(mealTypeKey, List<String>.from(mealList)),
+        ),
+      ),
+    );
+
+    // Create a deep copy of the previous day's meals and assign it to the current day
+    newState[day] = Map<String, List<String>>.from(previousDayMeals).map(
+        (mealType, mealList) =>
+            MapEntry(mealType, List<String>.from(mealList)));
+
+    // Update the provider's state, which will rebuild the UI
+    notifier.state = newState;
+  }
+
   void _addMealItem(String day, String mealType, String mealItem) {
     final notifier = ref.read(weeklyMealProvider.notifier);
     // Create a deep copy of the current state to ensure immutability
@@ -112,9 +144,35 @@ class _WeeklyMealManagerState extends ConsumerState<MealTab>
   Widget _buildDayView(String day) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final isFirstDay = days.indexOf(day) == 0;
+
     return SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(children: [
+          if (!isFirstDay)
+            Container(
+              margin: const EdgeInsets.only(bottom: 8.0),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: OutlinedButton(
+                  onPressed: () => _copyFromPreviousDay(day),
+                  style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.grey.shade600),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.copy),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        'Same as previous day',
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ...mealTypes.map((mealType) {
             return _buildMealSection(day, mealType);
           }),
@@ -193,6 +251,7 @@ class _WeeklyMealManagerState extends ConsumerState<MealTab>
               children: items.asMap().entries.map((entry) {
                 final index = entry.key;
                 final item = entry.value;
+
                 return Chip(
                   label: Text(item),
                   backgroundColor: Colors.lightBlueAccent,
