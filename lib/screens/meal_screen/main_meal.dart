@@ -47,80 +47,84 @@ class _MealScreenState extends State<MealScreen> {
         clipBehavior: Clip.none,
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-            // 🔹 Day Selector (Chips)
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // 🔹 Day Selector (Chips)
 
-            // 🔹 Carousel
-            CarouselSlider(
-              items: const [
-                FoodCard(
-                  foodTime: 'Breakfast',
-                  foodTitle: 'Avacardo Toast',
-                  foodDescription: 'Sourdough bread with mashed avocado',
-                  price: 120,
-                  calories: 320,
-                  image: 'assets/images/nashtapng.png',
-                  reviewCount: 128,
-                  ratings: 4.6,
-                ),
-                FoodCard(
-                  foodTime: 'Lunch',
-                  foodTitle: 'Avacardo Toast',
-                  foodDescription: 'Sourdough bread with mashed avocado',
-                  price: 120,
-                  calories: 320,
-                  image: 'assets/images/nashtapng.png',
-                  reviewCount: 128,
-                  ratings: 4.6,
-                ),
-                FoodCard(
-                  foodTime: 'Dinner',
-                  foodTitle: 'Avacardo Toast',
-                  foodDescription: 'Sourdough bread with mashed avocado',
-                  price: 120,
-                  calories: 320,
-                  image: 'assets/images/nashtapng.png',
-                  reviewCount: 128,
-                  ratings: 4.6,
-                ),
-              ],
-              options: CarouselOptions(
-                height: 300,
-                autoPlay: false,
-                enlargeCenterPage: true,
-              ),
-            ),
-
-            const SizedBox(height: 20),
-            Wrap(
-              children: [
-                'Sunday',
-                'Monday',
-                'Tuesday',
-                'Wednesday',
-                'Thursday',
-                'Friday',
-                'Saturday'
-              ].map((day) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ChoiceChip(
-                    backgroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.transparent),
-                    label: Text(day),
-                    selected: selectedDay == day,
-                    selectedColor: Colors.lightBlueAccent.applyOpacity(.9),
-                    onSelected: (_) {
-                      setState(() {
-                        selectedDay = day;
-                      });
-                    },
+              // 🔹 Carousel
+              CarouselSlider(
+                items: const [
+                  FoodCard(
+                    foodTime: 'Breakfast',
+                    foodTitle: 'Avacardo Toast',
+                    foodDescription: 'Sourdough bread with mashed avocado',
+                    price: 120,
+                    calories: 320,
+                    image: 'assets/images/nashtapng.png',
+                    reviewCount: 128,
+                    ratings: 4.6,
                   ),
-                );
-              }).toList(),
-            ),
-          ]),
+                  FoodCard(
+                    foodTime: 'Lunch',
+                    foodTitle: 'Avacardo Toast',
+                    foodDescription: 'Sourdough bread with mashed avocado',
+                    price: 120,
+                    calories: 320,
+                    image: 'assets/images/nashtapng.png',
+                    reviewCount: 128,
+                    ratings: 4.6,
+                  ),
+                  FoodCard(
+                    foodTime: 'Dinner',
+                    foodTitle: 'Avacardo Toast',
+                    foodDescription: 'Sourdough bread with mashed avocado',
+                    price: 120,
+                    calories: 320,
+                    image: 'assets/images/nashtapng.png',
+                    reviewCount: 128,
+                    ratings: 4.6,
+                  ),
+                ],
+                options: CarouselOptions(
+                  height: 300,
+                  autoPlay: false,
+                  enlargeCenterPage: true,
+                ),
+              ),
+
+              const SizedBox(height: 20),
+              Wrap(
+                children: [
+                  'Sunday',
+                  'Monday',
+                  'Tuesday',
+                  'Wednesday',
+                  'Thursday',
+                  'Friday',
+                  'Saturday'
+                ].map((day) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ChoiceChip(
+                      backgroundColor: Colors.white,
+                      side: const BorderSide(color: Colors.transparent),
+                      label: Text(day),
+                      selected: selectedDay == day,
+                      selectedColor: Colors.lightBlueAccent.applyOpacity(.9),
+                      onSelected: (_) {
+                        setState(() {
+                          selectedDay = day;
+                        });
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              caloriCounter(screenHeight, screenWidth),
+            ],
+          ),
         ),
       ),
     );
