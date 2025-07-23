@@ -25,18 +25,6 @@ class _WeeklyMealManagerState extends ConsumerState<MealTab>
   ];
   final List<String> mealTypes = ['breakfast', 'lunch', 'dinner', 'snacks'];
 
-  Map<String, Map<String, List<String>>> weeklyMeals = {
-    // Initialize other days with empty lists
-    'monday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
-    'tuesday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
-    'wednesday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
-
-    'thursday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
-    'friday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
-    'saturday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
-    'sunday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
-  };
-
   @override
   void initState() {
     super.initState();
@@ -50,30 +38,48 @@ class _WeeklyMealManagerState extends ConsumerState<MealTab>
   }
 
   void _addMealItem(String day, String mealType, String mealItem) {
-    try {
-      weeklyMeals[day]![mealType]!.add(mealItem);
-      final weeklyMealsProvider = ref.watch(weeklyMealProvider.notifier);
-      weeklyMealsProvider.state = weeklyMeals;
-      debugPrint("weeklyMeals are here:$weeklyMealsProvider.state.toString()");
-      log("weeklyMeals are here:$weeklyMealsProvider.state.toString()");
-      debugPrint("weeklyMeals: $weeklyMeals");
-    } catch (e) {
-      log("here is the error: $e");
-      debugPrint(e.toString());
-    }
+    final notifier = ref.read(weeklyMealProvider.notifier);
+    // Create a deep copy of the current state to ensure immutability
+    final currentState = notifier.state;
+    final newState = Map<String, Map<String, List<String>>>.from(currentState)
+        .map((dayKey, mealMap) {
+      return MapEntry(
+          dayKey,
+          Map<String, List<String>>.from(mealMap).map(
+            (mealTypeKey, mealList) =>
+                MapEntry(mealTypeKey, List<String>.from(mealList)),
+          ));
+    });
+
+    // Add the new item
+    newState[day]?[mealType]?.add(mealItem);
+
+    // Update the provider's state
+    notifier.state = newState;
   }
 
   Future<void> saveMealsToFirebase() async {
+    final mealsToSave = ref.read(weeklyMealProvider);
     await FirebaseFirestore.instance
         .collection('meals')
         .doc('weeklyMeals')
-        .set(weeklyMeals);
+        .set(mealsToSave);
   }
 
   void _removeMealItem(String day, String mealType, int index) {
-    setState(() {
-      weeklyMeals[day]![mealType]!.removeAt(index);
-    });
+    final notifier = ref.read(weeklyMealProvider.notifier);
+    final currentState = notifier.state;
+    final newState =
+        Map<String, Map<String, List<String>>>.from(currentState).map(
+      (key, value) => MapEntry(
+          key,
+          Map<String, List<String>>.from(value).map(
+            (innerKey, innerValue) =>
+                MapEntry(innerKey, List<String>.from(innerValue)),
+          )),
+    );
+    newState[day]?[mealType]?.removeAt(index);
+    notifier.state = newState;
   }
 
   @override
@@ -152,7 +158,8 @@ class _WeeklyMealManagerState extends ConsumerState<MealTab>
   }
 
   Widget _buildMealSection(String day, String mealType) {
-    final items = weeklyMeals[day]![mealType]!;
+    final weeklyMeals = ref.watch(weeklyMealProvider);
+    final items = weeklyMeals[day]?[mealType] ?? [];
     final TextEditingController controller = TextEditingController();
 
     return Card(
