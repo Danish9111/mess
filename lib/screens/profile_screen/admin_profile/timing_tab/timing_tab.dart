@@ -83,7 +83,7 @@ class _MealTimeSetterScreenState extends State<MealTimeSetterScreen> {
             width: double.infinity,
             child: FilledButton.icon(
               onPressed: () {
-                saveMealTimesToFirestore(context);
+                saveMealTimesToFirestore(context, mealTimings);
               },
               icon: const Icon(Icons.save_rounded),
               label: const Text('SAVE ALL MEAL TIMES'),

@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mess/providers/weekly_meal_provider.dart';
+import 'dart:developer';
 
-class MealTab extends StatefulWidget {
+class MealTab extends ConsumerStatefulWidget {
   const MealTab({super.key});
 
   @override
   _WeeklyMealManagerState createState() => _WeeklyMealManagerState();
 }
 
-class _WeeklyMealManagerState extends State<MealTab>
+class _WeeklyMealManagerState extends ConsumerState<MealTab>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final List<String> days = [
@@ -22,20 +26,11 @@ class _WeeklyMealManagerState extends State<MealTab>
   final List<String> mealTypes = ['breakfast', 'lunch', 'dinner', 'snacks'];
 
   Map<String, Map<String, List<String>>> weeklyMeals = {
-    'monday': {
-      'breakfast': ['Oatmeal', 'Fruit'],
-      'lunch': ['Salad', 'Soup'],
-      'dinner': ['Grilled Chicken', 'Vegetables'],
-      'snacks': ['Yogurt'],
-    },
-    'tuesday': {
-      'breakfast': ['Smoothie'],
-      'lunch': ['Sandwich'],
-      'dinner': ['Pasta'],
-      'snacks': ['Nuts', 'Fruit'],
-    },
     // Initialize other days with empty lists
+    'monday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
+    'tuesday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
     'wednesday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
+
     'thursday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
     'friday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
     'saturday': {'breakfast': [], 'lunch': [], 'dinner': [], 'snacks': []},
@@ -55,9 +50,24 @@ class _WeeklyMealManagerState extends State<MealTab>
   }
 
   void _addMealItem(String day, String mealType, String mealItem) {
-    setState(() {
+    try {
       weeklyMeals[day]![mealType]!.add(mealItem);
-    });
+      final weeklyMealsProvider = ref.watch(weeklyMealProvider.notifier);
+      weeklyMealsProvider.state = weeklyMeals;
+      debugPrint("weeklyMeals are here:$weeklyMealsProvider.state.toString()");
+      log("weeklyMeals are here:$weeklyMealsProvider.state.toString()");
+      debugPrint("weeklyMeals: $weeklyMeals");
+    } catch (e) {
+      log("here is the error: $e");
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> saveMealsToFirebase() async {
+    await FirebaseFirestore.instance
+        .collection('meals')
+        .doc('weeklyMeals')
+        .set(weeklyMeals);
   }
 
   void _removeMealItem(String day, String mealType, int index) {
@@ -91,15 +101,51 @@ class _WeeklyMealManagerState extends State<MealTab>
   }
 
   Widget _buildDayView(String day) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(children: [
         ...mealTypes.map((mealType) {
           return _buildMealSection(day, mealType);
         }),
-        ElevatedButton(
-          child: const Text('Save all'),
-          onPressed: () {},
+        SizedBox(
+          width: screenWidth * .7,
+          height: screenHeight * .06,
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+                surfaceTintColor: Colors.lightBlueAccent,
+                side: const BorderSide(color: Colors.lightBlueAccent)
+                // backgroundColor: Colors.lightBlueAccent,
+                ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.save,
+                  color: Colors.lightBlueAccent,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Save all',
+                  style: TextStyle(color: Colors.lightBlue),
+                ),
+              ],
+            ),
+            onPressed: () async {
+              try {
+                await saveMealsToFirebase();
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('successfully saved data')));
+              } catch (e) {
+                debugPrint(e.toString());
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("error saving data:$e")));
+              }
+            },
+          ),
         )
       ]),
     );
