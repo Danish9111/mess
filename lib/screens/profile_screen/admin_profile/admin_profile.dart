@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mess/screens/profile_screen/admin_profile/meal_tab/meal_tab.dart';
+import 'package:mess/screens/profile_screen/admin_profile/members_tab/members_tab.dart';
 import 'package:mess/screens/profile_screen/admin_profile/timing_tab/timing_tab.dart';
 
 class AdminProfileScreen extends StatefulWidget {
@@ -29,23 +30,23 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
             tabs: [
               Padding(
                 padding: EdgeInsets.all(10),
-                child: Text('meal'),
+                child: Text('Meals'),
               ),
               Padding(
                 padding: EdgeInsets.all(10),
-                child: Text('Timing'),
+                child: Text('Timings'),
               ),
               Padding(
                 padding: EdgeInsets.all(10),
-                child: Text('expense'),
+                child: Text('Members'),
               )
             ],
           ),
         ),
-        body: const TabBarView(children: [
-          MealTab(),
-          MealTimeSetterScreen(),
-          Center(child: Text('expense'))
+        body: TabBarView(children: [
+          const MealTab(),
+          const MealTimeSetterScreen(),
+          MembersScreen(),
         ]),
       ),
     );

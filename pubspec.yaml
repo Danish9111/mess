@@ -27,6 +27,8 @@ dependencies:
   internet_connection_checker: ^3.0.1
   carousel_slider: ^5.1.1
   flutter_datetime_picker_plus: ^2.0.1
+  path_provider: ^2.1.1
+  share_plus: ^7.0.1
 
 
 
