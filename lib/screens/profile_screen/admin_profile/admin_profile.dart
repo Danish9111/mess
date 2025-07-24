@@ -10,45 +10,74 @@ class AdminProfileScreen extends StatefulWidget {
   State<AdminProfileScreen> createState() => _AdminProfileScreenState();
 }
 
-class _AdminProfileScreenState extends State<AdminProfileScreen> {
+class _AdminProfileScreenState extends State<AdminProfileScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+    // Add a listener to rebuild the widget when the tab changes.
+    _tabController.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
           backgroundColor: Colors.grey[100],
           title: const Text('Admin Profile'),
           centerTitle: true,
-          bottom: const TabBar(
+          bottom: TabBar(
+            controller: _tabController,
             indicatorColor: Colors.lightBlueAccent,
             indicatorWeight: 3,
             labelColor: Colors.lightBlueAccent,
             unselectedLabelColor: Colors.grey,
-            labelStyle: TextStyle(fontSize: 15),
+            labelStyle: const TextStyle(fontSize: 15),
             tabs: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(10),
                 child: Text('Meals'),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(10),
                 child: Text('Timings'),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.all(10),
                 child: Text('Members'),
               )
             ],
           ),
         ),
-        body: const TabBarView(children: [
-          MealTab(),
-          MealTimeSetterScreen(),
-          AdminHomePage(),
-        ]),
-      ),
-    );
+        body: TabBarView(
+          controller: _tabController,
+          children: const [
+            MealTab(),
+            MealTimeSetterScreen(),
+            MembersTab(),
+          ],
+        ),
+        floatingActionButton: _tabController.index == 2
+            ? FloatingActionButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => const InviteQRDialog(),
+                  );
+                },
+                backgroundColor: Colors.lightBlueAccent,
+                child: const Icon(Icons.qr_code, color: Colors.white),
+              )
+            : null);
   }
 }
