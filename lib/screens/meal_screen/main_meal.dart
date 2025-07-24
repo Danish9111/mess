@@ -46,12 +46,14 @@ class _MealScreenState extends State<MealScreen> {
       body: SingleChildScrollView(
         clipBehavior: Clip.none,
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // 🔹 Day Selector (Chips)
-
+              caloriCounter(screenHeight, screenWidth),
+              const SizedBox(
+                height: 20,
+              ),
               // 🔹 Carousel
               CarouselSlider(
                 items: const [
@@ -121,8 +123,6 @@ class _MealScreenState extends State<MealScreen> {
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 20),
-              caloriCounter(screenHeight, screenWidth),
             ],
           ),
         ),
@@ -135,27 +135,32 @@ Widget caloriCounter(double screenHeight, double screenWidth) {
   return Container(
     alignment: Alignment.center,
     child: Container(
-        height: screenHeight * .1,
+        height: screenHeight * .05,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          // gradient: const LinearGradient(
+          //   colors: [Color(0xFF2196F3), Color(0xFF64B5F6)],
+          //   begin: Alignment.topLeft,
+          //   end: Alignment.bottomRight,
+          // ),
+          color: Colors.white.applyOpacity(.5),
           border: Border.all(color: Colors.white, width: 1),
-          borderRadius: BorderRadius.circular(20),
+          // borderRadius: BorderRadius.circular(20),
         ),
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.whatshot,
-              size: 40,
-              color: Colors.amberAccent,
+              size: 30,
+              color: Colors.lightBlueAccent,
             ),
             Text(
               '  2000 calories Today',
               style: TextStyle(
                 color: Colors.lightBlueAccent,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                // fontSize: 20,
+                // fontWeight: FontWeight.bold,
               ),
             ),
           ],
