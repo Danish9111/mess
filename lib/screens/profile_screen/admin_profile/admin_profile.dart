@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mess/screens/profile_screen/admin_profile/meal_tab/meal_tab.dart';
 import 'package:mess/screens/profile_screen/admin_profile/members_tab/members_tab.dart';
 import 'package:mess/screens/profile_screen/admin_profile/timing_tab/timing_tab.dart';
+import 'package:mess/screens/profile_screen/admin_profile/members_tab/invite_qr_dialog.dart';
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
