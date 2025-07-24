@@ -43,10 +43,10 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
             ],
           ),
         ),
-        body: TabBarView(children: [
-          const MealTab(),
-          const MealTimeSetterScreen(),
-          MembersScreen(),
+        body: const TabBarView(children: [
+          MealTab(),
+          MealTimeSetterScreen(),
+          AdminHomePage(),
         ]),
       ),
     );
