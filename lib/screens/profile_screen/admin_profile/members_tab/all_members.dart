@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 
 class Member {
   final String id;
@@ -67,6 +68,13 @@ class _MembersTabState extends State<AllMembers> {
         name: name,
         phone: phone,
       ));
+    });
+    _filterMembers();
+  }
+
+  void _deleteMember(String memberId) {
+    setState(() {
+      _members.removeWhere((member) => member.id == memberId);
     });
     _filterMembers();
   }
@@ -212,7 +220,45 @@ class _MembersTabState extends State<AllMembers> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                log('pressed');
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      title: const Text('Delete Member'),
+                                      content: const Text(
+                                          'Are you sure you want to delete this member?'),
+                                      actions: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            overlayColor: Colors.grey.shade300,
+                                          ),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text('Cancel',
+                                              style: TextStyle(
+                                                  color: Colors.grey.shade800)),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            _deleteMember(member.id);
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            'Delete',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
                               icon: const Icon(Icons.delete),
                               color: Colors.grey.shade600,
                             ),
