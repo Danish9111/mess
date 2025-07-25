@@ -9,6 +9,8 @@ Future<void> signUp({
   required String email,
   required String password,
   required BuildContext context,
+  required String name,
+  required String phone,
 }) async {
   try {
     await FirebaseAuth.instance
@@ -16,7 +18,12 @@ Future<void> signUp({
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Signed up Successfully 🎉')),
     );
-    _createAttendance();
+    await _createAttendance();
+
+    _createMemberInfo({
+      'name': name,
+      'phone': phone,
+    });
 
     // return userCredential;
   } catch (e) {
@@ -25,6 +32,14 @@ Future<void> signUp({
     );
     debugPrint("error : $e");
   }
+}
+
+Future<void> _createMemberInfo(infoPayload) async {
+  final userId = FirebaseAuth.instance.currentUser?.uid;
+  FirebaseFirestore.instance
+      .collection('members')
+      .doc(userId)
+      .set(infoPayload, SetOptions(merge: true));
 }
 
 Future<void> _createAttendance() async {

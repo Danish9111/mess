@@ -16,6 +16,7 @@ class _SignUpState extends ConsumerState<SignUp> {
   final controller = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
+  final phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                       height: 10,
                     ),
                     _buildInputField(
-                      controller: nameController,
+                      controller: phoneController,
                       hint: 'Enter your phone number',
                       icon: Icons.phone_android,
                     ),
@@ -99,6 +100,8 @@ class _SignUpState extends ConsumerState<SignUp> {
                           email: controller.text,
                           password: passwordController.text,
                           context: context,
+                          name: nameController.text,
+                          phone: phoneController.text,
                         );
                         controller.clear();
                         passwordController.clear();
