@@ -157,6 +157,11 @@ class _MembersTabState extends State<AllMembers> {
               child: TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    borderSide:
+                        BorderSide(color: Colors.lightBlueAccent, width: 1.0),
+                  ),
                   hintText: 'Search members...',
                   hintStyle: TextStyle(color: Colors.grey[400]),
                   prefixIcon: const Icon(

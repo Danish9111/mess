@@ -15,6 +15,7 @@ class SignUp extends ConsumerStatefulWidget {
 class _SignUpState extends ConsumerState<SignUp> {
   final controller = TextEditingController();
   final passwordController = TextEditingController();
+  final nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,125 +42,127 @@ class _SignUpState extends ConsumerState<SignUp> {
               ),
             ),
           ),
-          Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: isTablet ? 500 : double.infinity,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.lock_person,
-                        size: 100,
-                        color: Colors.lightBlueAccent,
-                      ),
-                      const SizedBox(height: 30),
-                      const Text(
-                        'Hi there!',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text('Sign Up to continue'),
-                      const SizedBox(height: 20),
-                      _buildInputField(
-                        controller: controller,
-                        hint: 'Email Address',
-                        icon: Icons.email,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildInputField(
-                        controller: passwordController,
-                        hint: 'Enter Password',
-                        icon: Icons.lock,
-                        isPassword: true,
-                      ),
-                      const SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text('Forget password?'),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: isTablet ? 500 : double.infinity,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.lock_person,
+                      size: 80,
+                      color: Colors.lightBlueAccent,
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Hi there!',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text('Sign Up to continue'),
+                    const SizedBox(height: 10),
+                    _buildInputField(
+                      controller: controller,
+                      hint: 'Email Address',
+                      icon: Icons.email,
+                    ),
+                    const SizedBox(height: 10),
+                    _buildInputField(
+                      controller: passwordController,
+                      hint: 'Enter a Password',
+                      icon: Icons.lock,
+                      isPassword: true,
+                    ),
+                    const SizedBox(height: 10),
+                    _buildInputField(
+                      controller: nameController,
+                      hint: 'Enter your name',
+                      icon: Icons.person,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _buildInputField(
+                      controller: nameController,
+                      hint: 'Enter your phone number',
+                      icon: Icons.phone_android,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await signUp(
+                          email: controller.text,
+                          password: passwordController.text,
+                          context: context,
+                        );
+                        controller.clear();
+                        passwordController.clear();
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.lightBlueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        minimumSize: Size(screenWidth * 0.5, 60),
+                        elevation: 0,
                       ),
-                      const SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await signUp(
-                            email: controller.text,
-                            password: passwordController.text,
-                            context: context,
-                          );
-                          controller.clear();
-                          passwordController.clear();
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.lightBlueAccent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          minimumSize: Size(screenWidth * 0.5, 60),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(color: Colors.white),
                       ),
-                      const SizedBox(height: 20),
-                      const Row(
+                    ),
+                    const SizedBox(height: 20),
+                    const Row(
+                      children: [
+                        Expanded(
+                          child: Divider(color: Colors.grey, thickness: 1),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Text('OR'),
+                        ),
+                        Expanded(
+                          child: Divider(color: Colors.grey, thickness: 1),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 60),
+                        side: const BorderSide(
+                            width: 1, color: Colors.lightBlueAccent), // border
+                      ),
+                      onPressed: () async {
+                        await signInWithGoogle(context, ref);
+                        Navigator.pushReplacementNamed(context, '/mainScreen');
+                        controller.clear();
+                        passwordController.clear();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                            child: Divider(color: Colors.grey, thickness: 1),
+                          SizedBox(
+                            height: 40,
+                            width: 20,
+                            child: Image.asset('assets/images/google.png'),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text('OR'),
-                          ),
-                          Expanded(
-                            child: Divider(color: Colors.grey, thickness: 1),
+                          const SizedBox(width: 10),
+                          const Text(
+                            'Sign Up with Google',
+                            style: TextStyle(color: Colors.lightBlueAccent),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 60),
-                          side: const BorderSide(
-                              width: 1,
-                              color: Colors.lightBlueAccent), // border
-                        ),
-                        onPressed: () async {
-                          await signInWithGoogle(context, ref);
-                          Navigator.pushReplacementNamed(
-                              context, '/mainScreen');
-                          controller.clear();
-                          passwordController.clear();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: 40,
-                              width: 20,
-                              child: Image.asset('assets/images/google.png'),
-                            ),
-                            const SizedBox(width: 10),
-                            const Text(
-                              'Sign Up with Google',
-                              style: TextStyle(color: Colors.lightBlueAccent),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
