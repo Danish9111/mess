@@ -169,47 +169,62 @@ class _MembersTabState extends State<AllMembers> {
                 itemBuilder: (context, index) {
                   final member = _filteredMembers[index];
                   return Card(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
-                      elevation: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                          border: Border.all(
-                            color: Colors.transparent,
-                            width: 1,
-                          ),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    elevation: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.transparent,
+                          width: 1,
                         ),
-                        child: ListTile(
-                          title: Text(member.name,
-                              style: Theme.of(context).textTheme.titleMedium),
-                          subtitle: Text(member.phone),
-                          trailing: Container(
-                            width: 12,
-                            height: 12,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color:
-                                  member.isActive ? Colors.green : Colors.red,
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          member.name,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        subtitle: Text(member.phone),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              height: 30,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: member.isActive
+                                    ? Colors.green
+                                    : Colors.grey,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  'Active', // Optional: keep conditional if needed
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          onTap: () async {
-                            //.
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => MemberDetailsScreen(
-                            //       member: member,
-                            //     ),
-                            //   ),
-                            // );
-                          },
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.delete),
+                              color: Colors.grey.shade600,
+                            ),
+                          ],
                         ),
-                      ));
+                      ),
+                    ),
+                  );
                 },
               ),
             ),
+
             // const SizedBox(height: 16),
           ],
         ));
