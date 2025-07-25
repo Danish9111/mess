@@ -1,215 +1,185 @@
 import 'package:flutter/material.dart';
+import 'package:mess/extentions.dart';
 
-Widget buildMemberTabBody(
-    BuildContext context, double screenHeight, double screenWidth) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    // mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      const SizedBox(height: 20),
-      const Text(
-        "Total Members in Mess",
-        style: TextStyle(
-          color: Colors.grey,
-          fontSize: 20,
+class BuildMemberTabBody extends StatefulWidget {
+  const BuildMemberTabBody({super.key});
+
+  @override
+  State<BuildMemberTabBody> createState() => BuildMemberTabBodyState();
+}
+
+class BuildMemberTabBodyState extends State<BuildMemberTabBody> {
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: 20),
+        const Text(
+          "Total Members in Mess",
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 20,
+          ),
+        ),
+        const SizedBox(height: 20),
+        const Center(child: TotalMembers()),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Expanded(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Inactive Members Card
+              const MemberCard(
+                backgroundColor: Colors.lightBlueAccent,
+                text: 'Active Members',
+                icon: Icons.group,
+                membersCount: 100,
+                iconBackgroundColor: Colors.white,
+                textColor: Colors.white,
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+
+              MemberCard(
+                backgroundColor: Colors.grey.shade200,
+                text: 'Inactive Members',
+                icon: Icons.group_off,
+                membersCount: 5,
+                iconBackgroundColor: Colors.white,
+                textColor: Colors.grey.shade500,
+              ),
+            ],
+          )),
+        )
+      ],
+    );
+  }
+}
+
+class MemberCard extends StatefulWidget {
+  final Color backgroundColor;
+  final Color textColor;
+  final String text;
+  final IconData icon;
+  final int membersCount;
+  final Color iconBackgroundColor;
+
+  const MemberCard({
+    super.key,
+    required this.backgroundColor,
+    required this.text,
+    required this.textColor,
+    required this.icon,
+    required this.membersCount,
+    required this.iconBackgroundColor,
+  });
+  @override
+  State<MemberCard> createState() => MemberCardState();
+}
+
+class MemberCardState extends State<MemberCard> {
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.height;
+    return Expanded(
+        child: InkWell(
+      onTap: () {
+        debugPrint('tapped');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              blurRadius: 12,
+              spreadRadius: 4,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: Stack(
+          children: [
+            // Decorative elements (scaled down)
+            Positioned(
+              top: -10, // Adjusted position
+              right: -10, // Adjusted position
+              child: Container(
+                height: 60, // Smaller circle
+                width: 60, // Smaller circle
+                decoration: BoxDecoration(
+                  color: Colors.white.applyOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -15, // Adjusted position
+              left: -15, // Adjusted position
+              child: Container(
+                height: 50, // Smaller circle
+                width: 50, // Smaller circle
+                decoration: BoxDecoration(
+                  color: Colors.white.applyOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+
+            // Content (scaled proportionally)
+            Padding(
+              padding: const EdgeInsets.all(16.0), // Reduced padding
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Center vertically
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8), // Reduced padding
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      widget.icon,
+                      size: 24, // Smaller icon
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const SizedBox(height: 10), // Reduced spacing
+                  Text(
+                    " ${widget.text}",
+                    style: TextStyle(
+                      color: widget.textColor,
+                      fontSize: 14, // Smaller font
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4), // Reduced spacing
+                  Text(
+                    '${widget.membersCount}',
+                    style: TextStyle(
+                      color: widget.textColor,
+                      fontSize: 12, // Smaller font
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
-      const SizedBox(height: 20),
-      const Center(child: TotalMembers()),
-      const SizedBox(height: 20),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Active Members Card
-          Container(
-            height: screenHeight * .15, // Half the original height
-            width: screenWidth * .43,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.blue.shade300,
-                  Colors.lightBlueAccent.shade200,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blue.withOpacity(0.3),
-                  blurRadius: 12,
-                  spreadRadius: 4,
-                  offset: const Offset(0, 4),
-                )
-              ],
-            ),
-            child: Stack(
-              children: [
-                // Decorative elements (scaled down)
-                Positioned(
-                  top: -10, // Adjusted position
-                  right: -10, // Adjusted position
-                  child: Container(
-                    height: 60, // Smaller circle
-                    width: 60, // Smaller circle
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: -15, // Adjusted position
-                  left: -15, // Adjusted position
-                  child: Container(
-                    height: 50, // Smaller circle
-                    width: 50, // Smaller circle
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-
-                // Content (scaled proportionally)
-                Padding(
-                  padding: const EdgeInsets.all(16.0), // Reduced padding
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Center vertically
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8), // Reduced padding
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.group,
-                          size: 24, // Smaller icon
-                          color: Colors.blue,
-                        ),
-                      ),
-                      const SizedBox(height: 10), // Reduced spacing
-                      const Text(
-                        'Active Members',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14, // Smaller font
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 4), // Reduced spacing
-                      const Text(
-                        '1,248',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12, // Smaller font
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(width: 16),
-
-          // Inactive Members Card
-          Container(
-            height: screenHeight * .15, // Half the original height
-            width: screenWidth * .43,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 12,
-                  spreadRadius: 4,
-                  offset: const Offset(0, 4),
-                )
-              ],
-            ),
-            child: Stack(
-              children: [
-                // Decorative elements (scaled down)
-                Positioned(
-                  top: -10, // Adjusted position
-                  right: -10, // Adjusted position
-                  child: Container(
-                    height: 60, // Smaller circle
-                    width: 60, // Smaller circle
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: -15, // Adjusted position
-                  left: -15, // Adjusted position
-                  child: Container(
-                    height: 50, // Smaller circle
-                    width: 50, // Smaller circle
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.05),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-
-                // Content (scaled proportionally)
-                Padding(
-                  padding: const EdgeInsets.all(16.0), // Reduced padding
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Center vertically
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8), // Reduced padding
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.group_off,
-                          size: 24, // Smaller icon
-                          color: Colors.grey.shade700,
-                        ),
-                      ),
-                      const SizedBox(height: 10), // Reduced spacing
-                      Text(
-                        'Inactive Members',
-                        style: TextStyle(
-                          color: Colors.grey.shade700,
-                          fontSize: 14, // Smaller font
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 4), // Reduced spacing
-                      Text(
-                        '327',
-                        style: TextStyle(
-                          color: Colors.grey.shade800,
-                          fontSize: 12, // Smaller font
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      )
-    ],
-  );
+    ));
+  }
 }
 
 class TotalMembers extends StatelessWidget {
@@ -235,7 +205,7 @@ class TotalMembers extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.blue.withOpacity(0.3),
+            color: Colors.blue.applyOpacity(0.3),
             blurRadius: 12,
             spreadRadius: 4,
             offset: const Offset(0, 4),
@@ -252,7 +222,7 @@ class TotalMembers extends StatelessWidget {
               height: 120,
               width: 120,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
+                color: Colors.white.applyOpacity(0.15),
                 shape: BoxShape.circle,
               ),
             ),
@@ -264,7 +234,7 @@ class TotalMembers extends StatelessWidget {
               height: 100,
               width: 100,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.applyOpacity(0.1),
                 shape: BoxShape.circle,
               ),
             ),

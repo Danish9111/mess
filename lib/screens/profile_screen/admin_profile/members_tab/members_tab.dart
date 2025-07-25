@@ -7,12 +7,11 @@ class MembersTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: buildMemberTabBody(context, screenHeight, screenWidth),
+      body: const BuildMemberTabBody(), //custom Widget
       floatingActionButton: FloatingActionButton(
+        elevation: 0,
         onPressed: () {
           showDialog(
             context: context,
