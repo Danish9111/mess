@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
+import 'package:mess/screens/profile_screen/admin_profile/members_tab/memeber_utils.dart';
 
 class Member {
   final String id;
@@ -145,45 +146,46 @@ class _MembersTabState extends State<AllMembers> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            // const TotalMembers(),
+        body: Column(children: [
+          const SizedBox(
+            height: 20,
+          ),
+          // const TotalMembers(),
 
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    borderSide:
-                        BorderSide(color: Colors.lightBlueAccent, width: 1.0),
-                  ),
-                  hintText: 'Search members...',
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: Colors.cyan,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white10,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  borderSide:
+                      BorderSide(color: Colors.lightBlueAccent, width: 1.0),
                 ),
+                hintText: 'Search members...',
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Colors.cyan,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                filled: true,
+                fillColor: Colors.white10,
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _filteredMembers.length,
+          ),
+          Expanded(
+            child: FutureBuilder(
+              future: fetchUserInfo(),
+              builder: (context, snapshot) => ListView.builder(
+                itemCount: snapshot.data?.length,
+                padding: const EdgeInsets.all(16),
                 itemBuilder: (context, index) {
-                  final member = _filteredMembers[index];
                   return Card(
                     margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     elevation: 0,
                     child: Container(
                       decoration: BoxDecoration(
@@ -196,10 +198,11 @@ class _MembersTabState extends State<AllMembers> {
                       ),
                       child: ListTile(
                         title: Text(
-                          member.name,
+                          snapshot.data?['name'] ?? 'Loading...',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        subtitle: Text(member.phone),
+                        subtitle: Text(snapshot.data?["phone"] ?? 'Loading...',
+                            style: Theme.of(context).textTheme.bodyMedium),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -209,7 +212,7 @@ class _MembersTabState extends State<AllMembers> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 2),
                               decoration: BoxDecoration(
-                                color: member.isActive
+                                color: snapshot.data?['isActive'] ?? false
                                     ? Colors.green
                                     : Colors.grey,
                                 borderRadius: BorderRadius.circular(20),
@@ -251,8 +254,8 @@ class _MembersTabState extends State<AllMembers> {
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            _deleteMember(member.id);
-                                            Navigator.pop(context);
+                                            // _deleteMember(snapshot.data?['id'] ?? '');
+                                            // Navigator.pop(context);
                                           },
                                           child: const Text(
                                             'Delete',
@@ -277,7 +280,7 @@ class _MembersTabState extends State<AllMembers> {
             ),
 
             // const SizedBox(height: 16),
-          ],
-        ));
+          )
+        ]));
   }
 }
