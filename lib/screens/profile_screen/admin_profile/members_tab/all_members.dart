@@ -253,9 +253,8 @@ class _MembersTabState extends State<AllMembers> {
                                                   color: Colors.grey.shade800)),
                                         ),
                                         TextButton(
-                                          onPressed: () {
-                                            // _deleteMember(snapshot.data?['id'] ?? '');
-                                            // Navigator.pop(context);
+                                          onPressed: () async {
+                                            await deleteMember();
                                           },
                                           child: const Text(
                                             'Delete',
