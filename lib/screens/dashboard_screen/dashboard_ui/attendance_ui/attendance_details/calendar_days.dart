@@ -37,7 +37,6 @@ Widget calendarDays(BuildContext context, AsyncValue isOnline, WidgetRef ref) {
               final isWeekend = [DateTime.sunday, DateTime.saturday]
                   .contains(firstDay.add(Duration(days: dayIndex)).weekday);
 
-              // Get the status for this day from the attendance map
               final status = attendance[day];
 
               return GestureDetector(
