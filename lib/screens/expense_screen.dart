@@ -460,7 +460,7 @@ class ExpensesScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '₹${payment.amount.toStringAsFixed(2)}',
+              'Rs.${payment.amount.toStringAsFixed(2)}',
               style: const TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
