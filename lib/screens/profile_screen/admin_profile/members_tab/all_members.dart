@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:mess/screens/profile_screen/admin_profile/members_tab/memeber_utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Member {
   final String id;
@@ -45,6 +46,14 @@ class _MembersTabState extends State<AllMembers> {
     super.initState();
     _filteredMembers = _members;
     _searchController.addListener(_filterMembers);
+    fetchActiveMembers();
+  }
+
+  Future fetchActiveMembers() async {
+    await FirebaseFirestore.instance
+        .collection('members')
+        .where('isActive', isEqualTo: true)
+        .get();
   }
 
   @override
@@ -178,7 +187,7 @@ class _MembersTabState extends State<AllMembers> {
           ),
           Expanded(
             child: FutureBuilder(
-              future: fetchUserInfo(),
+              future: fetchActiveMembers(),
               builder: (context, snapshot) => ListView.builder(
                 itemCount: snapshot.data?.length,
                 padding: const EdgeInsets.all(16),

@@ -13,7 +13,7 @@ class _ActiveMembersState extends State<ActiveMembers> {
   @override
   void initState() {
     super.initState();
-    fetchActiveMembers();
+    // fetchActiveMembers();
   }
 
   @override
@@ -27,17 +27,5 @@ class _ActiveMembersState extends State<ActiveMembers> {
         child: Text('Active Members'),
       ),
     );
-  }
-}
-
-Future fetchActiveMembers() async {
-  final snapshot = await FirebaseFirestore.instance
-      .collection('members')
-      .where('isActive', isEqualTo: true)
-      .get();
-  for (var doc in snapshot.docs) {
-    final data = doc.data();
-    print(data['name']);
-    debugPrint(data['phone']);
   }
 }

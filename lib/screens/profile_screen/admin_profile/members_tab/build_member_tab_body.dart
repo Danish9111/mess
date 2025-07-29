@@ -191,117 +191,118 @@ class TotalMembers extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return InkWell(
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AllMembers()));
-          // Navigator.pushNamed(context, route)
-        },
-        child: Container(
-          height: screenHeight * .3,
-          width: screenWidth * .9,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.blue.shade300,
-                Colors.lightBlueAccent.shade200,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const AllMembers()));
+        // Navigator.pushNamed(context, route)
+      },
+      child: Container(
+        height: screenHeight * .3,
+        width: screenWidth * .9,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.shade300,
+              Colors.lightBlueAccent.shade200,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.applyOpacity(0.3),
+              blurRadius: 12,
+              spreadRadius: 4,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: Stack(
+          children: [
+            // Decorative elements
+            Positioned(
+              top: -20,
+              right: -20,
+              child: Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                  color: Colors.white.applyOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+              ),
             ),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blue.applyOpacity(0.3),
-                blurRadius: 12,
-                spreadRadius: 4,
-                offset: const Offset(0, 4),
-              )
-            ],
-          ),
-          child: Stack(
-            children: [
-              // Decorative elements
-              Positioned(
-                top: -20,
-                right: -20,
-                child: Container(
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.white.applyOpacity(0.15),
-                    shape: BoxShape.circle,
-                  ),
+            Positioned(
+              bottom: -30,
+              left: -30,
+              child: Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white.applyOpacity(0.1),
+                  shape: BoxShape.circle,
                 ),
               ),
-              Positioned(
-                bottom: -30,
-                left: -30,
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.white.applyOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
+            ),
 
-              // Content
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.people_alt_rounded,
-                        size: 32,
-                        color: Colors.blue,
-                      ),
+            // Content
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Total Members',
+                    child: const Icon(
+                      Icons.people_alt_rounded,
+                      size: 32,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Total Members',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    '42', // Replace with dynamic value
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 42,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto',
+                    ),
+                  ),
+                  const Spacer(),
+                  const Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      'In Mess',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.5,
+                        color: Colors.white70,
+                        fontSize: 16,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      '42', // Replace with dynamic value
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 42,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto',
-                      ),
-                    ),
-                    const Spacer(),
-                    const Align(
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        'In Mess',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
