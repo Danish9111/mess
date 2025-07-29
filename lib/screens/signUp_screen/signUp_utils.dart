@@ -12,26 +12,18 @@ Future<void> signUp({
   required String name,
   required String phone,
 }) async {
-  try {
-    await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Signed up Successfully 🎉')),
-    );
-    await _createAttendance();
+  await FirebaseAuth.instance
+      .createUserWithEmailAndPassword(email: email, password: password);
 
-    _createMemberInfo({
-      'name': name,
-      'phone': phone,
-    });
+  await _createAttendance();
 
-    // return userCredential;
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error: ${e.toString()}')),
-    );
-    debugPrint("error : $e");
-  }
+  _createMemberInfo({
+    'name': name,
+    'phone': phone,
+    'isActive': true,
+  });
+
+  // return userCredential;
 }
 
 Future<void> _createMemberInfo(infoPayload) async {

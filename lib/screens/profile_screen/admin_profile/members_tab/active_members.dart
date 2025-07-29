@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,10 @@ class _ActiveMembersState extends State<ActiveMembers> {
   }
 }
 
-fetchActiveMembers() async {
-  final userId = FirebaseAuth.instance.currentUser?.uid;
+Future fetchActiveMembers() async {
+  final snapshot = await FirebaseFirestore.instance
+      .collection('members')
+      .where('isActive', isEqualTo: true)
+      .get();
+  for (var doc in snapshot.docs) {}
 }

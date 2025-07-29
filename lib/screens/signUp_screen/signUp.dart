@@ -96,16 +96,27 @@ class _SignUpState extends ConsumerState<SignUp> {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
-                        await signUp(
-                          email: controller.text,
-                          password: passwordController.text,
-                          context: context,
-                          name: nameController.text,
-                          phone: phoneController.text,
-                        );
-                        controller.clear();
-                        passwordController.clear();
-                        Navigator.pop(context);
+                        try {
+                          await signUp(
+                            email: controller.text,
+                            password: passwordController.text,
+                            context: context,
+                            name: nameController.text,
+                            phone: phoneController.text,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Signed up Successfully 🎉')),
+                          );
+                          controller.clear();
+                          passwordController.clear();
+                          Navigator.pop(context);
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error: ${e.toString()}')),
+                          );
+                          debugPrint("error : $e");
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.lightBlueAccent,
@@ -205,7 +216,7 @@ class _buildInputField extends ConsumerWidget {
       ),
       child: TextField(
         controller: controller,
-        obscureText: isPassword,
+        obscureText: isPassword ? !isPasswordVisible : false,
         style: TextStyle(color: Colors.blueGrey.shade800),
         decoration: InputDecoration(
           hintText: hint,
