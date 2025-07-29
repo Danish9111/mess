@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 
 class ActiveMembers extends StatefulWidget {
@@ -13,7 +12,6 @@ class ActiveMembers extends StatefulWidget {
 class _ActiveMembersState extends State<ActiveMembers> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchActiveMembers();
   }
@@ -37,5 +35,9 @@ Future fetchActiveMembers() async {
       .collection('members')
       .where('isActive', isEqualTo: true)
       .get();
-  for (var doc in snapshot.docs) {}
+  for (var doc in snapshot.docs) {
+    final data = doc.data();
+    print(data['name']);
+    debugPrint(data['phone']);
+  }
 }
