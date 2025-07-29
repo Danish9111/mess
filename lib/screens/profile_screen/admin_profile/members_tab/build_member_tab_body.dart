@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mess/extentions.dart';
 import 'package:mess/screens/profile_screen/admin_profile/members_tab/all_members.dart';
-import 'package:mess/screens/profile_screen/admin_profile/members_tab/all_members.dart';
+import 'package:mess/screens/profile_screen/admin_profile/members_tab/active_members.dart';
 
+//  '
 class BuildMemberTabBody extends StatefulWidget {
   const BuildMemberTabBody({super.key});
 
@@ -13,8 +14,6 @@ class BuildMemberTabBody extends StatefulWidget {
 class BuildMemberTabBodyState extends State<BuildMemberTabBody> {
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       // mainAxisAlignment: MainAxisAlignment.center,
@@ -88,11 +87,12 @@ class MemberCard extends StatefulWidget {
 class MemberCardState extends State<MemberCard> {
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.height;
     return Expanded(
         child: InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ActiveMembers()));
+      },
       child: Container(
         decoration: BoxDecoration(
           color: widget.backgroundColor,
