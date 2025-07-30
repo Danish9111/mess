@@ -222,7 +222,8 @@ class _MembersTabState extends State<AllMembers> {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         subtitle: Text(
-                            "${snapshot.data?.docs["phone"] ?? 'Loading...'}",
+                            snapshot.data?.docs[index]["phone"]?.toString() ??
+                                'Loading...',
                             style: Theme.of(context).textTheme.bodyMedium),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
