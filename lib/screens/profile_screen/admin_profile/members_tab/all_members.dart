@@ -50,10 +50,21 @@ class _MembersTabState extends State<AllMembers> {
   }
 
   Future fetchActiveMembers() async {
-    await FirebaseFirestore.instance
-        .collection('members')
-        .where('isActive', isEqualTo: true)
-        .get();
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('members')
+          .where('isActive', isEqualTo: true)
+          .get();
+      log(snapshot.docs.length.toString());
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        debugPrint(data['name']);
+        debugPrint(data['phone']);
+      }
+      return snapshot;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
@@ -189,7 +200,7 @@ class _MembersTabState extends State<AllMembers> {
             child: FutureBuilder(
               future: fetchActiveMembers(),
               builder: (context, snapshot) => ListView.builder(
-                itemCount: snapshot.data?.length,
+                itemCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
                 padding: const EdgeInsets.all(16),
                 itemBuilder: (context, index) {
                   return Card(
@@ -207,10 +218,11 @@ class _MembersTabState extends State<AllMembers> {
                       ),
                       child: ListTile(
                         title: Text(
-                          snapshot.data?['name'] ?? 'Loading...',
+                          snapshot.data?.docs[index]['name'] ?? 'Loading...',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
-                        subtitle: Text(snapshot.data?["phone"] ?? 'Loading...',
+                        subtitle: Text(
+                            "${snapshot.data?.docs["phone"] ?? 'Loading...'}",
                             style: Theme.of(context).textTheme.bodyMedium),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
