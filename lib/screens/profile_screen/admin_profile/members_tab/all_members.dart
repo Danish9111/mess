@@ -31,7 +31,8 @@ final List<Member> _members = [
 ];
 
 class AllMembers extends StatefulWidget {
-  const AllMembers({super.key});
+  final bool isActive;
+  const AllMembers({super.key, required this.isActive});
 
   @override
   State<AllMembers> createState() => _MembersTabState();
@@ -39,6 +40,7 @@ class AllMembers extends StatefulWidget {
 
 class _MembersTabState extends State<AllMembers> {
   List<Member> _filteredMembers = [];
+
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -46,14 +48,14 @@ class _MembersTabState extends State<AllMembers> {
     super.initState();
     _filteredMembers = _members;
     _searchController.addListener(_filterMembers);
-    fetchActiveMembers();
+    fetchMembers();
   }
 
-  Future fetchActiveMembers() async {
+  Future fetchMembers() async {
     try {
       final snapshot = await FirebaseFirestore.instance
           .collection('members')
-          .where('isActive', isEqualTo: true)
+          .where('isActive', isEqualTo: widget.isActive)
           .get();
       log(snapshot.docs.length.toString());
       for (var doc in snapshot.docs) {
@@ -198,7 +200,7 @@ class _MembersTabState extends State<AllMembers> {
           ),
           Expanded(
             child: FutureBuilder(
-              future: fetchActiveMembers(),
+              future: fetchMembers(),
               builder: (context, snapshot) => ListView.builder(
                 itemCount: snapshot.hasData ? snapshot.data!.docs.length : 0,
                 padding: const EdgeInsets.all(16),
@@ -234,11 +236,10 @@ class _MembersTabState extends State<AllMembers> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 2),
                               decoration: BoxDecoration(
-                                color:
-                                    // snapshot.data().data?['isActive'] ?? false
-                                    //     ? Colors.green
-                                    //     : Colors.grey,
-                                    Colors.green,
+                                color: snapshot.data.docs[index]['isActive']
+                                    ? Colors.green
+                                    : Colors.grey,
+                                // Colors.green,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: const Center(
