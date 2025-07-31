@@ -223,7 +223,7 @@ class _MembersTabState extends State<AllMembers> {
                         ),
                         subtitle: Text(
                             snapshot.data?.docs[index]["phone"]?.toString() ??
-                                'Loading...',
+                                'loading..',
                             style: Theme.of(context).textTheme.bodyMedium),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -234,9 +234,11 @@ class _MembersTabState extends State<AllMembers> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 2),
                               decoration: BoxDecoration(
-                                color: snapshot.data?['isActive'] ?? false
-                                    ? Colors.green
-                                    : Colors.grey,
+                                color:
+                                    // snapshot.data().data?['isActive'] ?? false
+                                    //     ? Colors.green
+                                    //     : Colors.grey,
+                                    Colors.green,
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: const Center(
