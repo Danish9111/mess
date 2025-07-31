@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mess/extentions.dart';
 import 'package:mess/screens/profile_screen/admin_profile/members_tab/all_members.dart';
@@ -11,6 +12,14 @@ class BuildMemberTabBody extends StatefulWidget {
 }
 
 class BuildMemberTabBodyState extends State<BuildMemberTabBody> {
+  Future<int> fetchMemberCount() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('members')
+        .where('isActive', isEqualTo: true)
+        .get();
+    return snapshot.docs.length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,15 +43,26 @@ class BuildMemberTabBodyState extends State<BuildMemberTabBody> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Inactive Members Card
-              const MemberCard(
-                backgroundColor: Colors.lightBlueAccent,
-                text: 'Active Members',
-                icon: Icons.group,
-                membersCount: 100,
-                iconBackgroundColor: Colors.white,
-                textColor: Colors.white,
-                isActive: true,
-              ),
+              FutureBuilder(
+                  future: fetchMemberCount(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return const Icon(Icons.error);
+                    } else {
+                      return MemberCard(
+                        backgroundColor: Colors.lightBlueAccent,
+                        text: 'Active Members',
+                        icon: Icons.group,
+                        membersCount: snapshot.data!,
+                        iconBackgroundColor: Colors.white,
+                        textColor: Colors.white,
+                        isActive: true,
+                      );
+                    }
+                  }),
+
               const SizedBox(
                 width: 20,
               ),
