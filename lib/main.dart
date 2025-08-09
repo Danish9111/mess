@@ -21,12 +21,10 @@ void main() async {
   print("FCM Token: $fcmToken");
 
   FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-    // TODO: If necessary send token to application server.
     // Note: This callback is fired at each app startup and whenever a new
     // token is generated.
   }).onError((err) {
     debugPrint('Unable to get FCM Token: $err');
-    // Error getting token.
   });
 
   await backfillAttendance();
@@ -42,6 +40,24 @@ class MessApp extends ConsumerStatefulWidget {
 }
 
 class _MessAppState extends ConsumerState<MessApp> {
+  @override
+  @override
+  void initState() {
+    super.initState();
+    _requestNotificationPermission();
+  }
+
+  Future<void> _requestNotificationPermission() async {
+    NotificationSettings settings =
+        await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    debugPrint('🔔 Permission status: ${settings.authorizationStatus}');
+  }
+
   @override
   Widget build(BuildContext context) {
     // ✅ safe zone: inside build
