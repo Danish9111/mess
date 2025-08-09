@@ -11,10 +11,23 @@ import 'package:mess/providers/uid_firebase.dart';
 import 'package:mess/providers/google_user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:core';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print("FCM Token: $fcmToken");
+
+  FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+    // TODO: If necessary send token to application server.
+    // Note: This callback is fired at each app startup and whenever a new
+    // token is generated.
+  }).onError((err) {
+    debugPrint('Unable to get FCM Token: $err');
+    // Error getting token.
+  });
 
   await backfillAttendance();
 
